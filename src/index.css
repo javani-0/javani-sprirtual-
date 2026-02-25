@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core palette */
+    --primary: 0 68% 32%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 4 63% 46%;
+    --primary-dark: 0 80% 20%;
+
+    --gold: 42 50% 54%;
+    --gold-foreground: 0 0% 100%;
+    --gold-light: 40 66% 70%;
+    --gold-dark: 38 44% 42%;
+
+    --ivory: 39 67% 93%;
+    --ivory-dark: 38 47% 86%;
+
+    --charcoal: 0 0% 10%;
+    --charcoal-foreground: 0 0% 100%;
+
+    --background: 36 60% 96%;
+    --foreground: 18 37% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 18 37% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 18 37% 12%;
+
+    --secondary: 38 47% 86%;
+    --secondary-foreground: 18 37% 12%;
+
+    --muted: 38 30% 90%;
+    --muted-foreground: 30 20% 38%;
+
+    --accent: 42 50% 54%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 38 30% 82%;
+    --input: 38 30% 82%;
+    --ring: 0 68% 32%;
+
+    --radius: 0.5rem;
+
+    --bg-section: 39 47% 90%;
+    --overlay-dark: 0 44% 7%;
+
+    /* Shadows */
+    --shadow-gold: 0 4px 24px rgba(201, 168, 76, 0.18);
+    --shadow-card: 0 8px 40px rgba(26, 10, 10, 0.10);
+    --shadow-hero: 0 20px 80px rgba(26, 10, 10, 0.25);
+
+    /* Sidebar (keep defaults) */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', serif;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .font-body {
+    font-family: 'Inter', sans-serif;
+  }
+  .font-accent {
+    font-family: 'Cinzel Decorative', serif;
+  }
+  .text-gradient-gold {
+    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(var(--gold-light)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-light)) 100%);
+  }
+  .bg-gradient-dark {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
+  }
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  .shadow-hero {
+    box-shadow: var(--shadow-hero);
+  }
+}
+
+/* Marquee animation for trust bar */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Skeleton loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--ivory)) 50%, hsl(var(--muted)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Typing cursor reveal animation for mobile */
+@keyframes cursor-reveal {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.animate-cursor-reveal {
+  clip-path: inset(0 100% 0 0);
+  animation: cursor-reveal 1.2s ease-out forwards;
+}
+
+/* Top to bottom reveal animation for mobile */
+@keyframes cursor-reveal-vertical {
+  0% {
+    clip-path: inset(0 0 100% 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.animate-cursor-reveal-vertical {
+  animation: cursor-reveal-vertical 1.8s ease-out forwards;
+}
+
+/* Left to right reveal with visible cursor */
+@keyframes cursor-reveal-with-cursor {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.animate-cursor-reveal-with-cursor {
+  position: relative;
+  animation: cursor-reveal-with-cursor 2.5s ease-out forwards;
+}
+.animate-cursor-reveal-with-cursor::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, transparent, hsl(var(--primary)), transparent);
+  animation: cursor-move 2.5s ease-out forwards;
+  pointer-events: none;
+}
+@keyframes cursor-move {
+  0% {
+    left: 0;
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
+/* Blinking cursor for hero section */
+@keyframes blink-cursor {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+/* Typing animation for hero text with single cursor */
+@keyframes typing-line-1 {
+  0%, 10% { width: 0; }
+  10%, 30% { width: 100%; }
+  30%, 100% { width: 100%; }
+}
+@keyframes typing-line-2 {
+  0%, 30% { width: 0; }
+  30%, 50% { width: 100%; }
+  50%, 100% { width: 100%; }
+}
+@keyframes typing-line-3 {
+  0%, 50% { width: 0; }
+  50%, 74% { width: 100%; }
+  74%, 100% { width: 100%; }
+}
+
+.hero-typing-line {
+  overflow: hidden;
+  white-space: nowrap;
+  display: inline-block;
+  position: relative;
+}
+
+/* Loop animation every 5s */
+.hero-typing-line-1 {
+  animation: typing-line-1 5s steps(25) infinite;
+  animation-delay: 1.6s;
+  width: 0;
+}
+.hero-typing-line-2 {
+  animation: typing-line-2 5s steps(20) infinite;
+  animation-delay: 1.6s;
+  width: 0;
+}
+.hero-typing-line-3 {
+  animation: typing-line-3 5s steps(25) infinite;
+  animation-delay: 1.6s;
+  width: 0;
+}
+
+/* Single cursor that moves between lines */
+.hero-single-cursor {
+  position: fixed;
+  width: 3px;
+  height: 0.9em;
+  background: hsl(var(--gold-light));
+  box-shadow: 0 0 8px rgba(201, 168, 76, 0.6);
+  pointer-events: none;
+  z-index: 100;
+  display: none;
+}
+
