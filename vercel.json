@@ -2,13 +2,13 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.javanilife.store" }],
+      "has": [{ "type": "host", "value": "www.javanailife.store" }],
       "destination": "https://www.javanilife.com/products",
       "permanent": false
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "javanilife.store" }],
+      "has": [{ "type": "host", "value": "javanailife.store" }],
       "destination": "https://www.javanilife.com/products",
       "permanent": false
     }

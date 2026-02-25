@@ -70,7 +70,7 @@ const SuspenseLoader = () => (
 // Redirect .store domain visitors to /products
 const StoreDomainRedirect = () => {
   const { pathname } = useLocation();
-  const isStoreDomain = window.location.hostname.includes("javanilife.store");
+  const isStoreDomain = window.location.hostname.includes("javanailife.store");
 
   if (isStoreDomain && pathname === "/") {
     return <Navigate to="/products" replace />;
