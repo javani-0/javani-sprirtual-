@@ -1,9 +1,19 @@
 {
   "redirects": [
     {
-      "source": "/(.*)",
-      "destination": "https://www.javanilife.com/products",
+      "source": "/",
+      "has": [{ "type": "host", "value": "javanailife.store" }],
+      "destination": "/products",
+      "permanent": false
+    },
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "www.javanailife.store" }],
+      "destination": "/products",
       "permanent": false
     }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
   ]
 }
