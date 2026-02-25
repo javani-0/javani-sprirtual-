@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense, useState } from "react";
 import { AuthProvider } from "@/contexts/AuthContext";
 import FloatingButtons from "./components/FloatingButtons";
@@ -67,17 +67,6 @@ const SuspenseLoader = () => (
   </div>
 );
 
-// Redirect .store domain visitors to /products
-const StoreDomainRedirect = () => {
-  const { pathname } = useLocation();
-  const isStoreDomain = window.location.hostname.includes("javanailife.store");
-
-  if (isStoreDomain && pathname === "/") {
-    return <Navigate to="/products" replace />;
-  }
-  return null;
-};
-
 const App = () => {
   const [showLoader, setShowLoader] = useState(true);
 
@@ -99,7 +88,6 @@ const App = () => {
           {showLoader && <PageLoader />}
           <BrowserRouter>
             <ScrollToTop />
-            <StoreDomainRedirect />
             <PublicNavbar />
             <PublicFloatingButtons />
             <PublicScrollProgress />
