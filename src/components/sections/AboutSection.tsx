@@ -27,9 +27,7 @@ const AboutSection = () => {
   const [images, setImages] = useState(fallbackImages);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const handleLoad = (i: number) => setLoadedImages((prev) => new Set(prev).add(i));
-  const { ref: labelRef, isVisible: labelVisible } = useScrollAnimation();
-  const { ref: imgRef, isVisible: imgVisible } = useScrollAnimation();
-  const { ref: textRef, isVisible: textVisible } = useScrollAnimation();
+  const { ref: sectionRef, isVisible: sectionVisible } = useScrollAnimation({ threshold: 0.15 });
 
   useEffect(() => {
     const fetchAboutImages = async () => {
@@ -54,19 +52,23 @@ const AboutSection = () => {
   }, []);
 
   return (
-    <section className="py-16 sm:py-20 md:py-32 bg-background overflow-hidden">
+    <section ref={sectionRef} className="py-16 sm:py-20 md:py-32 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div ref={labelRef} className={`${labelVisible ? "animate-fade-up" : "opacity-0"}`}>
+        <div className={`${sectionVisible ? "animate-scale-in" : "opacity-0"}`}>
           <SectionLabel text="OUR LEGACY" className="mb-6" />
+        </div>
+        <div className={`${sectionVisible ? "animate-scale-in" : "opacity-0"}`} style={{ animationDelay: sectionVisible ? "0.1s" : undefined }}>
           <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center max-w-[700px] mx-auto mb-4">
             Preserving the Sacred. Teaching the Timeless.
           </h2>
+        </div>
+        <div className={`${sectionVisible ? "animate-scale-in" : "opacity-0"}`} style={{ animationDelay: sectionVisible ? "0.2s" : undefined }}>
           <GoldDivider className="mb-12 sm:mb-16" />
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-start">
           {/* Image collage */}
-          <div ref={imgRef} className={`relative ${imgVisible ? "animate-fade-left" : "opacity-0"}`}>
+          <div className={`relative ${sectionVisible ? "animate-fade-left" : "opacity-0"}`} style={{ animationDelay: sectionVisible ? "0.5s" : undefined }}>
             <div className="absolute -inset-5 border-[3px] border-gold/20 -z-10 hidden lg:block" style={{ borderRadius: "2px" }} />
             <div className="grid grid-cols-2 gap-3">
               {images.map((img, i) => (
@@ -79,7 +81,7 @@ const AboutSection = () => {
           </div>
 
           {/* Text content */}
-          <div ref={textRef} className={`min-w-0 ${textVisible ? "animate-fade-right" : "opacity-0"}`}>
+          <div className={`min-w-0 ${sectionVisible ? "animate-fade-right" : "opacity-0"}`} style={{ animationDelay: sectionVisible ? "0.5s" : undefined }}>
             <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-4">
               Javni Spiritual Arts was founded with a singular vision — to preserve and propagate the sacred classical arts of India in their most authentic form.
             </p>
@@ -89,7 +91,10 @@ const AboutSection = () => {
 
             <div className="space-y-0">
               {features.map((f, i) => (
-                <div key={i} className={`flex items-start gap-4 py-4 ${i < features.length - 1 ? "border-b border-ivory-dark" : ""}`}>
+                <div
+                  key={i}
+                  className={`flex items-start gap-4 py-4 ${i < features.length - 1 ? "border-b border-ivory-dark" : ""}`}
+                >
                   <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-lg flex-shrink-0">
                     {f.icon}
                   </div>
@@ -101,7 +106,9 @@ const AboutSection = () => {
               ))}
             </div>
 
-            <Link to="/about"><GoldOutlineButton className="mt-8">Our Full Story</GoldOutlineButton></Link>
+            <div>
+              <Link to="/about"><GoldOutlineButton className="mt-8">Our Full Story</GoldOutlineButton></Link>
+            </div>
           </div>
         </div>
       </div>

@@ -26,6 +26,7 @@ const CoursesPreview = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation();
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -48,14 +49,20 @@ const CoursesPreview = () => {
   return (
     <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
-          <SectionLabel text="WHAT WE TEACH" className="mb-6" />
-          <h2 className="font-display font-bold text-[1.8rem] sm:text-[2rem] md:text-[3.2rem] text-foreground text-center mb-3">
-            Explore Our Sacred Arts
-          </h2>
-          <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-muted-foreground text-center mb-10 sm:mb-12 max-w-lg mx-auto">
-            From classical dance forms to spiritual music — find your calling.
-          </p>
+        <div ref={headerRef}>
+          <div className={`${headerVisible ? "animate-scale-in" : "opacity-0"}`}>
+            <SectionLabel text="WHAT WE TEACH" className="mb-6" />
+          </div>
+          <div className={`${headerVisible ? "animate-scale-in" : "opacity-0"}`} style={{ animationDelay: headerVisible ? "0.1s" : undefined }}>
+            <h2 className="font-display font-bold text-[1.8rem] sm:text-[2rem] md:text-[3.2rem] text-foreground text-center mb-3">
+              Explore Our Sacred Arts
+            </h2>
+          </div>
+          <div className={`${headerVisible ? "animate-scale-in" : "opacity-0"}`} style={{ animationDelay: headerVisible ? "0.2s" : undefined }}>
+            <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-muted-foreground text-center mb-10 sm:mb-12 max-w-lg mx-auto">
+              From classical dance forms to spiritual music — find your calling.
+            </p>
+          </div>
         </div>
 
         {loading ? (
@@ -63,12 +70,12 @@ const CoursesPreview = () => {
             {/* Loading state - show nothing to avoid confusion */}
           </div>
         ) : courses.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-10 sm:mb-12">
+          <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-10 sm:mb-12">
             {courses.map((c, i) => (
               <div
                 key={c.id}
-                className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}
-                style={{ animationDelay: headerVisible ? `${0.2 + i * 0.12}s` : undefined }}
+                className={`${cardsVisible ? "animate-fade-up" : "opacity-0"}`}
+                style={{ animationDelay: cardsVisible ? `${i * 0.15}s` : undefined }}
               >
               <div className="bg-card shadow-card rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-hero group">
                 <div className="aspect-[3/2] relative overflow-hidden">
@@ -92,7 +99,7 @@ const CoursesPreview = () => {
           </div>
         )}
 
-        <div className={`text-center ${headerVisible ? "animate-fade-up" : "opacity-0"}`} style={{ animationDelay: "0.4s" }}>
+        <div className={`text-center ${cardsVisible ? "animate-fade-up" : "opacity-0"}`} style={{ animationDelay: cardsVisible ? "0.5s" : undefined }}>
           <Link to="/courses"><PrimaryButton>View All Courses →</PrimaryButton></Link>
         </div>
       </div>

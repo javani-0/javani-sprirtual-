@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
 import { ZoomIn, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 type GalleryCategory = "all" | "performances" | "workshops" | "certifications" | "behind" | "recitals";
 interface GalleryImage { src: string; category: GalleryCategory[]; }
@@ -28,6 +29,8 @@ const Gallery = () => {
   const [loaded, setLoaded] = useState<Set<number>>(new Set());
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
+  const { ref: filterRef, isVisible: filterVisible } = useScrollAnimation();
+  const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation();
 
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "gallery"), (snap) => {
@@ -77,9 +80,9 @@ const Gallery = () => {
         description="Browse photos from performances, workshops, certifications, and behind-the-scenes moments at Javni Spiritual Arts."
       />
       <main>
-        <PageHero backgroundImages={heroBgs.length > 0 ? heroBgs : undefined} label="OUR GALLERY" heading="Gallery of Art & Expression" subtext="Every photograph tells the story of a student's devotion." />
+        <PageHero backgroundImages={heroBgs} label="OUR GALLERY" heading="Gallery of Art & Expression" subtext="Every photograph tells the story of a student's devotion." />
 
-        <div className="sticky top-[80px] z-[500] bg-card shadow-sm py-3 sm:py-4">
+        <div ref={filterRef} className={`sticky top-[80px] z-[500] bg-card shadow-sm py-3 sm:py-4 ${filterVisible ? "animate-fade-down" : "opacity-0"}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap justify-center gap-2">
             {filters.map((f) => (
               <button key={f.value} onClick={() => { setActiveFilter(f.value); setLoaded(new Set()); }} className={`px-4 sm:px-5 py-2 rounded-full font-body font-medium text-[0.8rem] sm:text-[0.875rem] transition-all duration-300 ${activeFilter === f.value ? "bg-gradient-primary text-primary-foreground" : "border border-ivory-dark text-muted-foreground hover:bg-ivory-dark"}`}>
@@ -100,9 +103,14 @@ const Gallery = () => {
                 <p className="font-body text-muted-foreground">No images available in this category.</p>
               </div>
             ) : (
-              <div className="columns-2 lg:columns-3 2xl:columns-4 gap-3 sm:gap-4 space-y-3 sm:space-y-4">
+              <div ref={gridRef} className="columns-2 lg:columns-3 2xl:columns-4 gap-3 sm:gap-4 space-y-3 sm:space-y-4">
                 {filtered.map((img, i) => (
-                  <div key={i + activeFilter} className="relative group cursor-pointer overflow-hidden rounded-lg break-inside-avoid" onClick={() => setLightboxIndex(i)}>
+                  <div
+                    key={i + activeFilter}
+                    className={`relative group cursor-pointer overflow-hidden rounded-lg break-inside-avoid ${gridVisible ? "animate-scale-in" : "opacity-0"}`}
+                    style={{ animationDelay: gridVisible ? `${i * 0.05}s` : undefined }}
+                    onClick={() => setLightboxIndex(i)}
+                  >
                     {!loaded.has(i) && <div className="aspect-[4/3] skeleton-shimmer" />}
                     <img src={img.src} alt={`Gallery image ${i + 1}`} onLoad={() => setLoaded((p) => new Set(p).add(i))} className={`w-full object-cover transition-all duration-500 group-hover:scale-[1.04] ${loaded.has(i) ? "opacity-100" : "opacity-0 absolute inset-0"}`} />
                     <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/50 transition-all duration-300 flex items-center justify-center">

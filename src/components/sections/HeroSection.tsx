@@ -38,21 +38,16 @@ const HeroSection = () => {
     fetchHeroImages();
   }, []);
 
-  // Update cursor position
+  // Update cursor position - plays once only
   useEffect(() => {
     const updateCursor = () => {
       const now = Date.now();
       const elapsed = now - startTime;
       
-      // Don't show cursor during loading (first 1.6 seconds)
-      if (elapsed < 1600) return;
-      
-      const cycle = (elapsed - 1600) % 5000; // 5s loop, starting after 1.6s delay
-      
       let targetLine = -1;
-      if (cycle >= 500 && cycle < 1500) targetLine = 0;
-      else if (cycle >= 1500 && cycle < 2500) targetLine = 1;
-      else if (cycle >= 2500 && cycle < 3700) targetLine = 2;
+      if (elapsed >= 300 && elapsed < 1300) targetLine = 0;
+      else if (elapsed >= 1300 && elapsed < 2300) targetLine = 1;
+      else if (elapsed >= 2300 && elapsed < 3500) targetLine = 2;
       
       if (targetLine >= 0 && lineRefs.current[targetLine]) {
         const rect = lineRefs.current[targetLine]!.getBoundingClientRect();
@@ -66,7 +61,17 @@ const HeroSection = () => {
     const startTime = Date.now();
     updateCursor();
     const interval = setInterval(updateCursor, 50);
-    return () => clearInterval(interval);
+    
+    // Stop cursor updates after animation completes (3.5 seconds)
+    const stopTimeout = setTimeout(() => {
+      clearInterval(interval);
+      setCursorStyle({ display: 'none' });
+    }, 3500);
+    
+    return () => {
+      clearInterval(interval);
+      clearTimeout(stopTimeout);
+    };
   }, []);
 
   const nextImage = useCallback(() => {

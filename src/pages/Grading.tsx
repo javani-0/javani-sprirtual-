@@ -16,17 +16,19 @@ import dancerPortrait from "@/assets/dancer-portrait-1.jpg";
 /* ───── Intro ───── */
 const IntroSection = () => {
   const [imgLoaded, setImgLoaded] = useState(false);
+  const { ref: imgRef, isVisible: imgVisible } = useScrollAnimation();
+  const { ref: textRef, isVisible: textVisible } = useScrollAnimation();
   return (
     <section className="py-16 sm:py-20 md:py-32 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[45%_1fr] gap-8 sm:gap-12 lg:gap-20 items-start">
-        <div className="relative">
+        <div ref={imgRef} className={`relative ${imgVisible ? "animate-fade-left" : "opacity-0"}`}>
           <div className="absolute -inset-3 border-[4px] border-gold/30 pointer-events-none" style={{ borderRadius: "2px" }} />
           <div className="relative overflow-hidden aspect-[3/4]" style={{ borderRadius: "2px" }}>
             {!imgLoaded && <div className="absolute inset-0 skeleton-shimmer" />}
             <img src={dancerPortrait} alt="Grading" loading="lazy" onLoad={() => setImgLoaded(true)} className={`w-full h-full object-cover transition-opacity duration-700 ${imgLoaded ? "opacity-100" : "opacity-0"}`} />
           </div>
         </div>
-        <div className="min-w-0">
+        <div ref={textRef} className={`min-w-0 ${textVisible ? "animate-fade-right" : "opacity-0"}`}>
           <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.5rem] text-primary leading-tight mb-6">
             A Journey, Not Just a Grade
           </h2>
@@ -64,12 +66,17 @@ const steps = [
   { badge: "SD", title: "Senior Diploma / Arangetram", level: "Master", desc: "The pinnacle — a full solo debut performance (Arangetram) and Senior Diploma certification.", crown: true },
 ];
 
-const LadderSection = () => (
-  <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
-    <div className="max-w-7xl mx-auto px-4 sm:px-6">
-      <SectionLabel text="THE PROGRESSION PATH" className="mb-6" />
-      <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-14">From First Step to Master Level</h2>
-      <div className="overflow-x-auto pb-4 -mx-4 sm:mx-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+const LadderSection = () => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  const { ref: stepsRef, isVisible: stepsVisible } = useScrollAnimation();
+  return (
+    <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <SectionLabel text="THE PROGRESSION PATH" className="mb-6" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-14">From First Step to Master Level</h2>
+        </div>
+        <div ref={stepsRef} className={`overflow-x-auto pb-4 -mx-4 sm:mx-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${stepsVisible ? "animate-fade-up" : "opacity-0"}`}>
         <div className="flex gap-3 sm:gap-4 min-w-[1100px] px-4 sm:px-0">
           {steps.map((s, i) => (
             <div key={s.badge} className="flex items-start">
@@ -95,13 +102,17 @@ const LadderSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 /* ───── Certificate Mockup ───── */
-const CertificationSection = () => (
+const CertificationSection = () => {
+  const { ref: textRef, isVisible: textVisible } = useScrollAnimation();
+  const { ref: certRef, isVisible: certVisible } = useScrollAnimation();
+  return (
   <section className="py-16 sm:py-20 md:py-32 bg-background">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
-      <div>
+      <div ref={textRef} className={`${textVisible ? "animate-fade-left" : "opacity-0"}`}>
         <SectionLabel text="WHAT YOU EARN" className="justify-start mb-6" />
         <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-primary leading-tight mb-8">
           Your Certificate, Recognized Nationally
@@ -122,7 +133,7 @@ const CertificationSection = () => (
         </ul>
         <PrimaryButton>Ask About Certification</PrimaryButton>
       </div>
-      <div className="bg-ivory rounded-lg p-6 sm:p-8 md:p-10 shadow-[0_20px_60px_rgba(201,168,76,0.2)]" style={{ border: "3px double hsl(42,50%,54%)" }}>
+      <div ref={certRef} className={`bg-ivory rounded-lg p-6 sm:p-8 md:p-10 shadow-[0_20px_60px_rgba(201,168,76,0.2)] ${certVisible ? "animate-fade-right" : "opacity-0"}`} style={{ border: "3px double hsl(42,50%,54%)" }}>
         <div className="text-center">
           <p className="font-accent text-[1.1rem] sm:text-[1.2rem] md:text-[1.4rem] text-gold mb-2">Javni Spiritual Arts</p>
           <GoldDivider className="mb-4" />
@@ -143,7 +154,8 @@ const CertificationSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 /* ───── Exam Process ───── */
 const examSteps = [
@@ -153,14 +165,23 @@ const examSteps = [
   { num: "4", title: "Receive Certificate", desc: "Results within 60 days. Digital certificate immediately. Physical certificate by post within 90 days." },
 ];
 
-const ExamProcessSection = () => (
-  <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
-    <div className="max-w-7xl mx-auto px-4 sm:px-6">
-      <SectionLabel text="THE EXAM JOURNEY" className="mb-6" />
-      <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-14">How Examinations Work</h2>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {examSteps.map((s, i) => (
-          <div key={s.num} className="relative group">
+const ExamProcessSection = () => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  const { ref: stepsRef, isVisible: stepsVisible } = useScrollAnimation();
+  return (
+    <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <SectionLabel text="THE EXAM JOURNEY" className="mb-6" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-14">How Examinations Work</h2>
+        </div>
+        <div ref={stepsRef} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {examSteps.map((s, i) => (
+          <div
+            key={s.num}
+            className={`relative group ${stepsVisible ? "animate-fade-up" : "opacity-0"}`}
+            style={{ animationDelay: stepsVisible ? `${i * 0.15}s` : undefined }}
+          >
             <div className="bg-card shadow-card rounded-lg p-5 sm:p-6 hover:-translate-y-1 hover:border-t-[3px] hover:border-gold border-t-[3px] border-transparent transition-all duration-300 h-full">
               <div className="w-10 h-10 rounded-full bg-gold text-white font-accent text-sm flex items-center justify-center mb-4">{s.num}</div>
               <h3 className="font-display font-semibold text-[1rem] sm:text-[1.1rem] text-foreground mb-2">{s.title}</h3>
@@ -176,7 +197,8 @@ const ExamProcessSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};
 
 /* ───── FAQ Accordion ───── */
 const faqs = [
@@ -189,13 +211,17 @@ const faqs = [
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  const { ref: faqRef, isVisible: faqVisible } = useScrollAnimation();
 
   return (
     <section className="py-16 sm:py-20 md:py-32 bg-background">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
-        <SectionLabel text="COMMON QUESTIONS" className="mb-6" />
-        <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-12">Grading FAQs</h2>
-        <div className="space-y-3 sm:space-y-4">
+        <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <SectionLabel text="COMMON QUESTIONS" className="mb-6" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-12">Grading FAQs</h2>
+        </div>
+        <div ref={faqRef} className={`space-y-3 sm:space-y-4 ${faqVisible ? "animate-fade-up" : "opacity-0"}`}>
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i;
             return (

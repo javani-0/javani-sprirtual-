@@ -26,6 +26,7 @@ const TestimonialsSection = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>(defaultTestimonials);
   const [current, setCurrent] = useState(0);
   const { ref, isVisible } = useScrollAnimation();
+  const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation();
 
   useEffect(() => {
     const fetchTestimonials = async () => {
@@ -58,28 +59,32 @@ const TestimonialsSection = () => {
   return (
     <section className="py-20 md:py-32 bg-ivory">
       <div className="max-w-7xl mx-auto px-6">
-        <div ref={ref} className={`${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-          <SectionLabel text="STUDENT LOVE" className="mb-6" />
-          <h2 className="font-display font-semibold text-[2rem] md:text-[3rem] text-foreground text-center mb-12">
-            Words From Our Students
-          </h2>
+        <div ref={ref}>
+          <div className={`${isVisible ? "animate-scale-in" : "opacity-0"}`}>
+            <SectionLabel text="STUDENT LOVE" className="mb-6" />
+          </div>
+          <div className={`${isVisible ? "animate-scale-in" : "opacity-0"}`} style={{ animationDelay: isVisible ? "0.1s" : undefined }}>
+            <h2 className="font-display font-semibold text-[2rem] md:text-[3rem] text-foreground text-center mb-12">
+              Words From Our Students
+            </h2>
+          </div>
         </div>
 
         {/* Desktop: show 3 */}
-        <div className="hidden lg:grid grid-cols-3 gap-6 mb-8">
+        <div ref={cardsRef} className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {testimonials.slice(0, 3).map((t, i) => (
-            <div key={i} className={`${isVisible ? "animate-fade-up" : "opacity-0"}`} style={{ animationDelay: isVisible ? `${0.1 + i * 0.12}s` : undefined }}>
+            <div key={i} className={`${cardsVisible ? "animate-scale-in" : "opacity-0"}`} style={{ animationDelay: cardsVisible ? `${i * 0.15}s` : undefined }}>
               <TestimonialCard {...t} />
             </div>
           ))}
         </div>
 
         {/* Mobile: carousel */}
-        <div className="lg:hidden">
+        <div className="md:hidden">
           {testimonials[current] && <TestimonialCard {...testimonials[current]} />}
         </div>
 
-        <div className="flex items-center justify-center gap-4 mt-8">
+        <div className="md:hidden flex items-center justify-center gap-4 mt-8">
           <button onClick={prev} className="w-10 h-10 rounded-full border border-gold text-gold flex items-center justify-center hover:bg-gold hover:text-white transition-all">
             <ChevronLeft className="w-5 h-5" />
           </button>

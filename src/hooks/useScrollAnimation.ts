@@ -8,28 +8,34 @@ interface UseScrollAnimationOptions {
 export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Fallback: make visible after 1.5s in case IntersectionObserver doesn't fire (e.g., in iframes)
-    const fallbackTimer = setTimeout(() => setIsVisible(true), 1500);
-
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          clearTimeout(fallbackTimer);
+        // Only trigger animation when scrolling into view, not if already in view on page load
+        if (entry.isIntersecting && !hasAnimated.current) {
+          // Force a small delay to ensure the opacity-0 state is painted first
+          requestAnimationFrame(() => {
+            setIsVisible(true);
+            hasAnimated.current = true;
+          });
           observer.unobserve(el);
         }
       },
       { threshold: options.threshold ?? 0.1, rootMargin: options.rootMargin ?? "0px" }
     );
 
-    observer.observe(el);
+    // Small delay to ensure page has loaded before observing
+    const timeout = setTimeout(() => {
+      observer.observe(el);
+    }, 150);
+
     return () => {
-      clearTimeout(fallbackTimer);
+      clearTimeout(timeout);
       observer.disconnect();
     };
   }, [options.threshold, options.rootMargin]);

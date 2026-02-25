@@ -174,20 +174,26 @@ const FacultySection = ({ faculty }: { faculty: FacultyMember[] }) => {
     <>
       <section className="py-16 sm:py-20 md:py-32 bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div ref={ref} className={`${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-            <SectionLabel text="MEET THE GURUS" className="mb-6" />
-            <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-12">The Teachers Behind the Transformation</h2>
+          <div ref={ref}>
+            <div className={`${isVisible ? "animate-scale-in" : "opacity-0"}`}>
+              <SectionLabel text="MEET THE GURUS" className="mb-6" />
+            </div>
+            <div className={`${isVisible ? "animate-scale-in" : "opacity-0"}`} style={{ animationDelay: isVisible ? "0.1s" : undefined }}>
+              <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-12">The Teachers Behind the Transformation</h2>
+            </div>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {faculty.map((f, i) => (
               <div
                 key={f.name}
                 onClick={() => setSelectedFaculty(f)}
-                className={`text-center p-4 sm:p-6 md:p-8 rounded-lg shadow-card bg-card hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer ${isVisible ? "animate-fade-up" : "opacity-0"}`}
-                style={{ animationDelay: isVisible ? `${0.1 + i * 0.12}s` : undefined }}
+                className={`relative text-center p-4 sm:p-6 md:p-8 rounded-lg shadow-card bg-card hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer ${isVisible ? "animate-elegant-rise" : "opacity-0"}`}
+                style={{ 
+                  animationDelay: isVisible ? `${0.15 + i * 0.15}s` : undefined
+                }}
               >
                 <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto mb-4 sm:mb-5 rounded-full p-1 ring-[3px] ring-gold ring-offset-4 ring-offset-card overflow-hidden">
-                  <img src={f.image} alt={f.name} loading="lazy" className="w-full h-full object-cover rounded-full transition-transform duration-500 group-hover:scale-[1.04]" />
+                  <img src={f.image} alt={f.name} loading="lazy" className="w-full h-full object-cover rounded-full group-hover:scale-[1.04] transition-transform duration-500" />
                 </div>
                 <h3 className="font-display font-bold text-[1rem] sm:text-[1.3rem] text-primary mb-1">{f.name}</h3>
                 <p className="font-body font-medium text-[0.75rem] sm:text-[0.875rem] text-muted-foreground mb-2">{f.title}</p>
@@ -260,19 +266,24 @@ const whyPoints = [
 
 const WhySection = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation();
 
   return (
     <section className="relative py-16 sm:py-20 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${heroTemple})` }} />
       <div className="absolute inset-0 bg-[#1A0A0A]/80" />
-      <div ref={ref} className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-        <div className={`${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-          <SectionLabel text="WHY CHOOSE US" className="mb-6 [&_span]:text-gold-light [&_div]:bg-gold-light" />
-          <h2 className="font-display font-bold text-[1.8rem] sm:text-[2rem] md:text-[3.5rem] text-white text-center mb-10 sm:mb-14">What Makes Us Different</h2>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+        <div ref={ref}>
+          <div className={`${isVisible ? "animate-scale-in" : "opacity-0"}`}>
+            <SectionLabel text="WHY CHOOSE US" className="mb-6 [&_span]:text-gold-light [&_div]:bg-gold-light" />
+          </div>
+          <div className={`${isVisible ? "animate-scale-in" : "opacity-0"}`} style={{ animationDelay: isVisible ? "0.1s" : undefined }}>
+            <h2 className="font-display font-bold text-[1.8rem] sm:text-[2rem] md:text-[3.5rem] text-white text-center mb-10 sm:mb-14">What Makes Us Different</h2>
+          </div>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {whyPoints.map((p, i) => (
-            <div key={p.title} className={`flex gap-4 ${isVisible ? "animate-fade-up" : "opacity-0"}`} style={{ animationDelay: isVisible ? `${0.2 + i * 0.1}s` : undefined }}>
+            <div key={p.title} className={`flex gap-4 ${cardsVisible ? "animate-fade-up" : "opacity-0"}`} style={{ animationDelay: cardsVisible ? `${i * 0.15}s` : undefined }}>
               <span className="text-[1.8rem] sm:text-[2rem] flex-shrink-0 mt-1">{p.icon}</span>
               <div>
                 <h3 className="font-display font-bold text-white text-[1rem] sm:text-[1.1rem] mb-1">{p.title}</h3>

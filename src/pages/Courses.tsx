@@ -92,6 +92,30 @@ const ExtCourseCard = ({ course, delay = 0 }: { course: Course; delay?: number }
   );
 };
 
+const CourseSection = ({ category, title, description, courses, bgClass }: {
+  category: string;
+  title: string;
+  description: string;
+  courses: Course[];
+  bgClass: string;
+}) => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  return (
+    <section className={`py-16 sm:py-20 md:py-32 ${bgClass}`} style={!bgClass ? { background: "hsl(var(--bg-section))" } : undefined}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <SectionLabel text={category} className="mb-6" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-primary mb-3">{title}</h2>
+          <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-muted-foreground mb-10 sm:mb-12 max-w-2xl">{description}</p>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {courses.map((c, i) => <ExtCourseCard key={c.id} course={c} delay={i * 0.12} />)}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const tableData = [
   ["Duration", "Grade-based (1–6 yrs)", "Advanced (2–3 yrs)", "Flexible (3 months+)"],
   ["Certificate", "✅ Nationally Recognized", "✅ University-Linked", "❌ Not Applicable"],
@@ -201,40 +225,31 @@ const Courses = () => {
         ) : (
           <>
             {filteredCert.length > 0 && (
-              <section className="py-16 sm:py-20 md:py-32 bg-background">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                  <SectionLabel text="FULLY CERTIFIED" className="mb-6" />
-                  <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-primary mb-3">Certification Courses</h2>
-                  <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-muted-foreground mb-10 sm:mb-12 max-w-2xl">Complete a structured grade-based journey and earn a nationally recognized certificate.</p>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                    {filteredCert.map((c, i) => <ExtCourseCard key={c.id} course={c} delay={i * 0.12} />)}
-                  </div>
-                </div>
-              </section>
+              <CourseSection
+                category="FULLY CERTIFIED"
+                title="Certification Courses"
+                description="Complete a structured grade-based journey and earn a nationally recognized certificate."
+                courses={filteredCert}
+                bgClass="bg-background"
+              />
             )}
             {filteredDiploma.length > 0 && (
-              <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
-                <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                  <SectionLabel text="ADVANCED MASTERY" className="mb-6" />
-                  <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-primary mb-3">Diploma Courses</h2>
-                  <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-muted-foreground mb-10 sm:mb-12 max-w-2xl">Deepen your mastery with advanced, university-linked diploma programs.</p>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                    {filteredDiploma.map((c, i) => <ExtCourseCard key={c.id} course={c} delay={i * 0.12} />)}
-                  </div>
-                </div>
-              </section>
+              <CourseSection
+                category="ADVANCED MASTERY"
+                title="Diploma Courses"
+                description="Deepen your mastery with advanced, university-linked diploma programs."
+                courses={filteredDiploma}
+                bgClass=""
+              />
             )}
             {filteredPreGrade.length > 0 && (
-              <section className="py-16 sm:py-20 md:py-32 bg-background">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                  <SectionLabel text="EXPLORE & DISCOVER" className="mb-6" />
-                  <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-primary mb-3">Pre-Grade & Hobby Courses</h2>
-                  <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-muted-foreground mb-10 sm:mb-12 max-w-2xl">Perfect for curious beginners, young children, or those exploring arts without formal examination pressure.</p>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                    {filteredPreGrade.map((c, i) => <ExtCourseCard key={c.id} course={c} delay={i * 0.12} />)}
-                  </div>
-                </div>
-              </section>
+              <CourseSection
+                category="EXPLORE & DISCOVER"
+                title="Pre-Grade & Hobby Courses"
+                description="Perfect for curious beginners, young children, or those exploring arts without formal examination pressure."
+                courses={filteredPreGrade}
+                bgClass="bg-background"
+              />
             )}
           </>
         )}

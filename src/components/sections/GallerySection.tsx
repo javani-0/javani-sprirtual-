@@ -34,6 +34,7 @@ const GallerySection = () => {
   const [loaded, setLoaded] = useState<Set<number>>(new Set());
   const [images, setImages] = useState<string[]>(fallbackImages);
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  const { ref: imagesRef, isVisible: imagesVisible } = useScrollAnimation();
 
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "gallery"), (snap) => {
@@ -54,19 +55,23 @@ const GallerySection = () => {
   return (
     <section className="py-16 sm:py-20 md:py-32 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
-          <SectionLabel text="MOMENTS OF ART" className="mb-6" />
-          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-12">
-            Every Performance, A Prayer
-          </h2>
+        <div ref={headerRef}>
+          <div className={`${headerVisible ? "animate-scale-in" : "opacity-0"}`}>
+            <SectionLabel text="MOMENTS OF ART" className="mb-6" />
+          </div>
+          <div className={`${headerVisible ? "animate-scale-in" : "opacity-0"}`} style={{ animationDelay: headerVisible ? "0.1s" : undefined }}>
+            <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-12">
+              Every Performance, A Prayer
+            </h2>
+          </div>
         </div>
 
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4 mb-10 sm:mb-12">
+        <div ref={imagesRef} className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4 mb-10 sm:mb-12">
           {displayImages.map((src, i) => (
             <div
               key={i}
-              className={`relative group cursor-pointer overflow-hidden rounded-lg break-inside-avoid ${headerVisible ? "animate-scale-in" : "opacity-0"}`}
-              style={{ animationDelay: headerVisible ? `${0.1 + i * 0.06}s` : undefined }}
+              className={`relative group cursor-pointer overflow-hidden rounded-lg break-inside-avoid ${imagesVisible ? "animate-scale-in" : "opacity-0"}`}
+              style={{ animationDelay: imagesVisible ? `${i * 0.08}s` : undefined }}
               onClick={() => setLightbox(src)}
             >
               {!loaded.has(i) && <div className="aspect-[4/3] skeleton-shimmer" />}

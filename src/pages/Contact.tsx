@@ -12,6 +12,7 @@ import { Phone, Mail, MapPin, Clock, Instagram, Youtube, Facebook, MessageCircle
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer3 from "@/assets/hero-dancer-3.jpg";
 import heroTemple from "@/assets/hero-temple.jpg";
@@ -82,6 +83,8 @@ const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const { toast } = useToast();
   const contactInfo = useContactInfo();
+  const { ref: leftRef, isVisible: leftVisible } = useScrollAnimation();
+  const { ref: rightRef, isVisible: rightVisible } = useScrollAnimation();
 
   const updateField = (field: keyof FormData, value: string | boolean | string[]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -136,7 +139,7 @@ const Contact = () => {
         <section className="py-12 sm:py-16 md:py-24 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[40%_60%] gap-0 overflow-hidden rounded-xl shadow-hero">
             {/* Left Panel */}
-            <div className="bg-gradient-dark text-white p-8 sm:p-10 md:p-12 relative overflow-hidden">
+            <div ref={leftRef} className={`bg-gradient-dark text-white p-8 sm:p-10 md:p-12 relative overflow-hidden ${leftVisible ? "animate-fade-left" : "opacity-0"}`}>
               <div className="relative z-10">
                 <h2 className="font-accent text-[1.1rem] sm:text-[1.2rem] text-white mb-1">JAVNI</h2>
                 <h3 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] text-white mb-4">Let's Connect</h3>
@@ -166,12 +169,24 @@ const Contact = () => {
                   <MessageCircle className="w-5 h-5" /> Chat on WhatsApp Now
                 </a>
 
-                <div className="flex gap-3">
+                <div className="flex gap-3 mb-6 sm:mb-8">
                   {[Instagram, Youtube, Facebook].map((Icon, i) => (
                     <a key={i} href="#" className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/30 flex items-center justify-center text-white/60 hover:bg-gold hover:border-gold hover:text-white transition-all duration-300">
                       <Icon className="w-4 h-4" />
                     </a>
                   ))}
+                </div>
+
+                {/* Google Maps */}
+                <div className="w-full rounded-lg overflow-hidden">
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3805.7164016679676!2d78.53407287389398!3d17.47328278342863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba1af70361a59%3A0x74322e57cc5eeb87!2sJavni%20Spiritual%20Hub!5e0!3m2!1sen!2sin!4v1772033320226!5m2!1sen!2sin" 
+                    className="w-full h-48 sm:h-56 md:h-64"
+                    style={{ border: 0 }}
+                    allowFullScreen={true}
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
               </div>
               <svg className="absolute -bottom-10 -right-10 w-40 h-40 sm:w-48 sm:h-48 text-white/[0.06]" viewBox="0 0 200 200" fill="currentColor">
@@ -181,7 +196,7 @@ const Contact = () => {
             </div>
 
             {/* Right Panel — Form */}
-            <div className="bg-card p-6 sm:p-8 md:p-12">
+            <div ref={rightRef} className={`bg-card p-6 sm:p-8 md:p-12 ${rightVisible ? "animate-fade-right" : "opacity-0"}`}>
               {submitted ? (
                 <div className="text-center py-8 sm:py-12">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#25D366]/10 flex items-center justify-center mx-auto mb-6">
