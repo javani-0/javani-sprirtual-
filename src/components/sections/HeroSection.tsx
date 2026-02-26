@@ -127,7 +127,7 @@ const HeroSection = () => {
         backgroundSize: "200px 200px",
       }} />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-48 sm:pt-28 pb-28 sm:pb-32 lg:pt-24 lg:pb-0 lg:min-h-screen flex items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-36 sm:pt-28 pb-28 sm:pb-32 lg:pt-24 lg:pb-0 lg:min-h-screen flex items-center">
         <div className="w-full max-w-2xl">
           <h1 className="mb-4 sm:mb-6 relative">
             {words.map((word, i) => (
