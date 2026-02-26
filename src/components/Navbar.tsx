@@ -4,6 +4,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, User, LogOut } from "lucide-react";
 import PrimaryButton from "./PrimaryButton";
 import { useAuth } from "@/contexts/AuthContext";
+import logoWhite from "@/assets/logo-white.png";
+import logoBrown from "@/assets/logo-brown.png";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -70,8 +72,6 @@ const Navbar = () => {
   const textColor = isSolid ? "text-foreground" : "text-white/90";
   const activeColor = isSolid ? "text-gold border-b-2 border-gold" : "text-gold-light border-b-2 border-gold-light";
   const hoverColor = isSolid ? "hover:text-gold" : "hover:text-gold-light";
-  const brandColor = isSolid ? "text-primary" : "text-white";
-  const subtitleColor = isSolid ? "text-muted-foreground" : "text-white/70";
 
   const showMobile = mobileOpen || closing;
 
@@ -83,9 +83,12 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
           {/* Brand */}
-          <Link to="/" className="flex flex-col">
-            <span className={`font-accent text-[1.2rem] sm:text-[1.4rem] leading-tight tracking-wider uppercase transition-colors duration-300 ${brandColor}`}>Javani</span>
-            <span className={`font-display text-[0.6rem] sm:text-[0.7rem] tracking-[0.25em] transition-colors duration-300 ${subtitleColor}`}>SPIRITUAL ARTS</span>
+          <Link to="/" className="flex items-center">
+            <img
+              src={isSolid ? logoBrown : logoWhite}
+              alt="Javani Spiritual Arts"
+              className="h-28 sm:h-32 w-auto object-contain transition-opacity duration-300"
+            />
           </Link>
 
           {/* Desktop links */}
@@ -176,10 +179,7 @@ const Navbar = () => {
         >
           {/* Header: Brand + Close */}
           <div className="flex items-center justify-between px-6 pt-6 pb-4">
-            <div className="flex flex-col">
-              <span className="font-accent text-[1.3rem] text-gold tracking-wider uppercase">Javani</span>
-              <span className="font-display text-[0.6rem] tracking-[0.3em] text-white/50 mt-0.5">SPIRITUAL ARTS</span>
-            </div>
+            <img src={logoWhite} alt="Javani Spiritual Arts" className="h-28 w-auto object-contain" />
             <button
               onClick={handleClose}
               className="p-2 rounded-full border border-transparent hover:border-gold/40 transition-all duration-300 group"
