@@ -14,13 +14,14 @@ import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer3 from "@/assets/hero-dancer-3.jpg";
 import heroTemple from "@/assets/hero-temple.jpg";
 import dancerCloseup from "@/assets/dancer-closeup.jpg";
+import founderPhoto from "@/assets/ISW_4737.jpg";
 import dancerPortrait from "@/assets/dancer-portrait-1.jpg";
 import danceDetailFeet from "@/assets/dance-detail-feet.jpg";
 
 /* ───── Fallback data ───── */
 const fallbackHeroImages = [heroDancer1, heroTemple, heroDancer3];
 
-const fallbackFounderImage = dancerCloseup;
+const fallbackFounderImage = founderPhoto;
 
 const fallbackFaculty = [
   { image: dancerCloseup, name: "Vanitha haribabu ", title: "Senior Faculty – Diploma in Kuchipudi & Nattuvangam ", bio: "Grades in kuchipudi Certification / Master classes / Thevaram spiritual classes, A seasoned classical mentor with strong traditional grounding, guiding students with precision, discipline, and devotion" },
@@ -52,13 +53,13 @@ const FounderSection = ({ founderImage }: { founderImage: string }) => {
           <SectionLabel text="A MESSAGE FROM THE FOUNDER" className="justify-start mb-6" />
           <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-primary leading-tight mb-4 break-words">Art is Devotion. Teaching is Service.</h2>
           <GoldDivider className="justify-start [&>div]:max-w-[80px] mb-8" />
-          <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-loose mb-4">Javni Spiritual Arts was born from a deep reverence for India's classical performing arts traditions. I began this journey not just as a teacher, but as a lifelong student of these sacred arts.</p>
+          <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-loose mb-4">Javani Spiritual Arts was born from a deep reverence for India's classical performing arts traditions. I began this journey not just as a teacher, but as a lifelong student of these sacred arts.</p>
           <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-loose mb-8">Every student who walks through our doors is not just learning technique — they are connecting with a heritage that spans thousands of years. My mission is to make that connection accessible, joyful, and transformative.</p>
           <div className="mb-2">
             <span className="font-display italic font-bold text-[1.8rem] sm:text-[2rem] text-primary">Guru Vanitha Haribabu</span>
             <svg width="120" height="8" viewBox="0 0 120 8" className="block mt-1"><path d="M0 4 Q30 0 60 4 Q90 8 120 4" fill="none" stroke="hsl(42,50%,54%)" strokeWidth="1.5" /></svg>
           </div>
-          <p className="font-body font-light text-[0.9rem] text-muted-foreground">Founder & Principal | Javni Spiritual Arts</p>
+          <p className="font-body font-light text-[0.9rem] text-muted-foreground">Founder & Principal | Javani Spiritual Arts</p>
         </div>
       </div>
     </section>
@@ -100,7 +101,7 @@ const VisionSection = () => {
 
 /* ───── Timeline ───── */
 const timelineItems = [
-  { year: "2022", title: "Javni Spiritual Arts Founded", desc: "Started with 2 students in a small studio in Hyderabad, driven by a dream to preserve classical arts." },
+  { year: "2022", title: "Javani Spiritual Arts Founded", desc: "Started with 2 students in a small studio in Hyderabad, driven by a dream to preserve classical arts." },
   { year: "2024", title: "First Batch of Certified Students", desc: "Our inaugural batch of 12 students completed their Grade 1 certifications — a milestone that redefined our ambitions." },
   { year: "2025", title: "University-Linked Certification Introduced", desc: "Partnered with recognized examination boards to offer nationally accredited certifications to our students." },
   { year: "2026", title: "Diploma Programs, Gurus Empowerment & Javani Product Range Launched ", desc: "Expanded curriculum to include full Diploma programs in Kuchipudi & Nattuvangam — Gurus empowerment & Students certifications " },
@@ -122,7 +123,7 @@ const TimelineSection = () => {
         <div className="relative">
           <div className="absolute left-4 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 border-l-2 border-dashed border-gold/40" />
           {timelineItems.map((item, i) => (
-            <TimelineItem key={item.year} item={item} index={i} />
+            <TimelineItem key={`${item.year}-${i}`} item={item} index={i} />
           ))}
         </div>
       </div>
@@ -254,7 +255,7 @@ const FacultySection = ({ faculty }: { faculty: FacultyMember[] }) => {
   );
 };
 
-/* ───── Why Javni ───── */
+/* ───── Why Javani ───── */
 const whyPoints = [
   { icon: "🏛️", title: "Authentic Lineage", desc: "Our teaching methods trace directly to traditional guru-shishya parampara." },
   { icon: "📜", title: "Nationally Recognized Certifications", desc: "Earn grades and diplomas recognized by leading examination boards." },
@@ -323,11 +324,11 @@ const About = () => {
   return (
     <>
       <SEO
-        title="About Us | Javni Spiritual Arts — 12+ Years of Classical Arts Excellence"
-        description="Learn about Javni Spiritual Arts — our story, our founder, our faculty, and our 12+ year journey of preserving and teaching India's classical performing arts."
+        title="About Us | Javani Spiritual Arts — 12+ Years of Classical Arts Excellence"
+        description="Learn about Javani Spiritual Arts — our story, our founder, our faculty, and our 12+ year journey of preserving and teaching India's classical performing arts."
       />
       <main>
-        <PageHero backgroundImages={heroImages} label="OUR STORY" heading="The Soul Behind Javni" breadcrumb={[{ label: "Home" }, { label: "About Us" }]} />
+        <PageHero backgroundImages={heroImages} label="OUR STORY" heading="The Soul Behind Javani" breadcrumb={[{ label: "Home" }, { label: "About Us" }]} />
         <FounderSection founderImage={founderImage} />
         <VisionSection />
         <TimelineSection />

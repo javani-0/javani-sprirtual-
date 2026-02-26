@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, User, LogOut } from "lucide-react";
 import PrimaryButton from "./PrimaryButton";
+import { useAuth } from "@/contexts/AuthContext";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -25,8 +26,11 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [closing, setClosing] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === "/";
+  const { user, userProfile, logout } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -37,6 +41,7 @@ const Navbar = () => {
   useEffect(() => {
     setMobileOpen(false);
     setClosing(false);
+    setUserMenuOpen(false);
   }, [location]);
 
   useEffect(() => {
@@ -79,7 +84,7 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
           {/* Brand */}
           <Link to="/" className="flex flex-col">
-            <span className={`font-accent text-[1.2rem] sm:text-[1.4rem] leading-tight transition-colors duration-300 ${brandColor}`}>JAVNI</span>
+            <span className={`font-accent text-[1.2rem] sm:text-[1.4rem] leading-tight tracking-wider uppercase transition-colors duration-300 ${brandColor}`}>Javani</span>
             <span className={`font-display text-[0.6rem] sm:text-[0.7rem] tracking-[0.25em] transition-colors duration-300 ${subtitleColor}`}>SPIRITUAL ARTS</span>
           </Link>
 
@@ -100,11 +105,53 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="hidden lg:block">
+          {/* CTA / Auth */}
+          <div className="hidden lg:flex items-center gap-3">
             <Link to="/contact">
               <PrimaryButton compact>Enquire Now</PrimaryButton>
             </Link>
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className={`w-9 h-9 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
+                    isSolid
+                      ? "border-gold/50 text-foreground hover:bg-gold/10"
+                      : "border-white/40 text-white/90 hover:bg-white/10"
+                  }`}
+                >
+                  <User className="w-4 h-4" />
+                </button>
+                {userMenuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-[999]" onClick={() => setUserMenuOpen(false)} />
+                    <div className="absolute right-0 top-full mt-2 w-48 bg-card shadow-hero rounded-lg border border-border/50 overflow-hidden z-[1000]">
+                      <button
+                        onClick={async () => {
+                          await logout();
+                          setUserMenuOpen(false);
+                          navigate("/");
+                        }}
+                        className="flex items-center gap-2 w-full px-4 py-3 font-body text-[0.85rem] text-destructive hover:bg-destructive/10 transition-colors border-t border-border/50"
+                      >
+                        <LogOut className="w-4 h-4" /> Sign Out
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <Link
+                to="/login"
+                className={`font-body font-medium text-[0.85rem] px-4 py-2 rounded-md border transition-all duration-300 ${
+                  isSolid
+                    ? "border-gold/30 text-foreground hover:bg-gold/10"
+                    : "border-white/20 text-white/90 hover:bg-white/10"
+                }`}
+              >
+                Login
+              </Link>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -130,7 +177,7 @@ const Navbar = () => {
           {/* Header: Brand + Close */}
           <div className="flex items-center justify-between px-6 pt-6 pb-4">
             <div className="flex flex-col">
-              <span className="font-accent text-[1.3rem] text-gold tracking-wide">JAVNI</span>
+              <span className="font-accent text-[1.3rem] text-gold tracking-wider uppercase">Javani</span>
               <span className="font-display text-[0.6rem] tracking-[0.3em] text-white/50 mt-0.5">SPIRITUAL ARTS</span>
             </div>
             <button
@@ -206,6 +253,47 @@ const Navbar = () => {
               <Link to="/contact">
                 <PrimaryButton className="mt-2 px-8">Enquire Now</PrimaryButton>
               </Link>
+            </div>
+
+            {/* Auth buttons for mobile */}
+            <div
+              className="flex flex-col items-center gap-2 mt-3"
+              style={{
+                opacity: 0,
+                animation: closing
+                  ? "none"
+                  : `menuItemSlideIn 0.5s ease-out ${0.25 + navLinks.length * 0.06}s forwards`,
+              }}
+            >
+              {user ? (
+                <>
+                  <button
+                    onClick={async () => {
+                      await logout();
+                      handleClose();
+                      navigate("/");
+                    }}
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-md border border-white/20 text-white/70 font-body text-[0.9rem] font-medium hover:bg-white/10 transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" /> Sign Out
+                  </button>
+                </>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Link
+                    to="/login"
+                    className="px-6 py-2.5 rounded-md border border-gold/40 text-gold font-body text-[0.9rem] font-medium hover:bg-gold/10 transition-colors"
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="px-6 py-2.5 rounded-md bg-gold text-charcoal font-body text-[0.9rem] font-medium hover:bg-gold-light transition-colors"
+                  >
+                    Sign Up
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 

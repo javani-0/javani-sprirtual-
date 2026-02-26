@@ -57,7 +57,7 @@ const ProductDetailModal = ({ product, onClose }: { product: Product; onClose: (
   const [qty, setQty] = useState(1);
 
   const whatsappMsg = encodeURIComponent(
-    `Hi, I'd like to order from *Javni Spiritual Arts*:\n\n` +
+    `Hi, I'd like to order from *Javani Spiritual Arts*:\n\n` +
     `*${product.name}*\n` +
     `Category: ${product.categoryLabel}\n` +
     `Price: ${product.price}\n` +
@@ -120,7 +120,7 @@ const ProductCard = ({ product, delay = 0, onViewDetails }: { product: Product; 
   const [qty, setQty] = useState(1);
   const { whatsappNumber } = useContactInfo();
   const whatsappMsg = encodeURIComponent(
-    `Hi, I'd like to order from *Javni Spiritual Arts*:\n\n*${product.name}* (${product.categoryLabel})\nPrice: ${product.price}\nQuantity: ${qty}\n\n${product.image ? `Image: ${product.image}` : ""}`
+    `Hi, I'd like to order from *Javani Spiritual Arts*:\n\n*${product.name}* (${product.categoryLabel})\nPrice: ${product.price}\nQuantity: ${qty}\n\n${product.image ? `Image: ${product.image}` : ""}`
   );
   const { ref, isVisible } = useScrollAnimation();
 
@@ -164,17 +164,32 @@ const Products = () => {
   const [activeFilter, setActiveFilter] = useState<ProductCategory>("all");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { whatsappNumber } = useContactInfo();
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "products"), (snap) => {
-      if (!snap.empty) {
-        setProducts(snap.docs.map((d) => ({ id: d.id, ...d.data() } as Product)));
+    console.log("[Products] Starting Firestore listener on 'products' collection...");
+    const unsub = onSnapshot(
+      collection(db, "products"),
+      (snap) => {
+        console.log("[Products] Snapshot received:", snap.size, "documents");
+        const data = snap.docs.map((d) => {
+          const doc = { id: d.id, ...d.data() } as Product;
+          console.log("[Products] Doc:", d.id, "category:", doc.category, "name:", doc.name);
+          return doc;
+        });
+        setProducts(data);
+        setError(null);
+        setLoading(false);
+      },
+      (err) => {
+        console.error("[Products] Firestore error:", err.code, err.message);
+        setError(`Failed to load products: ${err.message}`);
+        setLoading(false);
       }
-      setLoading(false);
-    }, (err) => { console.error("Error fetching products:", err); setLoading(false); });
+    );
     return () => unsub();
   }, []);
 
@@ -183,8 +198,8 @@ const Products = () => {
   return (
     <>
       <SEO
-        title="Products & Materials | Costumes, Instruments | Javni Spiritual Arts"
-        description="Shop authentic costumes, instruments, books, and practice accessories curated by Javni Spiritual Arts faculty."
+        title="Products & Materials | Costumes, Instruments | Javani Spiritual Arts"
+        description="Shop authentic costumes, instruments, books, and practice accessories curated by Javani Spiritual Arts faculty."
       />
       <main>
         <PageHero backgroundImages={[heroDancer1, heroTemple, carnaticMusic]} label="OUR PRODUCTS" heading="Artistry Begins With the Right Tools" subtext="Authentic costumes, instruments, and learning materials — curated by our faculty." />
@@ -218,7 +233,14 @@ const Products = () => {
             </div>
             {loading ? (
               <div className="text-center py-12">
-                {/* Loading - show nothing to avoid confusion */}
+                <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                <p className="font-body text-sm text-muted-foreground">Loading products...</p>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <p className="font-display text-xl text-destructive mb-2">Unable to load products</p>
+                <p className="font-body text-sm text-muted-foreground">{error}</p>
+                <p className="font-body text-xs text-muted-foreground/60 mt-2">Check Firestore rules — "products" collection needs <code>allow read: if true</code></p>
               </div>
             ) : filtered.length === 0 ? (
               <p className="font-display text-xl text-muted-foreground text-center py-12">No products available in this category.</p>

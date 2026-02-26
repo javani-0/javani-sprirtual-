@@ -7,8 +7,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const defaultTestimonials = [
-  { quote: "Joining Javni was a life-changing decision. The teaching methodology is world-class, and I earned my certification within the promised timeline. The academy feels like home.", name: "Priya Sharma", course: "Bharatanatyam", stars: 5, order: 0 },
-  { quote: "My daughter has been with Javni for 3 years. Her transformation — in confidence, posture, and artistry — is nothing short of miraculous. The faculty truly cares.", name: "Lakshmi Devi", course: "Kuchipudi (Parent)", stars: 5, order: 1 },
+  { quote: "Joining Javani was a life-changing decision. The teaching methodology is world-class, and I earned my certification within the promised timeline. The academy feels like home.", name: "Priya Sharma", course: "Bharatanatyam", stars: 5, order: 0 },
+  { quote: "My daughter has been with Javani for 3 years. Her transformation — in confidence, posture, and artistry — is nothing short of miraculous. The faculty truly cares.", name: "Lakshmi Devi", course: "Kuchipudi (Parent)", stars: 5, order: 1 },
   { quote: "The grading system is transparent and well-structured. I always knew exactly where I stood and what the next milestone was. Highly recommend to any serious student.", name: "Aditya Rao", course: "Carnatic Music", stars: 5, order: 2 },
   { quote: "I came in as a complete beginner with no dance background. The beginner batches are incredibly welcoming, and the faculty makes learning feel joyful and sacred.", name: "Meena Reddy", course: "Bharatanatyam", stars: 5, order: 3 },
 ];

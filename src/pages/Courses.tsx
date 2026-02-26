@@ -60,7 +60,7 @@ const ExtCourseCard = ({ course, delay = 0 }: { course: Course; delay?: number }
   const { ref, isVisible } = useScrollAnimation();
   const { whatsappNumber } = useContactInfo();
   const whatsappMsg = encodeURIComponent(
-    `Hi, I'm interested in the *${course.title}* course (${course.badge}) at Javni Spiritual Arts.\n\n${course.description}${course.extra ? `\n${course.extra}` : ""}\n\nPlease share more details.`
+    `Hi, I'm interested in the *${course.title}* course (${course.badge}) at Javani Spiritual Arts.\n\n${course.description}${course.extra ? `\n${course.extra}` : ""}\n\nPlease share more details.`
   );
 
   return (
@@ -196,8 +196,8 @@ const Courses = () => {
   return (
     <>
       <SEO
-        title="Courses | Bharatanatyam, Kuchipudi, Carnatic Music & More | Javni Spiritual Arts"
-        description="Explore certification, diploma, and pre-grade courses in Bharatanatyam, Kuchipudi, Mohiniyattam, Carnatic Music, Tabla, Veena, and Yoga at Javni Spiritual Arts."
+        title="Courses | Bharatanatyam, Kuchipudi, Carnatic Music & More | Javani Spiritual Arts"
+        description="Explore certification, diploma, and pre-grade courses in Bharatanatyam, Kuchipudi, Mohiniyattam, Carnatic Music, Tabla, Veena, and Yoga at Javani Spiritual Arts."
       />
       <main>
         <PageHero backgroundImages={[heroDancer1, heroDancer2, heroDancer3]} label="OUR COURSES" heading="Our Sacred Courses" subtext="Classical arts for every soul — from first steps to national certification." />

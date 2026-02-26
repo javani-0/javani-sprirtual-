@@ -6,9 +6,9 @@ import SectionLabel from "../SectionLabel";
 import GoldDivider from "../GoldDivider";
 import GoldOutlineButton from "../GoldOutlineButton";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import dancerPortrait from "@/assets/dancer-portrait-1.jpg";
-import templeGopuram from "@/assets/temple-gopuram.jpg";
-import danceDetailFeet from "@/assets/dance-detail-feet.jpg";
+import dancerPortrait from "@/assets/ISW_5259.jpg";
+import templeGopuram from "@/assets/_W0A7189.jpg";
+import danceDetailFeet from "@/assets/6W0A5840.jpg";
 
 const features = [
   { icon: "🎭", title: "Nationally Accredited Curriculum", desc: "Recognized by leading cultural institutions" },
@@ -83,7 +83,7 @@ const AboutSection = () => {
           {/* Text content */}
           <div className={`min-w-0 ${sectionVisible ? "animate-fade-right" : "opacity-0"}`} style={{ animationDelay: sectionVisible ? "0.5s" : undefined }}>
             <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-4">
-              Javni Spiritual Arts was founded with a singular vision — to preserve and propagate the sacred classical arts of India in their most authentic form.
+              Javani Spiritual Arts was founded with a singular vision — to preserve and propagate the sacred classical arts of India in their most authentic form.
             </p>
             <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-8">
               Over 12 years, we have nurtured hundreds of students — from curious beginners to national-level performers — through structured, heart-centered teaching.

@@ -33,7 +33,7 @@ const IntroSection = () => {
             A Journey, Not Just a Grade
           </h2>
           <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-4">
-            At Javni, grading is more than an exam. It tracks holistic progress in technique, expression, rhythm, theory, and performance — a well-rounded development framework.
+            At Javani, grading is more than an exam. It tracks holistic progress in technique, expression, rhythm, theory, and performance — a well-rounded development framework.
           </p>
           <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-4">
             Each grade milestone prepares students not just for the next level, but for a deeper personal relationship with the art form itself.
@@ -135,7 +135,7 @@ const CertificationSection = () => {
       </div>
       <div ref={certRef} className={`bg-ivory rounded-lg p-6 sm:p-8 md:p-10 shadow-[0_20px_60px_rgba(201,168,76,0.2)] ${certVisible ? "animate-fade-right" : "opacity-0"}`} style={{ border: "3px double hsl(42,50%,54%)" }}>
         <div className="text-center">
-          <p className="font-accent text-[1.1rem] sm:text-[1.2rem] md:text-[1.4rem] text-gold mb-2">Javni Spiritual Arts</p>
+          <p className="font-accent text-[1.1rem] sm:text-[1.2rem] md:text-[1.4rem] text-gold mb-2">Javani Spiritual Arts</p>
           <GoldDivider className="mb-4" />
           <p className="font-display text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 tracking-widest uppercase">Certificate of Achievement</p>
           <p className="font-display text-[0.95rem] sm:text-[1.1rem] text-foreground leading-relaxed mb-6 sm:mb-8">
@@ -249,7 +249,7 @@ const FAQSection = () => {
 const Grading = () => (
   <>
     <SEO
-      title="Grading System & Certification | Javni Spiritual Arts"
+      title="Grading System & Certification | Javani Spiritual Arts"
       description="Understand our university-linked certification and grade-based progression system. From foundation level to Senior Diploma and Arangetram."
     />
     <main>

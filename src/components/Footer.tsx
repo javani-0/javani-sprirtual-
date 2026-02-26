@@ -31,7 +31,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand */}
           <div>
-            <h3 className="font-accent text-[1.4rem] text-white mb-1">JAVNI</h3>
+            <h3 className="font-accent text-[1.4rem] text-white mb-1">Javani</h3>
             <p className="font-display italic text-gold text-[1rem] mb-4">Where Ancient Art Meets the Modern Soul</p>
             <p className="font-body font-light text-[0.85rem] text-white/60 leading-relaxed mb-6">
               Preserving and propagating the sacred classical arts of India through authentic, heart-centered teaching.
@@ -90,7 +90,7 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="border-t border-gold/20">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-2">
-          <p className="font-body font-light text-[0.75rem] text-white/50">© 2024 Javni Spiritual Arts. All Rights Reserved.</p>
+          <p className="font-body font-light text-[0.75rem] text-white/50">© 2024 Javani Spiritual Arts. All Rights Reserved.</p>
           <p className="font-body font-light text-[0.75rem] text-white/50">Built by Dream Team Services</p>
         </div>
       </div>

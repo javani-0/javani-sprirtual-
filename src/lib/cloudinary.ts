@@ -1,5 +1,5 @@
-export const CLOUDINARY_CLOUD_NAME = "ds1lwd30k";
-export const CLOUDINARY_UPLOAD_PRESET = "janvai";
+export const CLOUDINARY_CLOUD_NAME = "dxeyhsuyr";
+export const CLOUDINARY_UPLOAD_PRESET = "Javani";
 
 export const getCloudinaryUrl = (publicId: string, transforms?: string) => {
   const base = `https://res.cloudinary.com/${CLOUDINARY_CLOUD_NAME}/image/upload`;

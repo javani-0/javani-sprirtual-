@@ -28,7 +28,7 @@ const AdminLayout = () => {
   const SidebarContent = () => (
     <>
       <div className="p-6 border-b border-white/10">
-        <h1 className="font-accent text-[1.2rem] text-gold">JAVNI</h1>
+        <h1 className="font-accent text-[1.2rem] text-gold">Javani</h1>
         <span className="inline-block mt-1 px-2 py-0.5 rounded text-[0.65rem] font-body text-white/60 bg-white/10">Admin</span>
       </div>
 

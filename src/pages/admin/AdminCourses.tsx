@@ -19,22 +19,6 @@ interface Course {
   featured?: boolean;
 }
 
-const defaultCourses = [
-  { title: "Bharatanatyam", category: "certification", badge: "Certification Course", badgeColor: "red", description: "India's most celebrated classical dance form. Learn Adavus, Hastas, Abhinaya, and complete Arangetram preparation.", image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600", extra: "Duration: 1–6 Years", status: "active" },
-  { title: "Kuchipudi", category: "certification", badge: "Certification Course", badgeColor: "red", description: "The vibrant dance-drama tradition of Andhra Pradesh combining expressive abhinaya with technical nritta.", image: "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=600", status: "active" },
-  { title: "Carnatic Vocals", category: "certification", badge: "Certification Course", badgeColor: "red", description: "Structured Carnatic vocal training with grade examinations at every level.", image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600", status: "active" },
-  { title: "Veena", category: "certification", badge: "Certification Course", badgeColor: "red", description: "Master the divine string instrument of South India.", image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600", status: "active" },
-  { title: "Mohiniyattam", category: "certification", badge: "Certification Course", badgeColor: "red", description: "Kerala's lyrical feminine dance tradition.", image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=600", status: "active" },
-  { title: "Odissi", category: "certification", badge: "Certification Course", badgeColor: "red", description: "The sculptural dance of Odisha.", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600", status: "active" },
-  { title: "Advanced Bharatanatyam Diploma", category: "diploma", badge: "Diploma Course", badgeColor: "gold", description: "Performance-level training for Grade 5+ students.", image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600", status: "active" },
-  { title: "Performing Arts Diploma", category: "diploma", badge: "Diploma Course", badgeColor: "gold", description: "Dance + Music + Theory for professional careers.", image: "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=600", status: "active" },
-  { title: "Music & Devotional Arts Diploma", category: "diploma", badge: "Diploma Course", badgeColor: "gold", description: "Carnatic Music, Bhajans, and Devotional compositions.", image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600", status: "active" },
-  { title: "Introduction to Classical Dance", category: "pre-grade", badge: "Pre-Grade", badgeColor: "charcoal", description: "Fun movement classes for young children.", image: "https://images.unsplash.com/photo-1561912774-79769a0a0a7a?w=600", extra: "Age 5–8", status: "active" },
-  { title: "Yoga & Spiritual Movement", category: "pre-grade", badge: "Pre-Grade", badgeColor: "charcoal", description: "Traditional yoga with meditative movement.", image: "https://images.unsplash.com/photo-1583500178450-e59e4309b57e?w=600", extra: "All Ages", status: "active" },
-  { title: "Tabla Beginners", category: "pre-grade", badge: "Pre-Grade", badgeColor: "charcoal", description: "Basics of this iconic percussion instrument.", image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=600", extra: "All Ages", status: "active" },
-  { title: "Devotional Music & Bhajans", category: "pre-grade", badge: "Pre-Grade", badgeColor: "charcoal", description: "Traditional bhajans — no prior music experience needed.", image: "https://images.unsplash.com/photo-1535016120720-40c646be5580?w=600", extra: "All Ages", status: "active" },
-];
-
 const emptyForm = { title: "", category: "certification", badge: "Certification Course", badgeColor: "red", description: "", image: "", extra: "", status: "active" };
 
 const badgeStyles: Record<string, string> = {
@@ -54,12 +38,8 @@ const AdminCourses = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "courses"), async (snap) => {
-      if (snap.empty) {
-        for (const c of defaultCourses) await addDoc(collection(db, "courses"), c);
-      } else {
-        setCourses(snap.docs.map((d) => ({ id: d.id, ...d.data() } as Course)));
-      }
+    const unsub = onSnapshot(collection(db, "courses"), (snap) => {
+      setCourses(snap.docs.map((d) => ({ id: d.id, ...d.data() } as Course)));
     });
     return unsub;
   }, []);

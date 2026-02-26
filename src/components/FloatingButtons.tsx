@@ -45,7 +45,7 @@ const FloatingButtons = () => {
         </div>
 
         <a
-          href={`https://wa.me/${whatsappNumber}?text=Hi%20Javni%20Spiritual%20Arts%2C%20I%27d%20like%20to%20know%20more%20about%20your%20courses.`}
+          href={`https://wa.me/${whatsappNumber}?text=Hi%20Javani%20Spiritual%20Arts%2C%20I%27d%20like%20to%20know%20more%20about%20your%20courses.`}
           target="_blank"
           rel="noopener noreferrer"
           className="w-[60px] h-[60px] rounded-full bg-[#25D366] flex items-center justify-center shadow-lg hover:scale-110 hover:shadow-[0_8px_24px_rgba(37,211,102,0.4)] transition-all duration-300"

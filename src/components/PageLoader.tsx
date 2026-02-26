@@ -25,8 +25,8 @@ const PageLoader = () => {
     >
       {/* Logo/Text */}
       <div className="text-center mb-12 animate-fade-in">
-        <h1 className="font-accent text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] text-gold-light tracking-wide mb-2 leading-tight">
-          JAVNI
+        <h1 className="font-accent text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] text-gold-light tracking-wider uppercase mb-2 leading-tight">
+          Javani
         </h1>
         <p className="font-body text-xs md:text-sm text-gold/80 tracking-[0.3em] uppercase">
           Spiritual Arts

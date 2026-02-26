@@ -23,6 +23,8 @@ const Products = lazy(() => import("./pages/Products"));
 const Contact = lazy(() => import("./pages/Contact"));
 const GuruBandhu = lazy(() => import("./pages/GuruBandhu"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const Login = lazy(() => import("./pages/Login"));
+const Signup = lazy(() => import("./pages/Signup"));
 const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminEnquiries = lazy(() => import("./pages/admin/AdminEnquiries"));
@@ -54,7 +56,7 @@ const PublicScrollProgress = () => {
 
 const PublicNavbar = () => {
   const { pathname } = useLocation();
-  if (pathname.startsWith("/admin")) return null;
+  if (pathname.startsWith("/admin") || pathname === "/login" || pathname === "/signup") return null;
   return <Navbar />;
 };
 
@@ -102,6 +104,8 @@ const App = () => {
                   <Route path="/products" element={<Products />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/guru-bandhu" element={<GuruBandhu />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/signup" element={<Signup />} />
                   <Route path="/admin/login" element={<AdminLogin />} />
                   <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
                     <Route index element={<AdminDashboard />} />

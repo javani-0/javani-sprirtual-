@@ -125,8 +125,8 @@ const Contact = () => {
   return (
     <>
       <SEO
-        title="Enquire Now | Javni Spiritual Arts | Secunderabad"
-        description="Submit a detailed enquiry to Javni Spiritual Arts. We offer free initial counselling and guide you to the perfect course for your age and experience level."
+        title="Enquire Now | Javani Spiritual Arts | Secunderabad"
+        description="Submit a detailed enquiry to Javani Spiritual Arts. We offer free initial counselling and guide you to the perfect course for your age and experience level."
       />
       <main>
         <PageHero
@@ -141,7 +141,7 @@ const Contact = () => {
             {/* Left Panel */}
             <div ref={leftRef} className={`bg-gradient-dark text-white p-8 sm:p-10 md:p-12 relative overflow-hidden ${leftVisible ? "animate-fade-left" : "opacity-0"}`}>
               <div className="relative z-10">
-                <h2 className="font-accent text-[1.1rem] sm:text-[1.2rem] text-white mb-1">JAVNI</h2>
+                <h2 className="font-accent text-[1.1rem] sm:text-[1.2rem] text-white mb-1">Javani</h2>
                 <h3 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.2rem] text-white mb-4">Let's Connect</h3>
                 <div className="w-10 h-0.5 bg-gold mb-6 sm:mb-8" />
 
@@ -180,7 +180,7 @@ const Contact = () => {
                 {/* Google Maps */}
                 <div className="w-full rounded-lg overflow-hidden">
                   <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3805.7164016679676!2d78.53407287389398!3d17.47328278342863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba1af70361a59%3A0x74322e57cc5eeb87!2sJavni%20Spiritual%20Hub!5e0!3m2!1sen!2sin!4v1772033320226!5m2!1sen!2sin" 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3805.7164016679676!2d78.53407287389398!3d17.47328278342863!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcba1af70361a59%3A0x74322e57cc5eeb87!2sJavani%20Spiritual%20Hub!5e0!3m2!1sen!2sin!4v1772033320226!5m2!1sen!2sin" 
                     className="w-full h-48 sm:h-56 md:h-64"
                     style={{ border: 0 }}
                     allowFullScreen={true}
@@ -322,7 +322,7 @@ const Contact = () => {
                     <div className="flex items-start gap-3 pt-2">
                       <input type="checkbox" id="consent" checked={form.consent} onChange={(e) => updateField("consent", e.target.checked)} className="mt-1 w-4 h-4 accent-gold" />
                       <label htmlFor="consent" className="font-body text-[0.8rem] sm:text-[0.85rem] text-muted-foreground leading-relaxed">
-                        I agree to be contacted by Javni Spiritual Arts via phone, WhatsApp, or email regarding my enquiry. *
+                        I agree to be contacted by Javani Spiritual Arts via phone, WhatsApp, or email regarding my enquiry. *
                       </label>
                     </div>
                     {errors.consent && <p className="font-body text-xs text-destructive">{errors.consent}</p>}

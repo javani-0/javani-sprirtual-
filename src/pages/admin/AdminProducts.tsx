@@ -5,6 +5,16 @@ import { db } from "@/lib/firebase";
 import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from "@/lib/cloudinary";
 import { Plus, Pencil, Trash2, X, LayoutGrid, List, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface Product {
   id: string;
@@ -17,17 +27,6 @@ interface Product {
   stockStatus: string;
   whatsappEnquiry: boolean;
 }
-
-const defaultProducts = [
-  { name: "Bharatanatyam Costume Set", category: "costumes", categoryLabel: "Costumes", description: "Traditional silk Bharatanatyam costume set — jacket, skirt, pleats, and accessories.", price: "₹4,500 onwards", image: "https://images.unsplash.com/photo-1583500178450-e59e4309b57e?w=600", stockStatus: "available", whatsappEnquiry: true },
-  { name: "Tabla Set (Beginner)", category: "instruments", categoryLabel: "Instruments", description: "Quality beginner tabla pair with case and tuning hammer.", price: "₹3,200", image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=600", stockStatus: "available", whatsappEnquiry: true },
-  { name: "Veena (Student Grade)", category: "instruments", categoryLabel: "Instruments", description: "Authentic Saraswati Veena crafted in Thanjavur.", price: "₹18,000", image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600", stockStatus: "available", whatsappEnquiry: true },
-  { name: "Ghungroo Set — Professional", category: "accessories", categoryLabel: "Practice Accessories", description: "Traditional brass ghungroo on thick cotton pad. 3-row (108 bells).", price: "₹950", image: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=600", stockStatus: "available", whatsappEnquiry: true },
-  { name: "Carnatic Music Notation Book Set", category: "books", categoryLabel: "Books & Notation", description: "Complete set of Carnatic music notation books for Grade 1–3.", price: "₹680", image: "https://images.unsplash.com/photo-1535016120720-40c646be5580?w=600", stockStatus: "available", whatsappEnquiry: true },
-  { name: "Kuchipudi Costume Set", category: "costumes", categoryLabel: "Costumes", description: "Traditional Kuchipudi silk costume with headdress and accessories.", price: "₹5,200 onwards", image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=600", stockStatus: "available", whatsappEnquiry: true },
-  { name: "Dance Practice Mirror (Portable)", category: "accessories", categoryLabel: "Practice Accessories", description: "Full-length lightweight practice mirror with foldable stand.", price: "₹2,100", image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600", stockStatus: "available", whatsappEnquiry: true },
-  { name: "Bharatanatyam Theory & History Book", category: "books", categoryLabel: "Books & Notation", description: "Comprehensive guide to Bharatanatyam theory and history.", price: "₹450", image: "https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=600", stockStatus: "available", whatsappEnquiry: true },
-];
 
 const categoryLabelMap: Record<string, string> = { costumes: "Costumes", instruments: "Instruments", books: "Books & Notation", accessories: "Practice Accessories" };
 
@@ -46,53 +45,60 @@ const AdminProducts = () => {
   const [form, setForm] = useState(emptyForm);
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
   const [imageUploading, setImageUploading] = useState(false);
-  const [initialized, setInitialized] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
   const imageRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "products"), async (snap) => {
-      if (snap.empty && !initialized) {
-        // Only add default products on first load if collection is empty
-        for (const p of defaultProducts) await addDoc(collection(db, "products"), p);
-        setInitialized(true);
-      } else {
-        setProducts(snap.docs.map((d) => ({ id: d.id, ...d.data() } as Product)));
-        setInitialized(true);
-      }
+    const unsub = onSnapshot(collection(db, "products"), (snap) => {
+      setProducts(snap.docs.map((d) => ({ id: d.id, ...d.data() } as Product)));
     });
     return unsub;
-  }, [initialized]);
+  }, []);
 
   const openAdd = () => { setForm(emptyForm); setEditing(null); setShowModal(true); };
   const openEdit = (p: Product) => {
-    setForm({ name: p.name, category: p.category, categoryLabel: p.categoryLabel, description: p.description, price: p.price, image: p.image, stockStatus: p.stockStatus, whatsappEnquiry: p.whatsappEnquiry });
+    setForm({ name: p.name, category: p.category, categoryLabel: p.categoryLabel, description: p.description, price: p.price, image: p.image ?? "", stockStatus: p.stockStatus, whatsappEnquiry: p.whatsappEnquiry });
     setEditing(p.id);
     setShowModal(true);
   };
 
-  const handleSave = async () => {
-    if (!form.name || !form.price) { toast({ title: "Name and price required", variant: "destructive" }); return; }
-    try {
-      if (editing) {
-        await updateDoc(doc(db, "products", editing), form);
-        toast({ title: "Product updated" });
-      } else {
-        await addDoc(collection(db, "products"), form);
-        toast({ title: "Product added" });
-      }
-      setShowModal(false);
-    } catch { toast({ title: "Error saving", variant: "destructive" }); }
+  const closeModal = () => {
+    setShowModal(false);
+    setEditing(null);
+    setForm(emptyForm);
   };
 
-  const deleteProduct = async (id: string) => {
-    if (!confirm("Delete this product?")) return;
+  const handleSave = async () => {
+    if (!form.name || !form.price) {
+      toast({ title: "Name and price required", variant: "destructive" });
+      return;
+    }
     try {
-      await deleteDoc(doc(db, "products", id));
+      if (editing) {
+        await updateDoc(doc(db, "products", editing), { ...form });
+        toast({ title: "Product updated" });
+      } else {
+        await addDoc(collection(db, "products"), { ...form });
+        toast({ title: "Product added" });
+      }
+      closeModal();
+    } catch (err) {
+      console.error("Error saving product:", err);
+      toast({ title: "Error saving product", description: "Check console for details.", variant: "destructive" });
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      await deleteDoc(doc(db, "products", deleteTarget));
       toast({ title: "Product deleted successfully" });
     } catch (error) {
       console.error("Error deleting product:", error);
       toast({ title: "Failed to delete product", description: "Please check permissions and try again", variant: "destructive" });
+    } finally {
+      setDeleteTarget(null);
     }
   };
 
@@ -130,7 +136,7 @@ const AdminProducts = () => {
                 <p className="font-display font-bold text-[1.1rem] text-primary mb-3">{p.price}</p>
                 <div className="flex items-center justify-end gap-1 pt-3 border-t border-border/50">
                   <button onClick={() => openEdit(p)} className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-gold"><Pencil className="w-4 h-4" /></button>
-                  <button onClick={() => deleteProduct(p.id)} className="p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+                  <button onClick={() => setDeleteTarget(p.id)} className="p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
                 </div>
               </div>
             </div>
@@ -159,7 +165,7 @@ const AdminProducts = () => {
                     <td className="px-4 py-3">
                       <div className="flex gap-1">
                         <button onClick={() => openEdit(p)} className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-gold"><Pencil className="w-4 h-4" /></button>
-                        <button onClick={() => deleteProduct(p.id)} className="p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
+                        <button onClick={() => setDeleteTarget(p.id)} className="p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
                       </div>
                     </td>
                   </tr>
@@ -172,11 +178,11 @@ const AdminProducts = () => {
 
       {showModal && createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto p-4">
-          <div className="fixed inset-0 bg-black/40" onClick={() => setShowModal(false)} />
+          <div className="fixed inset-0 bg-black/40" onClick={closeModal} />
           <div className="relative bg-card rounded-xl shadow-hero w-full max-w-lg mx-4 p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-display font-semibold text-[1.3rem]">{editing ? "Edit Product" : "Add New Product"}</h3>
-              <button onClick={() => setShowModal(false)}><X className="w-5 h-5" /></button>
+              <button onClick={closeModal}><X className="w-5 h-5" /></button>
             </div>
             <div className="space-y-4">
               <div>
@@ -216,13 +222,17 @@ const AdminProducts = () => {
                     fd.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
                     try {
                       const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: fd });
+                      if (!res.ok) throw new Error("Upload failed");
                       const data = await res.json();
-                      setForm({ ...form, image: data.secure_url });
-                    } catch { toast({ title: "Upload failed", variant: "destructive" }); }
+                      if (!data.secure_url) throw new Error("No URL returned");
+                      setForm((prev) => ({ ...prev, image: data.secure_url }));
+                    } catch {
+                      toast({ title: "Image upload failed", description: "Check Cloudinary preset settings.", variant: "destructive" });
+                    }
                     setImageUploading(false);
+                    if (imageRef.current) imageRef.current.value = "";
                   }} />
                 </div>
-                <input value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} placeholder="Or paste image URL" className="w-full mt-2 px-3 py-2 rounded-md border border-border font-body text-[0.85rem] outline-none focus:border-gold" />
               </div>
               <div>
                 <label className="font-body text-[0.85rem] text-muted-foreground block mb-1">Stock Status</label>
@@ -240,6 +250,25 @@ const AdminProducts = () => {
         </div>,
         document.body
       )}
+      <AlertDialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) setDeleteTarget(null); }}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Product</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this product? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

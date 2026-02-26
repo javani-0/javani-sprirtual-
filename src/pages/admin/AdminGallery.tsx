@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { collection, onSnapshot, addDoc, deleteDoc, doc, getDocs, serverTimestamp } from "firebase/firestore";
+import { collection, onSnapshot, addDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET } from "@/lib/cloudinary";
 import { Upload, Trash2, Image as ImageIcon, AlertTriangle, Link as LinkIcon } from "lucide-react";
@@ -16,19 +16,6 @@ interface GalleryItem {
 
 const categories = ["Performances", "Workshops", "Certifications", "Behind the Scenes", "Recitals"];
 
-// Real, persistent image URLs for initial seeding
-const seedGalleryImages = [
-  { url: "https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&q=80", category: "Performances" },
-  { url: "https://images.unsplash.com/photo-1617691786979-3ec0d8716aab?w=800&q=80", category: "Performances" },
-  { url: "https://images.unsplash.com/photo-1596727362302-b8d891c42ab8?w=800&q=80", category: "Performances" },
-  { url: "https://images.unsplash.com/photo-1599474924187-334a4ae5bd3c?w=800&q=80", category: "Workshops" },
-  { url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80", category: "Workshops" },
-  { url: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=800&q=80", category: "Behind the Scenes" },
-  { url: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800&q=80", category: "Recitals" },
-  { url: "https://images.unsplash.com/photo-1604871000636-074fa5117945?w=800&q=80", category: "Recitals" },
-  { url: "https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=800&q=80", category: "Certifications" },
-];
-
 const AdminGallery = () => {
   const [images, setImages] = useState<GalleryItem[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -37,35 +24,24 @@ const AdminGallery = () => {
   const [previewFiles, setPreviewFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [brokenImages, setBrokenImages] = useState<Set<string>>(new Set());
-  const [seeding, setSeeding] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [urlCategory, setUrlCategory] = useState("Performances");
   const [addingUrl, setAddingUrl] = useState(false);
+  const [lastError, setLastError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if gallery needs seeding
-    const checkAndSeed = async () => {
-      const snap = await getDocs(collection(db, "gallery"));
-      if (snap.empty) {
-        setSeeding(true);
-        for (const img of seedGalleryImages) {
-          await addDoc(collection(db, "gallery"), {
-            url: img.url,
-            publicId: "",
-            category: img.category,
-            timestamp: serverTimestamp(),
-          });
-        }
-        setSeeding(false);
+    const unsub = onSnapshot(
+      collection(db, "gallery"),
+      (snap) => {
+        setImages(snap.docs.map((d) => ({ id: d.id, ...d.data() } as GalleryItem)));
+      },
+      (err) => {
+        console.error("[Firestore Gallery Error]", err);
+        setLastError(`Firestore error: ${err.message}`);
       }
-    };
-    checkAndSeed();
-
-    const unsub = onSnapshot(collection(db, "gallery"), (snap) => {
-      setImages(snap.docs.map((d) => ({ id: d.id, ...d.data() } as GalleryItem)));
-    });
+    );
     return unsub;
   }, []);
 
@@ -80,6 +56,8 @@ const AdminGallery = () => {
     if (previewFiles.length === 0) return;
     setUploading(true);
     setProgress(0);
+    setLastError(null);
+    let successCount = 0;
 
     for (let i = 0; i < previewFiles.length; i++) {
       const formData = new FormData();
@@ -92,15 +70,28 @@ const AdminGallery = () => {
           body: formData,
         });
         const data = await res.json();
+        console.log("[Cloudinary response]", data);
 
+        if (!data.secure_url) {
+          const errMsg = data.error?.message || "No secure_url returned. Check that the upload preset is set to UNSIGNED in Cloudinary dashboard.";
+          console.error("[Cloudinary error]", errMsg, data);
+          toast({ title: `Upload failed: ${previewFiles[i].name}`, description: errMsg, variant: "destructive" });
+          continue;
+        }
+
+        console.log("[Saving to Firestore] URL:", data.secure_url);
         await addDoc(collection(db, "gallery"), {
           url: data.secure_url,
           publicId: data.public_id,
           category: selectedCategory,
           timestamp: serverTimestamp(),
         });
-      } catch {
-        toast({ title: `Failed to upload ${previewFiles[i].name}`, variant: "destructive" });
+        successCount++;
+      } catch (err: any) {
+        const msg = err?.message || "Unknown error";
+        console.error("[Upload catch]", msg);
+        setLastError(msg);
+        toast({ title: `Failed to upload ${previewFiles[i].name}`, description: msg, variant: "destructive" });
       }
       setProgress(((i + 1) / previewFiles.length) * 100);
     }
@@ -108,7 +99,11 @@ const AdminGallery = () => {
     setPreviewFiles([]);
     setPreviews([]);
     setUploading(false);
-    toast({ title: "Upload complete!" });
+    if (successCount > 0) {
+      toast({ title: `✓ ${successCount} image${successCount !== 1 ? "s" : ""} uploaded successfully!` });
+    } else {
+      toast({ title: "No images were uploaded", description: "Check the error messages above", variant: "destructive" });
+    }
   };
 
   const deleteImage = async (item: GalleryItem) => {
@@ -121,8 +116,15 @@ const AdminGallery = () => {
     setBrokenImages((prev) => new Set(prev).add(id));
   };
 
+  const normalizeUrl = (raw: string): string => {
+    // Convert Google Drive share links to direct image URLs
+    const driveMatch = raw.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+    if (driveMatch) return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    return raw;
+  };
+
   const addByUrl = async () => {
-    const trimmed = imageUrl.trim();
+    const trimmed = normalizeUrl(imageUrl.trim());
     if (!trimmed) return;
     try {
       new URL(trimmed);
@@ -140,14 +142,24 @@ const AdminGallery = () => {
       });
       setImageUrl("");
       toast({ title: "Image added from URL!" });
-    } catch {
-      toast({ title: "Failed to add image", variant: "destructive" });
+    } catch (err: any) {
+      toast({ title: "Failed to add image", description: err?.message || "Check Firestore rules — write may be blocked", variant: "destructive" });
     }
     setAddingUrl(false);
   };
 
   return (
     <div className="space-y-8">
+      {lastError && (
+        <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-body font-medium text-destructive text-[0.875rem]">Upload Error</p>
+            <p className="font-body text-[0.8rem] text-destructive/80 mt-0.5 break-all">{lastError}</p>
+          </div>
+          <button onClick={() => setLastError(null)} className="ml-auto text-destructive/60 hover:text-destructive text-lg leading-none">&times;</button>
+        </div>
+      )}
       {/* Upload Section */}
       <div className="bg-card shadow-card rounded-lg p-4 sm:p-6">
         <h3 className="font-display font-semibold text-[1.3rem] text-foreground mb-4">Upload Images</h3>
@@ -201,6 +213,7 @@ const AdminGallery = () => {
               placeholder="https://example.com/image.jpg"
               className="w-full px-3 py-2 rounded-md border border-border bg-card font-body text-[0.85rem] outline-none focus:border-gold transition-colors"
             />
+            <p className="font-body text-[0.75rem] text-muted-foreground mt-1">Google Drive share links are auto-converted.</p>
           </div>
           <div>
             <label className="font-body text-[0.8rem] text-muted-foreground block mb-1">Category</label>
@@ -218,7 +231,6 @@ const AdminGallery = () => {
       <div>
         <h3 className="font-display font-semibold text-[1.3rem] text-foreground mb-4">
           Gallery ({images.length} images)
-          {seeding && <span className="ml-2 font-body text-[0.8rem] text-muted-foreground">Setting up...</span>}
         </h3>
         {images.length === 0 ? (
           <div className="text-center py-16 bg-card rounded-lg shadow-card">
@@ -230,9 +242,10 @@ const AdminGallery = () => {
             {images.map((item) => (
               <div key={item.id} className="relative group rounded-lg overflow-hidden bg-muted aspect-[4/3]">
                 {brokenImages.has(item.id) ? (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground p-2">
                     <AlertTriangle className="w-8 h-8 mb-2" />
-                    <p className="font-body text-[0.75rem]">Image unavailable</p>
+                    <p className="font-body text-[0.75rem] text-center">Image unavailable</p>
+                    <p className="font-body text-[0.6rem] text-center break-all mt-1 opacity-60">{item.url || "No URL"}</p>
                   </div>
                 ) : (
                   <img

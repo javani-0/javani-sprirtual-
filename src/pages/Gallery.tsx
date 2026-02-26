@@ -2,12 +2,17 @@ import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import heroDancer1 from "@/assets/hero-dancer-1.jpg";
+import heroDancer2 from "@/assets/hero-dancer-2.jpg";
+import heroDancer3 from "@/assets/hero-dancer-3.jpg";
 
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import SEO from "@/components/SEO";
 import { ZoomIn, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+
+const galleryHeroBgs = [heroDancer1, heroDancer2, heroDancer3];
 
 type GalleryCategory = "all" | "performances" | "workshops" | "certifications" | "behind" | "recitals";
 interface GalleryImage { src: string; category: GalleryCategory[]; }
@@ -30,21 +35,28 @@ const Gallery = () => {
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const { ref: filterRef, isVisible: filterVisible } = useScrollAnimation();
-  const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation();
 
   useEffect(() => {
+    // Safety timeout — never stay in loading state forever
+    const timeout = setTimeout(() => setLoading(false), 3000);
     const unsub = onSnapshot(collection(db, "gallery"), (snap) => {
-      setImages(snap.docs.map((d) => {
-        const data = d.data();
-        const cat = categoryMap[data.category] || "performances";
-        return { src: data.url, category: [cat] as GalleryCategory[] };
-      }));
+      clearTimeout(timeout);
+      const fetched = snap.docs
+        .map((d) => {
+          const data = d.data();
+          if (!data.url) return null;
+          const cat = categoryMap[data.category] || "performances";
+          return { src: data.url, category: [cat] as GalleryCategory[] };
+        })
+        .filter(Boolean) as GalleryImage[];
+      setImages(fetched);
       setLoading(false);
     }, (err) => {
+      clearTimeout(timeout);
       console.error("Error fetching gallery:", err);
       setLoading(false);
     });
-    return () => unsub();
+    return () => { unsub(); clearTimeout(timeout); };
   }, []);
 
   const filtered = activeFilter === "all" ? images : images.filter((img) => img.category.includes(activeFilter));
@@ -70,17 +82,14 @@ const Gallery = () => {
     return () => window.removeEventListener("keydown", handleKey);
   }, [lightboxIndex, prev, next]);
 
-  // Use first gallery image as hero bg if available
-  const heroBgs = images.length > 0 ? images.slice(0, 3).map(i => i.src) : [];
-
   return (
     <>
       <SEO
-        title="Gallery | Performances & Student Moments | Javni Spiritual Arts"
-        description="Browse photos from performances, workshops, certifications, and behind-the-scenes moments at Javni Spiritual Arts."
+        title="Gallery | Performances & Student Moments | Javani Spiritual Arts"
+        description="Browse photos from performances, workshops, certifications, and behind-the-scenes moments at Javani Spiritual Arts."
       />
       <main>
-        <PageHero backgroundImages={heroBgs} label="OUR GALLERY" heading="Gallery of Art & Expression" subtext="Every photograph tells the story of a student's devotion." />
+        <PageHero backgroundImages={galleryHeroBgs} label="OUR GALLERY" heading="Gallery of Art & Expression" subtext="Every photograph tells the story of a student's devotion." />
 
         <div ref={filterRef} className={`sticky top-[80px] z-[500] bg-card shadow-sm py-3 sm:py-4 ${filterVisible ? "animate-fade-down" : "opacity-0"}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap justify-center gap-2">
@@ -96,23 +105,29 @@ const Gallery = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             {loading ? (
               <div className="text-center py-16">
-                {/* Loading - show nothing to avoid confusion */}
+                <div className="w-10 h-10 border-4 border-gold/30 border-t-gold rounded-full animate-spin mx-auto" />
               </div>
             ) : filtered.length === 0 ? (
               <div className="text-center py-16">
                 <p className="font-body text-muted-foreground">No images available in this category.</p>
               </div>
             ) : (
-              <div ref={gridRef} className="columns-2 lg:columns-3 2xl:columns-4 gap-3 sm:gap-4 space-y-3 sm:space-y-4">
+              <div className="columns-2 lg:columns-3 2xl:columns-4 gap-3 sm:gap-4 space-y-3 sm:space-y-4">
                 {filtered.map((img, i) => (
                   <div
                     key={i + activeFilter}
-                    className={`relative group cursor-pointer overflow-hidden rounded-lg break-inside-avoid ${gridVisible ? "animate-scale-in" : "opacity-0"}`}
-                    style={{ animationDelay: gridVisible ? `${i * 0.05}s` : undefined }}
+                    className="relative group cursor-pointer overflow-hidden rounded-lg break-inside-avoid animate-scale-in"
+                    style={{ animationDelay: `${i * 0.05}s` }}
                     onClick={() => setLightboxIndex(i)}
                   >
                     {!loaded.has(i) && <div className="aspect-[4/3] skeleton-shimmer" />}
-                    <img src={img.src} alt={`Gallery image ${i + 1}`} onLoad={() => setLoaded((p) => new Set(p).add(i))} className={`w-full object-cover transition-all duration-500 group-hover:scale-[1.04] ${loaded.has(i) ? "opacity-100" : "opacity-0 absolute inset-0"}`} />
+                    <img
+                      src={img.src}
+                      alt={`Gallery image ${i + 1}`}
+                      onLoad={() => setLoaded((p) => new Set(p).add(i))}
+                      onError={() => setLoaded((p) => new Set(p).add(i))}
+                      className={`w-full object-cover transition-all duration-500 group-hover:scale-[1.04] ${loaded.has(i) ? "opacity-100" : "opacity-0 absolute inset-0"}`}
+                    />
                     <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/50 transition-all duration-300 flex items-center justify-center">
                       <ZoomIn className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-6 h-6 sm:w-8 sm:h-8" />
                     </div>

@@ -135,8 +135,8 @@ const HeroSection = () => {
                 key={i}
                 className={`block font-display leading-[1.1] ${
                   i === 2
-                    ? "font-bold text-gold-light text-[1.75rem] sm:text-[2.5rem] md:text-[3.4rem] lg:text-[4rem]"
-                    : "font-light text-white text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4rem]"
+                    ? "font-bold text-gold-light text-[1.75rem] sm:text-[2.5rem] md:text-[3.4rem] lg:text-[3.3rem]"
+                    : "font-light text-white text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] lg:text-[3.4rem]"
                 }`}
                 style={{ 
                   ...(i === 2 ? { textShadow: "0 2px 30px rgba(201,168,76,0.25)" } : {}),
@@ -158,7 +158,7 @@ const HeroSection = () => {
           </h1>
 
           <p className="font-body font-light text-[0.9rem] sm:text-[1rem] md:text-[1.1rem] text-white/75 max-w-[480px] leading-relaxed mb-6 sm:mb-8 animate-cursor-reveal" style={{ animationDelay: "2.1s" }}>
-            Rooted in ancient tradition. Elevated for the modern soul. Join Javni Spiritual Arts and embark on a journey of grace, discipline, and self-discovery.
+            Rooted in ancient tradition. Elevated for the modern soul. Join Javani Spiritual Arts and embark on a journey of grace, discipline, and self-discovery.
           </p>
 
           <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8 animate-cursor-reveal" style={{ animationDelay: "2.3s" }}>

@@ -57,17 +57,17 @@ const OverviewSection = () => {
           <div className="absolute -inset-3 border-[4px] border-gold/30 pointer-events-none" style={{ borderRadius: "2px" }} />
           <div className="relative overflow-hidden aspect-[3/4]" style={{ borderRadius: "2px" }}>
             {!imgLoaded && <div className="absolute inset-0 skeleton-shimmer" />}
-            <img src={dancerPortrait} alt="Javni Bandhathuvum Program" loading="lazy" onLoad={() => setImgLoaded(true)} className={`w-full h-full object-cover transition-opacity duration-700 ${imgLoaded ? "opacity-100" : "opacity-0"}`} />
+            <img src={dancerPortrait} alt="Javani Bandhathuvum Program" loading="lazy" onLoad={() => setImgLoaded(true)} className={`w-full h-full object-cover transition-opacity duration-700 ${imgLoaded ? "opacity-100" : "opacity-0"}`} />
           </div>
         </div>
         <div ref={textRef} className={`min-w-0 ${textVisible ? "animate-fade-right" : "opacity-0"}`}>
-          <SectionLabel text="JAVNI BANDHATHUVUM PROGRAM" className="justify-start mb-6" />
+          <SectionLabel text="Javani BANDHATHUVUM PROGRAM" className="justify-start mb-6" />
           <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.5rem] text-primary leading-tight mb-6">
             Program Overview & Structure
           </h2>
           <GoldDivider className="justify-start [&>div]:max-w-[80px] mb-8" />
           <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-4">
-            The <strong>Javni Bandhathuvum Program</strong> is a comprehensive affiliation framework designed to empower classical arts academies and Gurus across India. It provides structured academic support, digital infrastructure, revenue opportunities, and cultural preservation — all under the organized umbrella of <strong>Javani Spiritual Hub</strong>.
+            The <strong>Javani Bandhathuvum Program</strong> is a comprehensive affiliation framework designed to empower classical arts academies and Gurus across India. It provides structured academic support, digital infrastructure, revenue opportunities, and cultural preservation — all under the organized umbrella of <strong>Javani Spiritual Hub</strong>.
           </p>
           <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-8">
             From certification and student management to product distribution and Guru recognition — this program equips affiliated academies with everything they need to thrive, sustain, and grow.
@@ -396,7 +396,7 @@ const CTASection = () => {
       <div ref={ref} className={`relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center ${isVisible ? "animate-scale-in" : "opacity-0"}`}>
         <Sparkles className="w-10 h-10 text-gold mx-auto mb-6" />
         <h2 className="font-display font-bold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-white mb-4">
-          Join the Javni Bandhathuvum Network
+          Join the Javani Bandhathuvum Network
         </h2>
         <p className="font-body font-light text-[0.95rem] sm:text-[1.05rem] text-white/75 mb-8 sm:mb-10 max-w-xl mx-auto leading-relaxed">
           Affiliate your academy with Javani Spiritual Hub and unlock structured growth, academic credibility, and sustainable revenue for your institution.
@@ -420,14 +420,14 @@ const CTASection = () => {
 const GuruBandhu = () => (
   <>
     <SEO
-      title="Guru Bandhu | Javni Bandhathuvum Program | Javni Spiritual Arts"
-      description="The Javni Bandhathuvum Program empowers classical arts academies with certification support, digital management, product distribution, workshops, and Guru recognition — all under Javani Spiritual Hub."
+      title="Guru Bandhu | Javani Bandhathuvum Program | Javani Spiritual Arts"
+      description="The Javani Bandhathuvum Program empowers classical arts academies with certification support, digital management, product distribution, workshops, and Guru recognition — all under Javani Spiritual Hub."
     />
     <main>
       <PageHero
         backgroundImages={[heroDancer1, heroTemple, heroDancer2]}
         label="GURU BANDHU"
-        heading="Javni Bandhathuvum Program"
+        heading="Javani Bandhathuvum Program"
         subtext="Empowering Gurus, strengthening academies, and preserving the sacred classical arts tradition through structured support and recognition."
         breadcrumb={[{ label: "Home", path: "/" }, { label: "Guru Bandhu" }]}
       />

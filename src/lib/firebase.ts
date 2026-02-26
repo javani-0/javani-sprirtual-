@@ -4,13 +4,13 @@ import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBSz-iEFspJKvhH2qCR5SHVonUj0ELHpp0",
-  authDomain: "javni-spiritual-arts.firebaseapp.com",
-  projectId: "javni-spiritual-arts",
-  storageBucket: "javni-spiritual-arts.firebasestorage.app",
-  messagingSenderId: "118397355026",
-  appId: "1:118397355026:web:806ebb4a85e72b7d6244cb",
-  measurementId: "G-QJVK8VMVTK",
+  apiKey: "AIzaSyAN7wb7o91N_9b-zVcOwTReaoHHOSlhHKg",
+  authDomain: "javani-181d5.firebaseapp.com",
+  projectId: "javani-181d5",
+  storageBucket: "javani-181d5.firebasestorage.app",
+  messagingSenderId: "898711359281",
+  appId: "1:898711359281:web:c12eb1742b54d70d2eea10",
+  measurementId: "G-WHJ0TJ1VX6",
 };
 
 const app = initializeApp(firebaseConfig);
