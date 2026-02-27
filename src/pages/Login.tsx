@@ -72,7 +72,7 @@ const Login = () => {
         <div className="text-center mb-6">
           <h1 className="font-accent text-[1.8rem] text-gold">Javani</h1>
           <p className="font-display text-[0.75rem] tracking-[0.25em] text-white/50 uppercase">
-            Spiritual Arts
+            Spiritual Hub
           </p>
         </div>
 

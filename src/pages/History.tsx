@@ -63,8 +63,8 @@ const History = () => {
   return (
     <>
       <SEO
-        title="My Activity | Javani Spiritual Arts"
-        description="View your activity history on Javani Spiritual Arts."
+        title="My Activity | Javani Spiritual Hub"
+        description="View your activity history on Javani Spiritual Hub."
       />
       <main>
         {/* Hero */}

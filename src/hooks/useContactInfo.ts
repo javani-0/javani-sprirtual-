@@ -16,7 +16,7 @@ export interface ContactInfo {
 const defaults: ContactInfo = {
   whatsappNumber: "919876543210",
   phone: "+91 9030200263",
-  email: "seva@javanilife.com, spiritualarts@javanilife.com",
+  email: "seva@javanilife.com, spiritualhub@javanilife.com",
   address: "JAVANI SPIRITUAL HUB, Plot # 7&8, Raghava Kalyan Estate, Chandragiri Colony, Yapral, Secunderabad, Telangana 500094",
   hours: "Mon-Sat: 7:00 AM - 8:00 PM",
   instagramUrl: "",

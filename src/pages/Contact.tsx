@@ -125,8 +125,8 @@ const Contact = () => {
   return (
     <>
       <SEO
-        title="Enquire Now | Javani Spiritual Arts | Secunderabad"
-        description="Submit a detailed enquiry to Javani Spiritual Arts. We offer free initial counselling and guide you to the perfect course for your age and experience level."
+        title="Enquire Now | Javani Spiritual Hub | Secunderabad"
+        description="Submit a detailed enquiry to Javani Spiritual Hub. We offer free initial counselling and guide you to the perfect course for your age and experience level."
       />
       <main>
         <PageHero
@@ -322,7 +322,7 @@ const Contact = () => {
                     <div className="flex items-start gap-3 pt-2">
                       <input type="checkbox" id="consent" checked={form.consent} onChange={(e) => updateField("consent", e.target.checked)} className="mt-1 w-4 h-4 accent-gold" />
                       <label htmlFor="consent" className="font-body text-[0.8rem] sm:text-[0.85rem] text-muted-foreground leading-relaxed">
-                        I agree to be contacted by Javani Spiritual Arts via phone, WhatsApp, or email regarding my enquiry. *
+                        I agree to be contacted by Javani Spiritual Hub via phone, WhatsApp, or email regarding my enquiry. *
                       </label>
                     </div>
                     {errors.consent && <p className="font-body text-xs text-destructive">{errors.consent}</p>}

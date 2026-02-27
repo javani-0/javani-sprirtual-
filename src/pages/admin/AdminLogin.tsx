@@ -41,7 +41,7 @@ const AdminLogin = () => {
       <div className="relative z-10 w-full max-w-[420px] mx-4 rounded-xl p-10 md:p-12" style={{ background: "rgba(250,243,224,0.05)", border: "1px solid rgba(201,168,76,0.2)", backdropFilter: "blur(16px)" }}>
         <div className="text-center mb-6">
           <h1 className="font-accent text-[1.8rem] text-gold">Javani</h1>
-          <p className="font-display text-[0.75rem] tracking-[0.25em] text-white/50 uppercase">Spiritual Arts</p>
+          <p className="font-display text-[0.75rem] tracking-[0.25em] text-white/50 uppercase">Spiritual Hub</p>
           <span className="inline-block mt-3 px-4 py-1 rounded-full border border-gold/40 font-body text-[0.75rem] text-gold tracking-wider uppercase">Admin Portal</span>
         </div>
 

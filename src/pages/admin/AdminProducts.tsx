@@ -28,9 +28,16 @@ interface Product {
   whatsappEnquiry: boolean;
 }
 
-const categoryLabelMap: Record<string, string> = { costumes: "Costumes", instruments: "Instruments", books: "Books & Notation", accessories: "Practice Accessories" };
+const categoryLabelMap: Record<string, string> = {
+  clothing: "Clothing",
+  "thermic-toys": "Thermic Toys",
+  aaharya: "Aaharya Collections",
+  accessories: "Practice Accessories",
+  "books-stationaries": "Books & Stationaries",
+  "sattvic-refreshments": "Sattvic Refreshments"
+};
 
-const emptyForm = { name: "", category: "costumes", categoryLabel: "Costumes", description: "", price: "", image: "", stockStatus: "available", whatsappEnquiry: true };
+const emptyForm = { name: "", category: "clothing", categoryLabel: "Clothing", description: "", price: "", image: "", stockStatus: "available", whatsappEnquiry: true };
 
 const stockColors: Record<string, string> = {
   available: "bg-green-100 text-green-700",
@@ -192,10 +199,12 @@ const AdminProducts = () => {
               <div>
                 <label className="font-body text-[0.85rem] text-muted-foreground block mb-1">Category</label>
                 <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value, categoryLabel: categoryLabelMap[e.target.value] || e.target.value })} className="w-full px-3 py-2 rounded-md border border-border font-body text-[0.875rem] outline-none">
-                  <option value="costumes">Costumes</option>
-                  <option value="instruments">Instruments</option>
-                  <option value="books">Books & Notation</option>
+                  <option value="clothing">Clothing</option>
+                  <option value="thermic-toys">Thermic Toys</option>
+                  <option value="aaharya">Aaharya Collections</option>
                   <option value="accessories">Practice Accessories</option>
+                  <option value="books-stationaries">Books & Stationaries</option>
+                  <option value="sattvic-refreshments">Sattvic Refreshments</option>
                 </select>
               </div>
               <div>

@@ -13,7 +13,7 @@ import SEO from "@/components/SEO";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "EducationalOrganization",
-  "name": "Javani Spiritual Arts",
+  "name": "Javani Spiritual Hub",
   "description": "Classical dance and music academy in Secunderabad",
   "url": "https://www.Javaniarts.com",
   "address": {
@@ -33,8 +33,8 @@ const jsonLd = {
 const Index = () => (
   <>
     <SEO
-      title="Javani Spiritual Arts | Classical Dance & Music Academy in Secunderabad"
-      description="Join Javani Spiritual Arts — a premier classical dance and music academy in Secunderabad, Telangana. Certified courses in Bharatanatyam, Kuchipudi, Carnatic Music, and more."
+      title="Javani Spiritual Hub | Classical Dance & Music Academy in Secunderabad"
+      description="Join Javani Spiritual Hub — a premier classical dance and music academy in Secunderabad, Telangana. Certified courses in Bharatanatyam, Kuchipudi, Carnatic Music, and more."
       canonical="https://www.Javaniarts.com/"
       ogImage="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=1200"
       jsonLd={jsonLd}

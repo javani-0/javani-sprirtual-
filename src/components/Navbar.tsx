@@ -86,7 +86,7 @@ const Navbar = () => {
           <Link to="/" className="flex items-center">
             <img
               src={isSolid ? logoBrown : logoWhite}
-              alt="Javani Spiritual Arts"
+              alt="Javani Spiritual Hub"
               className="h-28 sm:h-32 w-auto object-contain transition-opacity duration-300"
             />
           </Link>
@@ -179,7 +179,7 @@ const Navbar = () => {
         >
           {/* Header: Brand + Close */}
           <div className="flex items-center justify-between px-6 pt-6 pb-4">
-            <img src={logoWhite} alt="Javani Spiritual Arts" className="h-28 w-auto object-contain" />
+            <img src={logoWhite} alt="Javani Spiritual Hub" className="h-28 w-auto object-contain" />
             <button
               onClick={handleClose}
               className="p-2 rounded-full border border-transparent hover:border-gold/40 transition-all duration-300 group"

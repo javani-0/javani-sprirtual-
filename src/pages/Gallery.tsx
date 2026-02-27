@@ -85,8 +85,8 @@ const Gallery = () => {
   return (
     <>
       <SEO
-        title="Gallery | Performances & Student Moments | Javani Spiritual Arts"
-        description="Browse photos from performances, workshops, certifications, and behind-the-scenes moments at Javani Spiritual Arts."
+        title="Gallery | Performances & Student Moments | Javani Spiritual Hub"
+        description="Browse photos from performances, workshops, certifications, and behind-the-scenes moments at Javani Spiritual Hub."
       />
       <main>
         <PageHero backgroundImages={galleryHeroBgs} label="OUR GALLERY" heading="Gallery of Art & Expression" subtext="Every photograph tells the story of a student's devotion." />

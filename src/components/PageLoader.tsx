@@ -29,7 +29,7 @@ const PageLoader = () => {
           Javani
         </h1>
         <p className="font-body text-xs md:text-sm text-gold/80 tracking-[0.3em] uppercase">
-          Spiritual Arts
+          Spiritual Hub
         </p>
       </div>
 

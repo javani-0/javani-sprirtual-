@@ -51,7 +51,7 @@ const OverviewSection = () => {
   }, []);
 
   return (
-    <section className="py-16 sm:py-20 md:py-32 bg-background overflow-hidden">
+    <section className="py-12 sm:py-16 md:py-20 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[45%_1fr] gap-8 sm:gap-12 lg:gap-20 items-center">
         <div ref={imgRef} className={`relative ${imgVisible ? "animate-fade-left" : "opacity-0"}`}>
           <div className="absolute -inset-3 border-[4px] border-gold/30 pointer-events-none" style={{ borderRadius: "2px" }} />
@@ -61,11 +61,11 @@ const OverviewSection = () => {
           </div>
         </div>
         <div ref={textRef} className={`min-w-0 ${textVisible ? "animate-fade-right" : "opacity-0"}`}>
-          <SectionLabel text="Javani BANDHATHUVUM PROGRAM" className="justify-start mb-6" />
-          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.5rem] text-primary leading-tight mb-6">
+          <SectionLabel text="Javani BANDHATHUVUM PROGRAM" className="justify-start mb-4" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.5rem] text-primary leading-tight mb-4">
             Program Overview & Structure
           </h2>
-          <GoldDivider className="justify-start [&>div]:max-w-[80px] mb-8" />
+          <GoldDivider className="justify-start [&>div]:max-w-[80px] mb-6" />
           <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-4">
             The <strong>Javani Bandhathuvum Program</strong> is a comprehensive affiliation framework designed to empower classical arts academies and Gurus across India. It provides structured academic support, digital infrastructure, revenue opportunities, and cultural preservation — all under the organized umbrella of <strong>Javani Spiritual Hub</strong>.
           </p>
@@ -185,11 +185,11 @@ const ProgramPillarsSection = () => {
   }, []);
 
   return (
-    <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
+    <section className="py-12 sm:py-16 md:py-20" style={{ background: "hsl(var(--bg-section))" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div ref={ref} className={`${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-          <SectionLabel text="PROGRAM STRUCTURE" className="mb-6" />
-          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-14">
+          <SectionLabel text="PROGRAM STRUCTURE" className="mb-4" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-6 sm:mb-8">
             8 Pillars of the Bandhathuvum Program
           </h2>
         </div>
@@ -254,14 +254,14 @@ const GurusBusinessSection = () => {
   }, []);
 
   return (
-    <section className="py-16 sm:py-20 md:py-32 bg-background">
+    <section className="py-12 sm:py-16 md:py-20 bg-background">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div ref={ref} className={`${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-          <SectionLabel text="GURU EMPOWERMENT" className="mb-6" />
-          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-4">
+          <SectionLabel text="GURU EMPOWERMENT" className="mb-4" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-3">
             💼 Gurus Business Wing
           </h2>
-          <p className="font-body text-[1rem] sm:text-[1.1rem] text-gold font-medium text-center mb-10 sm:mb-14">Zero Investment Opportunity</p>
+          <p className="font-body text-[1rem] sm:text-[1.1rem] text-gold font-medium text-center mb-6 sm:mb-8">Zero Investment Opportunity</p>
         </div>
         <div 
           ref={cardRef}
@@ -293,31 +293,8 @@ const GurusBusinessSection = () => {
 /* ───── Financial Structure ───── */
 const FinancialSection = () => {
   const { ref, isVisible } = useScrollAnimation();
-  const cardsRef = useRef<HTMLDivElement>(null);
-  const [animateCards, setAnimateCards] = useState(false);
   const alertRef = useRef<HTMLDivElement>(null);
   const [alertVisible, setAlertVisible] = useState(false);
-
-  // Re-triggering intersection observer for mobile card animations
-  useEffect(() => {
-    const cards = cardsRef.current;
-    if (!cards) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setAnimateCards(true);
-        } else {
-          // Reset animation when out of view so it can re-trigger
-          setAnimateCards(false);
-        }
-      },
-      { threshold: 0.2 }
-    );
-
-    observer.observe(cards);
-    return () => observer.disconnect();
-  }, []);
 
   // Intersection observer for the alert box
   useEffect(() => {
@@ -339,35 +316,16 @@ const FinancialSection = () => {
   }, []);
 
   return (
-    <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
+    <section className="py-12 sm:py-16 md:py-20" style={{ background: "hsl(var(--bg-section))" }}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div ref={ref} className={`${isVisible ? "animate-fade-up" : "opacity-0"}`}>
-          <SectionLabel text="AFFILIATION DETAILS" className="mb-6" />
-          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-14">
+          <SectionLabel text="AFFILIATION DETAILS" className="mb-4" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-6">
             💼 Financial Structure Summary
           </h2>
         </div>
-        <div 
-          ref={cardsRef}
-          className={`grid sm:grid-cols-2 gap-5 sm:gap-6 mb-8 ${isVisible ? "animate-fade-up" : "opacity-0"}`} 
-          style={{ animationDelay: "0.15s" }}
-        >
-          <div className={`bg-card shadow-card rounded-xl p-6 sm:p-8 text-center border-t-[4px] border-gold ${animateCards ? "sm:animate-none animate-cursor-reveal" : "opacity-0 sm:opacity-100"}`}>
-            <p className="font-body text-[0.85rem] text-muted-foreground mb-2 uppercase tracking-wide">Annual Affiliation Fee</p>
-            <p className="font-display font-bold text-[2rem] sm:text-[2.5rem] text-primary mb-2">₹6,000</p>
-            <p className="font-body font-light text-[0.85rem] text-muted-foreground">One-time annual payment per academy</p>
-          </div>
-          <div 
-            className={`bg-card shadow-card rounded-xl p-6 sm:p-8 text-center border-t-[4px] border-gold ${animateCards ? "sm:animate-none animate-cursor-reveal" : "opacity-0 sm:opacity-100"}`}
-            style={{ animationDelay: animateCards ? "0.3s" : undefined }}
-          >
-            <p className="font-body text-[0.85rem] text-muted-foreground mb-2 uppercase tracking-wide">Student Administrative Contribution</p>
-            <p className="font-display font-bold text-[2rem] sm:text-[2.5rem] text-primary mb-2">₹50<span className="text-[1rem] font-normal text-muted-foreground">/month</span></p>
-            <p className="font-body font-light text-[0.85rem] text-muted-foreground">Mandatory for each enrolled student</p>
-          </div>
-        </div>
-        <div className={`bg-card shadow-card rounded-xl p-6 sm:p-8 ${isVisible ? "animate-fade-up" : "opacity-0"}`} style={{ animationDelay: "0.25s" }}>
-          <p className="font-body font-light text-[0.88rem] sm:text-[0.95rem] text-foreground leading-relaxed mb-4">
+        <div className={`bg-card shadow-card rounded-xl p-6 sm:p-8 ${isVisible ? "animate-fade-up" : "opacity-0"}`} style={{ animationDelay: "0.15s" }}>
+          <p className="font-body font-light text-[0.88rem] sm:text-[0.95rem] text-foreground leading-relaxed mb-3">
             This structured contribution supports digital infrastructure, academic monitoring, administrative services, event organization, and overall ecosystem development — ensuring sustainability, transparency, and long-term growth of the Kuchipudi network.
           </p>
           <div 
@@ -390,7 +348,7 @@ const CTASection = () => {
   const { whatsappNumber } = useContactInfo();
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-32 overflow-hidden">
+    <section className="relative py-12 sm:py-16 md:py-20 overflow-hidden">
       <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${heroTemple})` }} />
       <div className="absolute inset-0 bg-[#1A0A0A]/85" />
       <div ref={ref} className={`relative z-10 max-w-3xl mx-auto px-4 sm:px-6 text-center ${isVisible ? "animate-scale-in" : "opacity-0"}`}>
@@ -420,7 +378,7 @@ const CTASection = () => {
 const GuruBandhu = () => (
   <>
     <SEO
-      title="Guru Bandhu | Javani Bandhathuvum Program | Javani Spiritual Arts"
+      title="Guru Bandhu | Javani Bandhathuvum Program | Javani Spiritual Hub"
       description="The Javani Bandhathuvum Program empowers classical arts academies with certification support, digital management, product distribution, workshops, and Guru recognition — all under Javani Spiritual Hub."
     />
     <main>

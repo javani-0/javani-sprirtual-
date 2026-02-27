@@ -19,7 +19,7 @@ interface Course {
   featured?: boolean;
 }
 
-const emptyForm = { title: "", category: "certification", badge: "Certification Course", badgeColor: "red", description: "", image: "", extra: "", status: "active" };
+const emptyForm = { title: "", category: "grades", badge: "Grades Course", badgeColor: "red", description: "", image: "", extra: "", status: "active" };
 
 const badgeStyles: Record<string, string> = {
   red: "bg-primary text-primary-foreground",
@@ -77,9 +77,12 @@ const AdminCourses = () => {
   };
 
   const categoryBadgeMap: Record<string, { badge: string; badgeColor: string }> = {
-    certification: { badge: "Certification Course", badgeColor: "red" },
+    grades: { badge: "Grades Course", badgeColor: "red" },
     diploma: { badge: "Diploma Course", badgeColor: "gold" },
     "pre-grade": { badge: "Pre-Grade", badgeColor: "charcoal" },
+    "masterclass-workshops": { badge: "Masterclass & Workshop", badgeColor: "gold" },
+    yoga: { badge: "Yoga Course", badgeColor: "charcoal" },
+    konnakol: { badge: "Konnakol Course", badgeColor: "red" },
   };
 
   return (
@@ -182,10 +185,13 @@ const AdminCourses = () => {
               </div>
               <div>
                 <label className="font-body text-[0.85rem] text-muted-foreground block mb-1">Category</label>
-                <select value={form.category} onChange={(e) => { const cat = e.target.value; const mapped = categoryBadgeMap[cat] || categoryBadgeMap.certification; setForm({ ...form, category: cat, badge: mapped.badge, badgeColor: mapped.badgeColor }); }} className="w-full px-3 py-2 rounded-md border border-border font-body text-[0.875rem] outline-none">
-                  <option value="certification">Certification</option>
+                <select value={form.category} onChange={(e) => { const cat = e.target.value; const mapped = categoryBadgeMap[cat] || categoryBadgeMap.grades; setForm({ ...form, category: cat, badge: mapped.badge, badgeColor: mapped.badgeColor }); }} className="w-full px-3 py-2 rounded-md border border-border font-body text-[0.875rem] outline-none">
+                  <option value="grades">Grades</option>
                   <option value="diploma">Diploma</option>
                   <option value="pre-grade">Pre-Grade</option>
+                  <option value="masterclass-workshops">Masterclass & Workshops</option>
+                  <option value="yoga">Yoga</option>
+                  <option value="konnakol">Konnakol</option>
                 </select>
               </div>
               <div>
@@ -224,7 +230,7 @@ const AdminCourses = () => {
                 <label className="font-body text-[0.85rem] text-muted-foreground block mb-1">Status</label>
                 <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="w-full px-3 py-2 rounded-md border border-border font-body text-[0.875rem] outline-none">
                   <option value="active">Active</option>
-                  <option value="draft">Draft</option>
+                  <option value="inactive">Inactive</option>
                 </select>
               </div>
               <button onClick={handleSave} className="w-full px-4 py-2.5 rounded-md bg-gradient-primary text-primary-foreground font-body text-[0.9rem] font-medium hover:brightness-110">

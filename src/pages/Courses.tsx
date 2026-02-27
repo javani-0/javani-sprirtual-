@@ -15,7 +15,7 @@ import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer2 from "@/assets/hero-dancer-2.jpg";
 import heroDancer3 from "@/assets/hero-dancer-3.jpg";
 
-type CourseCategory = "all" | "certification" | "diploma" | "pre-grade" | "music" | "dance" | "yoga";
+type CourseCategory = "all" | "grades" | "diploma" | "pre-grade" | "masterclass-workshops" | "yoga" | "konnakol";
 
 interface Course {
   id: string;
@@ -31,9 +31,12 @@ interface Course {
 
 const filters: { label: string; value: CourseCategory }[] = [
   { label: "All Courses", value: "all" },
-  { label: "Certification", value: "certification" },
+  { label: "Grades", value: "grades" },
   { label: "Diploma", value: "diploma" },
   { label: "Pre-Grade", value: "pre-grade" },
+  { label: "Masterclass & Workshops", value: "masterclass-workshops" },
+  { label: "Yoga", value: "yoga" },
+  { label: "Konnakol", value: "konnakol" },
 ];
 
 const badgeStyles: Record<string, string> = {
@@ -60,7 +63,7 @@ const ExtCourseCard = ({ course, delay = 0 }: { course: Course; delay?: number }
   const { ref, isVisible } = useScrollAnimation();
   const { whatsappNumber } = useContactInfo();
   const whatsappMsg = encodeURIComponent(
-    `Hi, I'm interested in the *${course.title}* course (${course.badge}) at Javani Spiritual Arts.\n\n${course.description}${course.extra ? `\n${course.extra}` : ""}\n\nPlease share more details.`
+    `Hi, I'm interested in the *${course.title}* course (${course.badge}) at Javani Spiritual Hub.\n\n${course.description}${course.extra ? `\n${course.extra}` : ""}\n\nPlease share more details.`
   );
 
   return (
@@ -69,6 +72,11 @@ const ExtCourseCard = ({ course, delay = 0 }: { course: Course; delay?: number }
         <div className="aspect-[3/2] relative overflow-hidden">
           {!imgLoaded && <div className="absolute inset-0 skeleton-shimmer" />}
           <img src={course.image} alt={course.title} loading="lazy" onLoad={() => setImgLoaded(true)} className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.06] ${imgLoaded ? "opacity-100" : "opacity-0"}`} />
+          {course.status === "inactive" && (
+            <div className="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 text-xs font-body font-semibold rounded-full shadow-lg">
+              Not Available
+            </div>
+          )}
         </div>
         <div className="p-5 sm:p-6 flex flex-col flex-1">
           <span className={`inline-block px-3 py-1 text-xs font-body font-medium rounded-full mb-3 self-start ${badgeStyles[course.badgeColor] || badgeStyles.red}`}>{course.badge}</span>
@@ -117,16 +125,19 @@ const CourseSection = ({ category, title, description, courses, bgClass }: {
 };
 
 const tableData = [
-  ["Duration", "Grade-based (1–6 yrs)", "Advanced (2–3 yrs)", "Flexible (3 months+)"],
-  ["Certificate", "✅ Nationally Recognized", "✅ University-Linked", "❌ Not Applicable"],
-  ["Examination", "✅ Graded Exams", "✅ Final Assessment", "❌ No Exam"],
-  ["Age Group", "All ages", "12+ years", "All ages"],
-  ["Ideal For", "Serious learners", "Career artists", "Beginners, hobby"],
-  ["Fee Range", "₹₹₹", "₹₹₹₹", "₹₹"],
+  ["Duration", "Grade-based (1–5 yrs)", "Advanced (2 yrs)", "Flexible", "Intensive (1-3 days)", "Flexible sessions", "Progressive levels"],
+  ["Certificate", "✅ Recognized", "✅ University-Linked", "❌ Not Applicable", "✅ Participation", "✅ On Completion", "✅ Grade-based"],
+  ["Examination", "✅ Grade Exams", "✅ 4 semesters", "Internal exam", "❌ No Exam", "❌ No Exam", "✅ Level Tests"],
+  ["Experience", "Beginners", "Intermediates", "Beginners", "All levels", "Beginners", "Intermediates"],
+  ["Ideal For", "Serious learners", "Career artists", "Beginners, hobby", "Skill enhancement", "Wellness seekers", "Rhythm enthusiasts"],
 ];
 
 const ComparisonTable = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const { whatsappNumber } = useContactInfo();
+  const whatsappMsg = encodeURIComponent(
+    "Hi, I'm interested in learning more about your courses at Javani Spiritual Hub. Could you please share more details?"
+  );
 
   return (
     <section className="py-16 sm:py-20 md:py-32 bg-background">
@@ -138,9 +149,12 @@ const ComparisonTable = () => {
             <thead>
               <tr className="bg-primary text-primary-foreground">
                 <th className="p-3 sm:p-4 text-left font-display font-semibold text-[0.85rem] sm:text-[0.95rem]">Feature</th>
-                <th className="p-3 sm:p-4 text-left font-display font-semibold text-[0.85rem] sm:text-[0.95rem]">Certification</th>
+                <th className="p-3 sm:p-4 text-left font-display font-semibold text-[0.85rem] sm:text-[0.95rem]">Grades</th>
                 <th className="p-3 sm:p-4 text-left font-display font-semibold text-[0.85rem] sm:text-[0.95rem]">Diploma</th>
                 <th className="p-3 sm:p-4 text-left font-display font-semibold text-[0.85rem] sm:text-[0.95rem]">Pre-Grade</th>
+                <th className="p-3 sm:p-4 text-left font-display font-semibold text-[0.85rem] sm:text-[0.95rem]">Masterclass</th>
+                <th className="p-3 sm:p-4 text-left font-display font-semibold text-[0.85rem] sm:text-[0.95rem]">Yoga</th>
+                <th className="p-3 sm:p-4 text-left font-display font-semibold text-[0.85rem] sm:text-[0.95rem]">Konnakol</th>
               </tr>
             </thead>
             <tbody>
@@ -161,7 +175,13 @@ const ComparisonTable = () => {
           </table>
         </div>
         <div className="text-center mt-8 sm:mt-10">
-          <PrimaryButton>Enquire About a Course</PrimaryButton>
+          <a
+            href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <PrimaryButton>Enquire About a Course</PrimaryButton>
+          </a>
         </div>
       </div>
     </section>
@@ -174,7 +194,7 @@ const Courses = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const q = query(collection(db, "courses"), where("status", "==", "active"));
+    const q = query(collection(db, "courses"));
     const unsub = onSnapshot(q, (snap) => {
       if (!snap.empty) {
         setCourses(snap.docs.map((d) => ({ id: d.id, ...d.data() } as Course)));
@@ -184,20 +204,26 @@ const Courses = () => {
     return unsub;
   }, []);
 
-  const certCourses = useMemo(() => courses.filter((c) => c.category === "certification"), [courses]);
+  const gradesCourses = useMemo(() => courses.filter((c) => c.category === "grades"), [courses]);
   const diplomaCourses = useMemo(() => courses.filter((c) => c.category === "diploma"), [courses]);
   const preGradeCourses = useMemo(() => courses.filter((c) => c.category === "pre-grade"), [courses]);
+  const masterclassCourses = useMemo(() => courses.filter((c) => c.category === "masterclass-workshops"), [courses]);
+  const yogaCourses = useMemo(() => courses.filter((c) => c.category === "yoga"), [courses]);
+  const konnakolCourses = useMemo(() => courses.filter((c) => c.category === "konnakol"), [courses]);
 
-  const filteredCert = useMemo(() => activeFilter === "all" || activeFilter === "certification" ? certCourses : [], [activeFilter, certCourses]);
+  const filteredGrades = useMemo(() => activeFilter === "all" || activeFilter === "grades" ? gradesCourses : [], [activeFilter, gradesCourses]);
   const filteredDiploma = useMemo(() => activeFilter === "all" || activeFilter === "diploma" ? diplomaCourses : [], [activeFilter, diplomaCourses]);
   const filteredPreGrade = useMemo(() => activeFilter === "all" || activeFilter === "pre-grade" ? preGradeCourses : [], [activeFilter, preGradeCourses]);
-  const hasAny = filteredCert.length + filteredDiploma.length + filteredPreGrade.length > 0;
+  const filteredMasterclass = useMemo(() => activeFilter === "all" || activeFilter === "masterclass-workshops" ? masterclassCourses : [], [activeFilter, masterclassCourses]);
+  const filteredYoga = useMemo(() => activeFilter === "all" || activeFilter === "yoga" ? yogaCourses : [], [activeFilter, yogaCourses]);
+  const filteredKonnakol = useMemo(() => activeFilter === "all" || activeFilter === "konnakol" ? konnakolCourses : [], [activeFilter, konnakolCourses]);
+  const hasAny = filteredGrades.length + filteredDiploma.length + filteredPreGrade.length + filteredMasterclass.length + filteredYoga.length + filteredKonnakol.length > 0;
 
   return (
     <>
       <SEO
-        title="Courses | Bharatanatyam, Kuchipudi, Carnatic Music & More | Javani Spiritual Arts"
-        description="Explore certification, diploma, and pre-grade courses in Bharatanatyam, Kuchipudi, Mohiniyattam, Carnatic Music, Tabla, Veena, and Yoga at Javani Spiritual Arts."
+        title="Courses | Bharatanatyam, Kuchipudi, Carnatic Music & More | Javani Spiritual Hub"
+        description="Explore grades, diploma, pre-grade, masterclass & workshops, yoga, and konnakol courses in classical Indian arts including Bharatanatyam, Kuchipudi, Carnatic Music, and more at Javani Spiritual Hub."
       />
       <main>
         <PageHero backgroundImages={[heroDancer1, heroDancer2, heroDancer3]} label="OUR COURSES" heading="Our Sacred Courses" subtext="Classical arts for every soul — from first steps to national certification." />
@@ -224,12 +250,12 @@ const Courses = () => {
           </div>
         ) : (
           <>
-            {filteredCert.length > 0 && (
+            {filteredGrades.length > 0 && (
               <CourseSection
-                category="FULLY CERTIFIED"
-                title="Certification Courses"
-                description="Complete a structured grade-based journey and earn a nationally recognized certificate."
-                courses={filteredCert}
+                category="STRUCTURED LEARNING"
+                title="Grades Courses"
+                description="Complete a structured grade-based journey and earn recognized certification through progressive levels."
+                courses={filteredGrades}
                 bgClass="bg-background"
               />
             )}
@@ -245,10 +271,37 @@ const Courses = () => {
             {filteredPreGrade.length > 0 && (
               <CourseSection
                 category="EXPLORE & DISCOVER"
-                title="Pre-Grade & Hobby Courses"
+                title="Pre-Grade Courses"
                 description="Perfect for curious beginners, young children, or those exploring arts without formal examination pressure."
                 courses={filteredPreGrade}
                 bgClass="bg-background"
+              />
+            )}
+            {filteredMasterclass.length > 0 && (
+              <CourseSection
+                category="INTENSIVE TRAINING"
+                title="Masterclass & Workshops"
+                description="Deep dive into specific techniques and practices with intensive masterclasses and focused workshops."
+                courses={filteredMasterclass}
+                bgClass=""
+              />
+            )}
+            {filteredYoga.length > 0 && (
+              <CourseSection
+                category="MIND & BODY"
+                title="Yoga Courses"
+                description="Ancient practices for holistic wellness, combining physical postures, breathing techniques, and meditation."
+                courses={filteredYoga}
+                bgClass="bg-background"
+              />
+            )}
+            {filteredKonnakol.length > 0 && (
+              <CourseSection
+                category="RHYTHMIC ARTS"
+                title="Konnakol Courses"
+                description="Master the art of South Indian vocal percussion through systematic practice and rhythmic recitation."
+                courses={filteredKonnakol}
+                bgClass=""
               />
             )}
           </>

@@ -158,7 +158,7 @@ const HeroSection = () => {
           </h1>
 
           <p className="font-body font-light text-[0.9rem] sm:text-[1rem] md:text-[1.1rem] text-white/75 max-w-[480px] leading-relaxed mb-6 sm:mb-8 animate-cursor-reveal" style={{ animationDelay: "2.1s" }}>
-            Rooted in ancient tradition. Elevated for the modern soul. Join Javani Spiritual Arts and embark on a journey of grace, discipline, and self-discovery.
+            Rooted in ancient tradition. Elevated for the modern soul. Join Javani Spiritual Hub and embark on a journey of grace, discipline, and self-discovery.
           </p>
 
           <div className="flex flex-wrap gap-3 sm:gap-4 mb-6 sm:mb-8 animate-cursor-reveal" style={{ animationDelay: "2.3s" }}>

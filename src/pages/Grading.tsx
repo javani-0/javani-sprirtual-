@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useContactInfo } from "@/hooks/useContactInfo";
 
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
@@ -12,20 +13,40 @@ import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer2 from "@/assets/hero-dancer-2.jpg";
 import heroTemple from "@/assets/hero-temple.jpg";
 import dancerPortrait from "@/assets/dancer-portrait-1.jpg";
+import dancerCloseup from "@/assets/dancer-closeup.jpg";
+import danceDetailFeet from "@/assets/dance-detail-feet.jpg";
 
 /* ───── Intro ───── */
 const IntroSection = () => {
-  const [imgLoaded, setImgLoaded] = useState(false);
+  const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+  const handleLoad = (i: number) => setLoadedImages((prev) => new Set(prev).add(i));
   const { ref: imgRef, isVisible: imgVisible } = useScrollAnimation();
   const { ref: textRef, isVisible: textVisible } = useScrollAnimation();
+
+  const images = [
+    { src: dancerPortrait, alt: "Bharatanatyam dancer in red costume", className: "col-span-2 row-span-2 aspect-[4/5]", rotate: "" },
+    { src: dancerCloseup, alt: "Dancer close-up portrait", className: "aspect-square", rotate: "-rotate-1" },
+    { src: danceDetailFeet, alt: "Dancer feet with ankle bells", className: "aspect-[4/3]", rotate: "rotate-1" },
+  ];
+
   return (
     <section className="py-16 sm:py-20 md:py-32 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[45%_1fr] gap-8 sm:gap-12 lg:gap-20 items-start">
         <div ref={imgRef} className={`relative ${imgVisible ? "animate-fade-left" : "opacity-0"}`}>
-          <div className="absolute -inset-3 border-[4px] border-gold/30 pointer-events-none" style={{ borderRadius: "2px" }} />
-          <div className="relative overflow-hidden aspect-[3/4]" style={{ borderRadius: "2px" }}>
-            {!imgLoaded && <div className="absolute inset-0 skeleton-shimmer" />}
-            <img src={dancerPortrait} alt="Grading" loading="lazy" onLoad={() => setImgLoaded(true)} className={`w-full h-full object-cover transition-opacity duration-700 ${imgLoaded ? "opacity-100" : "opacity-0"}`} />
+          <div className="absolute -inset-5 border-[3px] border-gold/20 -z-10 hidden lg:block" style={{ borderRadius: "2px" }} />
+          <div className="grid grid-cols-2 gap-3">
+            {images.map((img, i) => (
+              <div key={i} className={`${img.className} ${img.rotate} overflow-hidden rounded-lg relative`}>
+                {!loadedImages.has(i) && <div className="absolute inset-0 skeleton-shimmer" />}
+                <img 
+                  src={img.src} 
+                  alt={img.alt} 
+                  loading="lazy" 
+                  onLoad={() => handleLoad(i)} 
+                  className={`w-full h-full object-cover shadow-gold transition-all duration-500 hover:scale-[1.04] ${loadedImages.has(i) ? "opacity-100" : "opacity-0"}`} 
+                />
+              </div>
+            ))}
           </div>
         </div>
         <div ref={textRef} className={`min-w-0 ${textVisible ? "animate-fade-right" : "opacity-0"}`}>
@@ -109,6 +130,11 @@ const LadderSection = () => {
 const CertificationSection = () => {
   const { ref: textRef, isVisible: textVisible } = useScrollAnimation();
   const { ref: certRef, isVisible: certVisible } = useScrollAnimation();
+  const { whatsappNumber } = useContactInfo();
+  const whatsappMsg = encodeURIComponent(
+    "Hi, I'd like to know more about the certification and grading system at Javani Spiritual Hub. Could you please provide details about the examination process, university-linked certifications, and how to get started?"
+  );
+  
   return (
   <section className="py-16 sm:py-20 md:py-32 bg-background">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
@@ -131,11 +157,17 @@ const CertificationSection = () => {
             </li>
           ))}
         </ul>
-        <PrimaryButton>Ask About Certification</PrimaryButton>
+        <a
+          href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <PrimaryButton>Ask About Certification</PrimaryButton>
+        </a>
       </div>
       <div ref={certRef} className={`bg-ivory rounded-lg p-6 sm:p-8 md:p-10 shadow-[0_20px_60px_rgba(201,168,76,0.2)] ${certVisible ? "animate-fade-right" : "opacity-0"}`} style={{ border: "3px double hsl(42,50%,54%)" }}>
         <div className="text-center">
-          <p className="font-accent text-[1.1rem] sm:text-[1.2rem] md:text-[1.4rem] text-gold mb-2">Javani Spiritual Arts</p>
+          <p className="font-accent text-[1.1rem] sm:text-[1.2rem] md:text-[1.4rem] text-gold mb-2">Javani Spiritual Hub</p>
           <GoldDivider className="mb-4" />
           <p className="font-display text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 tracking-widest uppercase">Certificate of Achievement</p>
           <p className="font-display text-[0.95rem] sm:text-[1.1rem] text-foreground leading-relaxed mb-6 sm:mb-8">
@@ -249,7 +281,7 @@ const FAQSection = () => {
 const Grading = () => (
   <>
     <SEO
-      title="Grading System & Certification | Javani Spiritual Arts"
+      title="Grading System & Certification | Javani Spiritual Hub"
       description="Understand our university-linked certification and grade-based progression system. From foundation level to Senior Diploma and Arangetram."
     />
     <main>

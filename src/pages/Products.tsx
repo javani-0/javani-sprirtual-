@@ -15,7 +15,7 @@ import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroTemple from "@/assets/hero-temple.jpg";
 import carnaticMusic from "@/assets/carnatic-music.jpg";
 
-type ProductCategory = "all" | "costumes" | "instruments" | "books" | "accessories";
+type ProductCategory = "all" | "clothing" | "thermic-toys" | "aaharya" | "accessories" | "books-stationaries" | "sattvic-refreshments";
 
 interface Product {
   id: string;
@@ -28,16 +28,22 @@ interface Product {
 }
 
 const filters: { label: string; value: ProductCategory }[] = [
-  { label: "All", value: "all" }, { label: "Costumes", value: "costumes" },
-  { label: "Instruments", value: "instruments" }, { label: "Books & Notation", value: "books" },
+  { label: "All", value: "all" },
+  { label: "Clothing", value: "clothing" },
+  { label: "Thermic Toys", value: "thermic-toys" },
+  { label: "Aaharya Collections", value: "aaharya" },
   { label: "Practice Accessories", value: "accessories" },
+  { label: "Books & Stationaries", value: "books-stationaries" },
+  { label: "Sattvic Refreshments", value: "sattvic-refreshments" },
 ];
 
 const categoryBadgeColors: Record<string, string> = {
-  costumes: "bg-primary text-primary-foreground",
-  instruments: "bg-gold text-gold-foreground",
-  books: "bg-charcoal text-charcoal-foreground",
+  clothing: "bg-primary text-primary-foreground",
+  "thermic-toys": "bg-gold text-gold-foreground",
+  aaharya: "bg-charcoal text-charcoal-foreground",
   accessories: "bg-primary-light text-primary-foreground",
+  "books-stationaries": "bg-muted text-foreground",
+  "sattvic-refreshments": "bg-green-100 text-green-700",
 };
 
 const SkeletonCard = () => (
@@ -57,7 +63,7 @@ const ProductDetailModal = ({ product, onClose }: { product: Product; onClose: (
   const [qty, setQty] = useState(1);
 
   const whatsappMsg = encodeURIComponent(
-    `Hi, I'd like to order from *Javani Spiritual Arts*:\n\n` +
+    `Hi, I'd like to order from *Javani Spiritual Hub*:\n\n` +
     `*${product.name}*\n` +
     `Category: ${product.categoryLabel}\n` +
     `Price: ${product.price}\n` +
@@ -120,7 +126,7 @@ const ProductCard = ({ product, delay = 0, onViewDetails }: { product: Product; 
   const [qty, setQty] = useState(1);
   const { whatsappNumber } = useContactInfo();
   const whatsappMsg = encodeURIComponent(
-    `Hi, I'd like to order from *Javani Spiritual Arts*:\n\n*${product.name}* (${product.categoryLabel})\nPrice: ${product.price}\nQuantity: ${qty}\n\n${product.image ? `Image: ${product.image}` : ""}`
+    `Hi, I'd like to order from *Javani Spiritual Hub*:\n\n*${product.name}* (${product.categoryLabel})\nPrice: ${product.price}\nQuantity: ${qty}\n\n${product.image ? `Image: ${product.image}` : ""}`
   );
   const { ref, isVisible } = useScrollAnimation();
 
@@ -198,8 +204,8 @@ const Products = () => {
   return (
     <>
       <SEO
-        title="Products & Materials | Costumes, Instruments | Javani Spiritual Arts"
-        description="Shop authentic costumes, instruments, books, and practice accessories curated by Javani Spiritual Arts faculty."
+        title="Products & Materials | Costumes, Instruments | Javani Spiritual Hub"
+        description="Shop authentic costumes, instruments, books, and practice accessories curated by Javani Spiritual Hub faculty."
       />
       <main>
         <PageHero backgroundImages={[heroDancer1, heroTemple, carnaticMusic]} label="OUR PRODUCTS" heading="Artistry Begins With the Right Tools" subtext="Authentic costumes, instruments, and learning materials — curated by our faculty." />

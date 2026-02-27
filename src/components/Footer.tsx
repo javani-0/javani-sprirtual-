@@ -90,7 +90,7 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="border-t border-gold/20">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-2">
-          <p className="font-body font-light text-[0.75rem] text-white/50">© 2024 Javani Spiritual Arts. All Rights Reserved.</p>
+          <p className="font-body font-light text-[0.75rem] text-white/50">© 2024 Javani Spiritual Hub. All Rights Reserved.</p>
           <p className="font-body font-light text-[0.75rem] text-white/50">Built by Dream Team Services</p>
         </div>
       </div>

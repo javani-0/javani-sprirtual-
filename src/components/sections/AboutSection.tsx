@@ -83,7 +83,7 @@ const AboutSection = () => {
           {/* Text content */}
           <div className={`min-w-0 ${sectionVisible ? "animate-fade-right" : "opacity-0"}`} style={{ animationDelay: sectionVisible ? "0.5s" : undefined }}>
             <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-4">
-              Javani Spiritual Arts was founded with a singular vision — to preserve and propagate the sacred classical arts of India in their most authentic form.
+              Javani Spiritual Hub was founded with a singular vision — to preserve and propagate the sacred classical arts of India in their most authentic form.
             </p>
             <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-foreground leading-relaxed mb-8">
               Over 12 years, we have nurtured hundreds of students — from curious beginners to national-level performers — through structured, heart-centered teaching.
