@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useContactInfo } from "@/hooks/useContactInfo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
@@ -10,7 +10,7 @@ import SectionLabel from "@/components/SectionLabel";
 import GoldOutlineButton from "@/components/GoldOutlineButton";
 import SEO from "@/components/SEO";
 import ShareButton from "@/components/ShareButton";
-import { MessageCircle, ShoppingBag, Minus, Plus } from "lucide-react";
+import { MessageCircle, ShoppingBag, Minus, Plus, ArrowLeft } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroTemple from "@/assets/hero-temple.jpg";
@@ -84,7 +84,7 @@ const ProductCard = ({ product, delay = 0 }: { product: Product; delay?: number 
               text={`Check out *${product.name}* on Javani Spiritual Hub — *${product.price}/-*`}
               url={`/products/${product.id}`}
               imageUrl={product.image}
-              className="bg-[#25D366]/90 hover:bg-[#25D366] text-white hover:text-white rounded-full w-7 h-7 sm:w-auto sm:h-auto"
+              className="bg-black/40 hover:bg-black/60 text-white hover:text-white rounded-full w-7 h-7 sm:w-auto sm:h-auto"
             />
           </div>
         </div>
@@ -94,7 +94,7 @@ const ProductCard = ({ product, delay = 0 }: { product: Product; delay?: number 
           <h3 className="font-display font-semibold text-[0.8rem] sm:text-[1.1rem] text-foreground mb-1 sm:mb-2 line-clamp-2">{product.name}</h3>
 
           {/* Description — hidden on mobile */}
-          <p className="hidden sm:block font-body font-light text-[0.875rem] text-muted-foreground mb-4 leading-relaxed flex-1">{product.description}</p>
+          <p className="hidden sm:block lg:hidden font-body font-light text-[0.875rem] text-muted-foreground mb-4 leading-relaxed flex-1">{product.description}</p>
 
           <p className="font-body font-semibold text-base sm:text-[1.4rem] text-primary mb-2 sm:mb-3">{product.price}/-</p>
 
@@ -146,6 +146,7 @@ const ProductCard = ({ product, delay = 0 }: { product: Product; delay?: number 
 };
 
 const Products = () => {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState<ProductCategory>("all");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -191,6 +192,10 @@ const Products = () => {
         description="Shop authentic costumes, instruments, books, and practice accessories curated by Javani Spiritual Hub faculty."
       />
       <main>
+        {/* Mobile back arrow */}
+        <button onClick={() => navigate(-1)} className="lg:hidden fixed top-4 left-4 z-[600] flex items-center justify-center w-10 h-10 rounded-full bg-black/40 text-white backdrop-blur-sm">
+          <ArrowLeft className="w-5 h-5" />
+        </button>
         <PageHero backgroundImages={[heroDancer1, heroTemple, carnaticMusic]} label="OUR PRODUCTS" heading="Artistry Begins With the Right Tools" subtext="Authentic costumes, instruments, and learning materials — curated by our faculty." />
 
         <div className="bg-gold py-3 sm:py-4">

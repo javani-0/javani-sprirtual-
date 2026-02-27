@@ -253,6 +253,13 @@
   width: 0;
 }
 
+/* On desktop for product detail page: hide nav entirely */
+@media (min-width: 1024px) {
+  body.hide-nav-desktop nav {
+    display: none !important;
+  }
+}
+
 /* On mobile for specific pages: transparent nav showing only hamburger icon */
 @media (max-width: 639px) {
   body.hide-nav-mobile nav {

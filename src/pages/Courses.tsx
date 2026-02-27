@@ -8,9 +8,9 @@ import PageHero from "@/components/PageHero";
 import SectionLabel from "@/components/SectionLabel";
 import PrimaryButton from "@/components/PrimaryButton";
 import SEO from "@/components/SEO";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, ArrowLeft } from "lucide-react";
 import ShareButton from "@/components/ShareButton";
 import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer2 from "@/assets/hero-dancer-2.jpg";
@@ -202,6 +202,7 @@ const ComparisonTable = () => {
 };
 
 const Courses = () => {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState<CourseCategory>("all");
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
@@ -244,6 +245,10 @@ const Courses = () => {
         description="Explore grades, diploma, pre-grade, masterclass & workshops, yoga, and konnakol courses in classical Indian arts including Bharatanatyam, Kuchipudi, Carnatic Music, and more at Javani Spiritual Hub."
       />
       <main>
+        {/* Mobile back arrow */}
+        <button onClick={() => navigate(-1)} className="lg:hidden fixed top-4 left-4 z-[600] flex items-center justify-center w-10 h-10 rounded-full bg-black/40 text-white backdrop-blur-sm">
+          <ArrowLeft className="w-5 h-5" />
+        </button>
         <PageHero backgroundImages={[heroDancer1, heroDancer2, heroDancer3]} label="OUR COURSES" heading="Our Sacred Courses" subtext="Classical arts for every soul — from first steps to national certification." />
 
         <div className="sticky top-0 sm:top-[80px] z-[500] bg-card shadow-sm py-3 sm:py-4">
