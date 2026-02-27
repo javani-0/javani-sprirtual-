@@ -31,8 +31,11 @@ const AdminEnquiries = lazy(() => import("./pages/admin/AdminEnquiries"));
 const AdminCourses = lazy(() => import("./pages/admin/AdminCourses"));
 const AdminGallery = lazy(() => import("./pages/admin/AdminGallery"));
 const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
+const AdminFaculty = lazy(() => import("./pages/admin/AdminFaculty"));
 const AdminSiteSettings = lazy(() => import("./pages/admin/AdminSiteSettings"));
 const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
+const CourseDetail = lazy(() => import("./pages/CourseDetail"));
 
 const queryClient = new QueryClient();
 
@@ -102,6 +105,8 @@ const App = () => {
                   <Route path="/grading" element={<Grading />} />
                   <Route path="/gallery" element={<Gallery />} />
                   <Route path="/products" element={<Products />} />
+                  <Route path="/products/:id" element={<ProductDetail />} />
+                  <Route path="/courses/:id" element={<CourseDetail />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/guru-bandhu" element={<GuruBandhu />} />
                   <Route path="/login" element={<Login />} />
@@ -113,8 +118,7 @@ const App = () => {
                     <Route path="enquiries" element={<AdminEnquiries />} />
                     <Route path="courses" element={<AdminCourses />} />
                     <Route path="gallery" element={<AdminGallery />} />
-                    <Route path="products" element={<AdminProducts />} />
-                    <Route path="site-settings" element={<AdminSiteSettings />} />
+                    <Route path="products" element={<AdminProducts />} />                    <Route path="faculty" element={<AdminFaculty />} />                    <Route path="site-settings" element={<AdminSiteSettings />} />
                   </Route>
                   <Route path="*" element={<NotFound />} />
                 </Routes>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink, useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, ClipboardList, BookOpen, Image, ShoppingBag, SlidersHorizontal, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, ClipboardList, BookOpen, Image, ShoppingBag, Users, SlidersHorizontal, LogOut, Menu, X } from "lucide-react";
 import logoWhite from "@/assets/logo-white.png";
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
   { label: "Courses Manager", icon: BookOpen, path: "/admin/courses" },
   { label: "Gallery Manager", icon: Image, path: "/admin/gallery" },
   { label: "Products Manager", icon: ShoppingBag, path: "/admin/products" },
+  { label: "Faculty Manager", icon: Users, path: "/admin/faculty" },
   { label: "Site Settings", icon: SlidersHorizontal, path: "/admin/site-settings" },
 ];
 

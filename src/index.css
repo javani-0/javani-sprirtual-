@@ -253,6 +253,34 @@
   width: 0;
 }
 
+/* On mobile for specific pages: transparent nav showing only hamburger icon */
+@media (max-width: 639px) {
+  body.hide-nav-mobile nav {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    border-bottom: none !important;
+    height: auto !important;
+  }
+  body.hide-nav-mobile nav [data-navbar-brand] {
+    display: none !important;
+  }
+  body.hide-nav-mobile nav [data-hamburger-btn] {
+    position: fixed !important;
+    top: 12px !important;
+    right: 16px !important;
+    z-index: 1001 !important;
+    color: white !important;
+    background: rgba(0, 0, 0, 0.45) !important;
+    border-radius: 50% !important;
+    padding: 8px !important;
+  }
+  body.hide-nav-mobile [data-floating-buttons] {
+    display: none !important;
+  }
+}
+
 /* Single cursor that moves between lines */
 .hero-single-cursor {
   position: fixed;

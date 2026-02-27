@@ -6,6 +6,7 @@ import PrimaryButton from "./PrimaryButton";
 import { useAuth } from "@/contexts/AuthContext";
 import logoWhite from "@/assets/logo-white.png";
 import logoBrown from "@/assets/logo-brown.png";
+import logoWhiteMobile from "@/assets/logo-white-mobile.png";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -83,7 +84,7 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between">
           {/* Brand */}
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center" data-navbar-brand>
             <img
               src={isSolid ? logoBrown : logoWhite}
               alt="Javani Spiritual Hub"
@@ -159,6 +160,7 @@ const Navbar = () => {
 
           {/* Mobile hamburger */}
           <button
+            data-hamburger-btn
             className={`lg:hidden p-2 transition-colors ${textColor}`}
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
@@ -178,8 +180,8 @@ const Navbar = () => {
           }}
         >
           {/* Header: Brand + Close */}
-          <div className="flex items-center justify-between px-6 pt-6 pb-4">
-            <img src={logoWhite} alt="Javani Spiritual Hub" className="h-28 w-auto object-contain" />
+          <div className="flex items-center justify-between px-6 pt-4 pb-3">
+            <img src={logoWhiteMobile} alt="Javani Spiritual Hub" className="h-12 w-auto object-contain" />
             <button
               onClick={handleClose}
               className="p-2 rounded-full border border-transparent hover:border-gold/40 transition-all duration-300 group"
@@ -193,7 +195,7 @@ const Navbar = () => {
           <div className="mx-6 h-px bg-gradient-to-r from-transparent via-gold/40 to-transparent" />
 
           {/* Nav Links */}
-          <div className="flex-1 flex flex-col items-center justify-center gap-1 px-6">
+          <div className="flex-1 overflow-y-auto flex flex-col items-center gap-1 px-6 py-6">
             {navLinks.map((link, i) => {
               const isActive = location.pathname === link.path;
               return (
@@ -304,7 +306,7 @@ const Navbar = () => {
               <GoldDiamond size={5} />
               <div className="w-8 h-px bg-gold/20" />
             </div>
-            <span className="font-display text-[0.55rem] tracking-[0.4em] text-white/20 uppercase">Est. 2012</span>
+            <span className="font-display text-[0.55rem] tracking-[0.4em] text-white/20 uppercase">Est. 2022</span>
           </div>
         </div>,
         document.body

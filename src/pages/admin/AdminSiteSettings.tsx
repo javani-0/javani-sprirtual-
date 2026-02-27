@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { doc, getDoc, setDoc, collection, onSnapshot, addDoc, updateDoc, deleteDoc, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Plus, Pencil, Trash2, X, Image, BarChart3, MessageSquare, Layers, Users, Phone, Globe } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Image, BarChart3, MessageSquare, Layers, Phone, Globe } from "lucide-react";
 import { contactInfoDefaults, type ContactInfo } from "@/hooks/useContactInfo";
 import { useToast } from "@/hooks/use-toast";
 
@@ -9,7 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 interface StatItem { number: string; label: string }
 interface Testimonial { id: string; quote: string; name: string; course: string; stars: number; order: number }
 interface AboutImage { src: string; alt: string }
-interface FacultyItem { image: string; name: string; title: string; bio: string }
 
 // ── Default About Page values (mirrors About.tsx fallbacks) ──
 const defaultAboutHeroImages = [
@@ -18,12 +17,6 @@ const defaultAboutHeroImages = [
   "/src/assets/hero-dancer-3.jpg",
 ];
 const defaultFounderImage = "/src/assets/dancer-closeup.jpg";
-const defaultFaculty: FacultyItem[] = [
-  { image: "/src/assets/dancer-closeup.jpg", name: "Guru Lavanya Devi", title: "Principal Faculty — Bharatanatyam & Kuchipudi", bio: "25 years of classical training and a national awardee in performing arts." },
-  { image: "/src/assets/dancer-portrait-1.jpg", name: "Guru Ramesh Iyer", title: "Senior Faculty — Carnatic Music & Veena", bio: "A disciple of the Carnatic tradition with over 18 years of teaching experience." },
-  { image: "/src/assets/hero-dancer-3.jpg", name: "Ms. Ananya Krishna", title: "Faculty — Mohiniyattam & Yoga", bio: "Trained in Kerala's Mohiniyattam tradition, integrating dance and mindfulness." },
-  { image: "/src/assets/dance-detail-feet.jpg", name: "Mr. Suresh Babu", title: "Faculty — Tabla & Rhythm Arts", bio: "Professional Tabla player bringing rhythmic precision to every lesson." },
-];
 
 // ── Section wrapper ──
 const Section = ({ title, icon: Icon, children }: { title: string; icon: any; children: React.ReactNode }) => (
@@ -61,11 +54,6 @@ const AdminSiteSettings = () => {
   const [aboutHeroImages, setAboutHeroImages] = useState<string[]>([]);
   const [newAboutHeroUrl, setNewAboutHeroUrl] = useState("");
   const [aboutFounderImage, setAboutFounderImage] = useState("");
-  const [aboutFaculty, setAboutFaculty] = useState<FacultyItem[]>([]);
-  const [showFacultyModal, setShowFacultyModal] = useState(false);
-  const [editingFacultyIdx, setEditingFacultyIdx] = useState<number | null>(null);
-  const [facultyForm, setFacultyForm] = useState<FacultyItem>({ image: "", name: "", title: "", bio: "" });
-
   // ── Contact Info ──
   const [contactInfo, setContactInfo] = useState<ContactInfo>(contactInfoDefaults);
 
@@ -94,11 +82,9 @@ const AdminSiteSettings = () => {
         const data = snap.data();
         setAboutHeroImages(data.heroImages?.length > 0 ? data.heroImages : defaultAboutHeroImages);
         setAboutFounderImage(data.founderImage || defaultFounderImage);
-        setAboutFaculty(data.faculty?.length > 0 ? data.faculty : defaultFaculty);
       } else {
         setAboutHeroImages(defaultAboutHeroImages);
         setAboutFounderImage(defaultFounderImage);
-        setAboutFaculty(defaultFaculty);
       }
     });
     // Contact Info
@@ -187,11 +173,10 @@ const AdminSiteSettings = () => {
   };
 
   // ── About Page Save ──
-  const saveAboutPageData = async (data: { heroImages?: string[]; founderImage?: string; faculty?: FacultyItem[] }) => {
+  const saveAboutPageData = async (data: { heroImages?: string[]; founderImage?: string }) => {
     const current: any = {};
     if (aboutHeroImages.length > 0) current.heroImages = aboutHeroImages;
     if (aboutFounderImage) current.founderImage = aboutFounderImage;
-    if (aboutFaculty.length > 0) current.faculty = aboutFaculty;
     await setDoc(doc(db, "siteSettings", "aboutPage"), { ...current, ...data });
     toast({ title: "About page updated" });
   };
@@ -207,28 +192,6 @@ const AdminSiteSettings = () => {
     setAboutHeroImages(updated);
     saveAboutPageData({ heroImages: updated });
   };
-  const openAddFaculty = () => { setFacultyForm({ image: "", name: "", title: "", bio: "" }); setEditingFacultyIdx(null); setShowFacultyModal(true); };
-  const openEditFaculty = (i: number) => { setFacultyForm(aboutFaculty[i]); setEditingFacultyIdx(i); setShowFacultyModal(true); };
-  const saveFaculty = () => {
-    if (!facultyForm.name || !facultyForm.title) { toast({ title: "Name and title required", variant: "destructive" }); return; }
-    let updated: FacultyItem[];
-    if (editingFacultyIdx !== null) {
-      updated = [...aboutFaculty];
-      updated[editingFacultyIdx] = facultyForm;
-    } else {
-      updated = [...aboutFaculty, facultyForm];
-    }
-    setAboutFaculty(updated);
-    saveAboutPageData({ faculty: updated });
-    setShowFacultyModal(false);
-  };
-  const deleteFaculty = (i: number) => {
-    if (!confirm("Delete this faculty member?")) return;
-    const updated = aboutFaculty.filter((_, idx) => idx !== i);
-    setAboutFaculty(updated);
-    saveAboutPageData({ faculty: updated });
-  };
-
   // ── Contact Info Save ──
   const saveContactInfo = async () => {
     await setDoc(doc(db, "siteSettings", "contactInfo"), contactInfo);
@@ -432,63 +395,7 @@ const AdminSiteSettings = () => {
         )}
       </Section>
 
-      <Section title="About Page — Faculty / Gurus" icon={Users}>
-        <p className="font-body text-[0.8rem] text-muted-foreground">Manage the "Teachers Behind the Transformation" section.</p>
-        <div className="flex justify-end">
-          <button onClick={openAddFaculty} className="flex items-center gap-2 px-4 py-2 rounded-md bg-gradient-primary text-primary-foreground font-body text-[0.85rem] font-medium hover:brightness-110">
-            <Plus className="w-4 h-4" /> Add Faculty
-          </button>
-        </div>
-        <div className="space-y-3">
-          {aboutFaculty.map((f, i) => (
-            <div key={i} className="flex items-center gap-3 p-4 rounded-lg bg-muted/30 border border-border/50">
-              {f.image && <img src={f.image} alt={f.name} className="w-12 h-12 rounded-full object-cover flex-shrink-0" />}
-              <div className="flex-1 min-w-0">
-                <p className="font-body text-[0.875rem] text-foreground font-medium">{f.name}</p>
-                <p className="font-body text-[0.8rem] text-muted-foreground">{f.title}</p>
-              </div>
-              <div className="flex gap-1 flex-shrink-0">
-                <button onClick={() => openEditFaculty(i)} className="p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-gold"><Pencil className="w-4 h-4" /></button>
-                <button onClick={() => deleteFaculty(i)} className="p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive"><Trash2 className="w-4 h-4" /></button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
 
-      {/* Faculty Modal */}
-      {showFacultyModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setShowFacultyModal(false)} />
-          <div className="relative bg-card rounded-xl shadow-hero w-full max-w-lg mx-4 p-6 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="font-display font-semibold text-[1.3rem]">{editingFacultyIdx !== null ? "Edit Faculty" : "Add Faculty"}</h3>
-              <button onClick={() => setShowFacultyModal(false)}><X className="w-5 h-5" /></button>
-            </div>
-            <div className="space-y-4">
-              <div>
-                <label className="font-body text-[0.85rem] text-muted-foreground block mb-1">Name *</label>
-                <input value={facultyForm.name} onChange={(e) => setFacultyForm({ ...facultyForm, name: e.target.value })} className="w-full px-3 py-2 rounded-md border border-border font-body text-[0.875rem] outline-none focus:border-gold" />
-              </div>
-              <div>
-                <label className="font-body text-[0.85rem] text-muted-foreground block mb-1">Title / Role *</label>
-                <input value={facultyForm.title} onChange={(e) => setFacultyForm({ ...facultyForm, title: e.target.value })} className="w-full px-3 py-2 rounded-md border border-border font-body text-[0.875rem] outline-none focus:border-gold" />
-              </div>
-              <div>
-                <label className="font-body text-[0.85rem] text-muted-foreground block mb-1">Image URL</label>
-                <input value={facultyForm.image} onChange={(e) => setFacultyForm({ ...facultyForm, image: e.target.value })} className="w-full px-3 py-2 rounded-md border border-border font-body text-[0.875rem] outline-none focus:border-gold" />
-              </div>
-              <div>
-                <label className="font-body text-[0.85rem] text-muted-foreground block mb-1">Bio</label>
-                <textarea value={facultyForm.bio} onChange={(e) => setFacultyForm({ ...facultyForm, bio: e.target.value })} rows={3} className="w-full px-3 py-2 rounded-md border border-border font-body text-[0.875rem] outline-none focus:border-gold" />
-              </div>
-              <button onClick={saveFaculty} className="w-full px-4 py-2.5 rounded-md bg-gradient-primary text-primary-foreground font-body text-[0.9rem] font-medium hover:brightness-110">
-                {editingFacultyIdx !== null ? "Update" : "Add"} Faculty
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

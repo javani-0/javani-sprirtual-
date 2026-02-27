@@ -11,6 +11,7 @@ import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { MessageCircle } from "lucide-react";
+import ShareButton from "@/components/ShareButton";
 import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer2 from "@/assets/hero-dancer-2.jpg";
 import heroDancer3 from "@/assets/hero-dancer-3.jpg";
@@ -77,14 +78,26 @@ const ExtCourseCard = ({ course, delay = 0 }: { course: Course; delay?: number }
               Not Available
             </div>
           )}
+          {/* Share button overlay */}
+          <div className="absolute top-2 left-2">
+            <ShareButton
+              title={course.title}
+              text={`Check out *${course.title}* (${course.badge}) at Javani Spiritual Hub`}
+              url={`/courses/${course.id}`}
+              className="bg-black/40 hover:bg-black/60 text-white hover:text-white rounded-full"
+            />
+          </div>
         </div>
         <div className="p-5 sm:p-6 flex flex-col flex-1">
           <span className={`inline-block px-3 py-1 text-xs font-body font-medium rounded-full mb-3 self-start ${badgeStyles[course.badgeColor] || badgeStyles.red}`}>{course.badge}</span>
           {course.extra && <p className="font-body text-xs text-muted-foreground mb-2">{course.extra}</p>}
           <h3 className="font-display font-semibold text-[1.2rem] sm:text-[1.4rem] text-foreground mb-2 transition-colors duration-300 group-hover:text-gold">{course.title}</h3>
           <p className="font-body text-[0.85rem] sm:text-[0.9rem] text-muted-foreground mb-4 leading-relaxed flex-1">{course.description}</p>
-          <div className="flex gap-2 sm:gap-3">
-            <Link to="/contact" className="flex-1"><PrimaryButton compact className="text-[0.85rem] w-full">Know More + Enquire</PrimaryButton></Link>
+          <div className="flex gap-2 sm:gap-3 flex-wrap">
+            <Link to={`/courses/${course.id}`} className="flex-1 min-w-[120px]">
+              <button className="w-full px-3 py-2 rounded-sm border border-gold text-gold font-body font-medium text-[0.8rem] hover:bg-gold/10 transition-colors">View Details</button>
+            </Link>
+            <Link to="/contact" className="flex-1 min-w-[120px]"><PrimaryButton compact className="text-[0.85rem] w-full">Know More + Enquire</PrimaryButton></Link>
             <a
               href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`}
               target="_blank"
@@ -219,6 +232,11 @@ const Courses = () => {
   const filteredKonnakol = useMemo(() => activeFilter === "all" || activeFilter === "konnakol" ? konnakolCourses : [], [activeFilter, konnakolCourses]);
   const hasAny = filteredGrades.length + filteredDiploma.length + filteredPreGrade.length + filteredMasterclass.length + filteredYoga.length + filteredKonnakol.length > 0;
 
+  useEffect(() => {
+    document.body.classList.add("hide-nav-mobile");
+    return () => document.body.classList.remove("hide-nav-mobile");
+  }, []);
+
   return (
     <>
       <SEO
@@ -228,7 +246,7 @@ const Courses = () => {
       <main>
         <PageHero backgroundImages={[heroDancer1, heroDancer2, heroDancer3]} label="OUR COURSES" heading="Our Sacred Courses" subtext="Classical arts for every soul — from first steps to national certification." />
 
-        <div className="sticky top-[80px] z-[500] bg-card shadow-sm py-3 sm:py-4">
+        <div className="sticky top-0 sm:top-[80px] z-[500] bg-card shadow-sm py-3 sm:py-4">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap justify-center gap-2">
             {filters.map((f) => (
               <button key={f.value} onClick={() => setActiveFilter(f.value)} className={`px-4 sm:px-5 py-2 rounded-full font-body font-medium text-[0.8rem] sm:text-[0.875rem] transition-all duration-300 ${activeFilter === f.value ? "bg-gradient-primary text-primary-foreground" : "border border-ivory-dark text-muted-foreground hover:bg-ivory-dark"}`}>
@@ -309,7 +327,7 @@ const Courses = () => {
 
         <ComparisonTable />
       </main>
-      <Footer />
+      <div className="hidden sm:block"><Footer /></div>
     </>
   );
 };

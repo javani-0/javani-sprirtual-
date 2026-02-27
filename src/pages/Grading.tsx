@@ -12,9 +12,9 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer2 from "@/assets/hero-dancer-2.jpg";
 import heroTemple from "@/assets/hero-temple.jpg";
-import dancerPortrait from "@/assets/dancer-portrait-1.jpg";
-import dancerCloseup from "@/assets/dancer-closeup.jpg";
-import danceDetailFeet from "@/assets/dance-detail-feet.jpg";
+import dancerPortrait from "@/assets/grading-main.jpg";
+import dancerCloseup from "@/assets/grading-closeup.jpg";
+import danceDetailFeet from "@/assets/grading-feet.jpg";
 
 /* ───── Intro ───── */
 const IntroSection = () => {

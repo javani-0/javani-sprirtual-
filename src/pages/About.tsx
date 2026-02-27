@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { Faculty, getActiveFaculty } from "@/lib/faculty";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import SectionLabel from "@/components/SectionLabel";
@@ -13,22 +14,11 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer3 from "@/assets/hero-dancer-3.jpg";
 import heroTemple from "@/assets/hero-temple.jpg";
-import dancerCloseup from "@/assets/dancer-closeup.jpg";
 import founderPhoto from "@/assets/ISW_4737.jpg";
-import dancerPortrait from "@/assets/dancer-portrait-1.jpg";
-import danceDetailFeet from "@/assets/dance-detail-feet.jpg";
 
 /* ───── Fallback data ───── */
 const fallbackHeroImages = [heroDancer1, heroTemple, heroDancer3];
-
 const fallbackFounderImage = founderPhoto;
-
-const fallbackFaculty = [
-  { image: dancerCloseup, name: "Vanitha haribabu ", title: "Senior Faculty – Diploma in Kuchipudi & Nattuvangam ", bio: "Grades in kuchipudi Certification / Master classes / Thevaram spiritual classes, A seasoned classical mentor with strong traditional grounding, guiding students with precision, discipline, and devotion" },
-  { image: dancerPortrait, name: "Vyshnavi ", title: "Faculty – kuchipudi ", bio: "Certified to teach – kuchipudi GRADES system certification courses A dedicated Kuchipudi practitioner who teaches with discipline, grace, and devotion, nurturing both skill and cultural values " },
-  { image: heroDancer3, name: "Dileep koundinya ", title: "Faculty – Yoga  ", bio: "Certified to teach – Daily yoga , Meditation , TTT Courses , kuchipudi Grades Certified yoga instructor specializing in daily yoga theraphy & classical Dance guiding students toward balance and holistic wellbeing." },
- 
-];
 
 /* ───── Founder ───── */
 const FounderSection = ({ founderImage }: { founderImage: string }) => {
@@ -151,16 +141,9 @@ const TimelineItem = ({ item, index }: { item: typeof timelineItems[0]; index: n
 };
 
 /* ───── Faculty ───── */
-interface FacultyMember {
-  image: string;
-  name: string;
-  title: string;
-  bio: string;
-}
-
-const FacultySection = ({ faculty }: { faculty: FacultyMember[] }) => {
+const FacultySection = ({ faculty, loadingFaculty }: { faculty: Faculty[]; loadingFaculty: boolean }) => {
   const { ref, isVisible } = useScrollAnimation();
-  const [selectedFaculty, setSelectedFaculty] = useState<FacultyMember | null>(null);
+  const [selectedFaculty, setSelectedFaculty] = useState<Faculty | null>(null);
 
   useEffect(() => {
     if (selectedFaculty) {
@@ -183,10 +166,18 @@ const FacultySection = ({ faculty }: { faculty: FacultyMember[] }) => {
               <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-12">The Teachers Behind the Transformation</h2>
             </div>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {faculty.map((f, i) => (
+          {loadingFaculty ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="text-center">
+                <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                <p className="font-body text-sm text-muted-foreground">Loading faculty...</p>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+              {faculty.map((f, i) => (
               <div
-                key={f.name}
+                key={f.id}
                 onClick={() => setSelectedFaculty(f)}
                 className={`relative text-center p-4 sm:p-6 md:p-8 rounded-lg shadow-card bg-card hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer ${isVisible ? "animate-elegant-rise" : "opacity-0"}`}
                 style={{ 
@@ -194,10 +185,10 @@ const FacultySection = ({ faculty }: { faculty: FacultyMember[] }) => {
                 }}
               >
                 <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 mx-auto mb-4 sm:mb-5 rounded-full p-1 ring-[3px] ring-gold ring-offset-4 ring-offset-card overflow-hidden">
-                  <img src={f.image} alt={f.name} loading="lazy" className="w-full h-full object-cover rounded-full group-hover:scale-[1.04] transition-transform duration-500" />
+                  <img src={f.imageUrl} alt={f.name} loading="lazy" className="w-full h-full object-cover rounded-full group-hover:scale-[1.04] transition-transform duration-500" />
                 </div>
                 <h3 className="font-display font-bold text-[1rem] sm:text-[1.3rem] text-primary mb-1">{f.name}</h3>
-                <p className="font-body font-medium text-[0.75rem] sm:text-[0.875rem] text-muted-foreground mb-2">{f.title}</p>
+                <p className="font-body font-medium text-[0.75rem] sm:text-[0.875rem] text-muted-foreground mb-2">{f.role}</p>
                 
                 {/* Mobile: Show "Know full details" link */}
                 <button className="sm:hidden font-body text-[0.7rem] text-gold hover:text-gold-dark underline mb-2">Know full details</button>
@@ -205,12 +196,21 @@ const FacultySection = ({ faculty }: { faculty: FacultyMember[] }) => {
                 {/* Desktop: Show bio and social links */}
                 <p className="font-body font-light text-[0.75rem] sm:text-[0.85rem] text-muted-foreground mb-4 hidden sm:block">{f.bio}</p>
                 <div className="hidden sm:flex justify-center gap-3">
-                  <a href="#" onClick={(e) => e.stopPropagation()} className="text-gold hover:text-gold-dark transition-colors"><Instagram className="w-4 h-4" /></a>
-                  <a href="#" onClick={(e) => e.stopPropagation()} className="text-gold hover:text-gold-dark transition-colors"><Youtube className="w-4 h-4" /></a>
+                  {f.instagram && (
+                    <a href={f.instagram} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="text-gold hover:text-gold-dark transition-colors">
+                      <Instagram className="w-4 h-4" />
+                    </a>
+                  )}
+                  {f.youtube && (
+                    <a href={f.youtube} target="_blank" rel="noopener noreferrer" onClick={(e) => e.stopPropagation()} className="text-gold hover:text-gold-dark transition-colors">
+                      <Youtube className="w-4 h-4" />
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -228,24 +228,30 @@ const FacultySection = ({ faculty }: { faculty: FacultyMember[] }) => {
             
             <div className="p-6 sm:p-8">
               <div className="w-32 h-32 mx-auto mb-6 rounded-full p-1 ring-[3px] ring-gold ring-offset-4 ring-offset-card overflow-hidden">
-                <img src={selectedFaculty.image} alt={selectedFaculty.name} className="w-full h-full object-cover rounded-full" />
+                <img src={selectedFaculty.imageUrl} alt={selectedFaculty.name} className="w-full h-full object-cover rounded-full" />
               </div>
               
               <h3 className="font-display font-bold text-[1.5rem] sm:text-[1.8rem] text-primary text-center mb-2">{selectedFaculty.name}</h3>
-              <p className="font-body font-medium text-[0.95rem] sm:text-[1rem] text-muted-foreground text-center mb-6">{selectedFaculty.title}</p>
+              <p className="font-body font-medium text-[0.95rem] sm:text-[1rem] text-muted-foreground text-center mb-6">{selectedFaculty.role}</p>
               
               <GoldDivider className="mb-6" />
               
               <p className="font-body font-light text-[0.9rem] sm:text-[0.95rem] text-foreground leading-relaxed mb-6">{selectedFaculty.bio}</p>
               
-              <div className="flex justify-center gap-4">
-                <a href="#" className="flex items-center justify-center w-10 h-10 rounded-full border border-gold/60 text-gold hover:bg-gold hover:text-white transition-all duration-300">
-                  <Instagram className="w-5 h-5" />
-                </a>
-                <a href="#" className="flex items-center justify-center w-10 h-10 rounded-full border border-gold/60 text-gold hover:bg-gold hover:text-white transition-all duration-300">
-                  <Youtube className="w-5 h-5" />
-                </a>
-              </div>
+              {(selectedFaculty.instagram || selectedFaculty.youtube) && (
+                <div className="flex justify-center gap-4">
+                  {selectedFaculty.instagram && (
+                    <a href={selectedFaculty.instagram} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-10 h-10 rounded-full border border-gold/60 text-gold hover:bg-gold hover:text-white transition-all duration-300">
+                      <Instagram className="w-5 h-5" />
+                    </a>
+                  )}
+                  {selectedFaculty.youtube && (
+                    <a href={selectedFaculty.youtube} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center w-10 h-10 rounded-full border border-gold/60 text-gold hover:bg-gold hover:text-white transition-all duration-300">
+                      <Youtube className="w-5 h-5" />
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>,
@@ -302,7 +308,8 @@ const WhySection = () => {
 const About = () => {
   const [heroImages, setHeroImages] = useState<string[]>(fallbackHeroImages);
   const [founderImage, setFounderImage] = useState<string>(fallbackFounderImage);
-  const [faculty, setFaculty] = useState<FacultyMember[]>(fallbackFaculty);
+  const [faculty, setFaculty] = useState<Faculty[]>([]);
+  const [loadingFaculty, setLoadingFaculty] = useState(true);
 
   useEffect(() => {
     const fetchAboutData = async () => {
@@ -312,13 +319,27 @@ const About = () => {
           const data = snap.data();
           if (data.heroImages?.length > 0) setHeroImages(data.heroImages);
           if (data.founderImage) setFounderImage(data.founderImage);
-          if (data.faculty?.length > 0) setFaculty(data.faculty);
         }
       } catch (err) {
         console.error("Error fetching about page data:", err);
       }
     };
+
+    const fetchFaculty = async () => {
+      try {
+        setLoadingFaculty(true);
+        const activeFaculty = await getActiveFaculty();
+        setFaculty(activeFaculty);
+        console.log("[About Page] Loaded faculty:", activeFaculty.length);
+      } catch (err) {
+        console.error("[About Page] Error fetching faculty:", err);
+      } finally {
+        setLoadingFaculty(false);
+      }
+    };
+
     fetchAboutData();
+    fetchFaculty();
   }, []);
 
   return (
@@ -332,7 +353,7 @@ const About = () => {
         <FounderSection founderImage={founderImage} />
         <VisionSection />
         <TimelineSection />
-        <FacultySection faculty={faculty} />
+        <FacultySection faculty={faculty} loadingFaculty={loadingFaculty} />
         <WhySection />
       </main>
       <Footer />

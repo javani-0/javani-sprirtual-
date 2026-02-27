@@ -1,15 +1,16 @@
 import { useState, useEffect, useMemo } from "react";
-import { createPortal } from "react-dom";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useContactInfo } from "@/hooks/useContactInfo";
+import { Link } from "react-router-dom";
 
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import SectionLabel from "@/components/SectionLabel";
 import GoldOutlineButton from "@/components/GoldOutlineButton";
 import SEO from "@/components/SEO";
-import { MessageCircle, ShoppingBag, X, Minus, Plus } from "lucide-react";
+import ShareButton from "@/components/ShareButton";
+import { MessageCircle, ShoppingBag, Minus, Plus } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroTemple from "@/assets/hero-temple.jpg";
@@ -48,80 +49,17 @@ const categoryBadgeColors: Record<string, string> = {
 
 const SkeletonCard = () => (
   <div className="bg-card shadow-card rounded-lg overflow-hidden">
-    <div className="aspect-[4/3] skeleton-shimmer" />
-    <div className="p-5 sm:p-6 space-y-3">
-      <div className="h-5 w-3/4 skeleton-shimmer rounded" />
-      <div className="h-4 w-full skeleton-shimmer rounded" />
-      <div className="h-6 w-24 skeleton-shimmer rounded" />
-      <div className="h-10 w-full skeleton-shimmer rounded" />
+    <div className="aspect-square sm:aspect-[4/3] skeleton-shimmer" />
+    <div className="p-3 sm:p-5 space-y-2">
+      <div className="h-4 w-3/4 skeleton-shimmer rounded" />
+      <div className="h-4 w-1/2 skeleton-shimmer rounded" />
+      <div className="h-8 w-full skeleton-shimmer rounded" />
     </div>
   </div>
 );
 
-const ProductDetailModal = ({ product, onClose }: { product: Product; onClose: () => void }) => {
-  const { whatsappNumber } = useContactInfo();
-  const [qty, setQty] = useState(1);
 
-  const whatsappMsg = encodeURIComponent(
-    `Hi, I'd like to order from *Javani Spiritual Hub*:\n\n` +
-    `*${product.name}*\n` +
-    `Category: ${product.categoryLabel}\n` +
-    `Price: ${product.price}\n` +
-    `Quantity: ${qty}\n\n` +
-    `${product.description}\n\n` +
-    (product.image ? `Image: ${product.image}` : "")
-  );
-
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", handleEsc);
-    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", handleEsc); };
-  }, [onClose]);
-
-  return createPortal(
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-      <div className="relative bg-card rounded-xl shadow-hero max-w-lg w-full max-h-[90vh] overflow-y-auto animate-scale-in" onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose} className="absolute top-3 right-3 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-charcoal/70 text-white hover:bg-charcoal transition-colors">
-          <X className="w-4 h-4" />
-        </button>
-        <div className="aspect-[4/3] relative overflow-hidden rounded-t-xl">
-          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-          <span className={`absolute top-3 left-3 px-3 py-1 text-xs font-body font-medium rounded-full ${categoryBadgeColors[product.category] || "bg-muted text-muted-foreground"}`}>{product.categoryLabel}</span>
-        </div>
-        <div className="p-6 sm:p-8 space-y-4">
-          <h2 className="font-display font-semibold text-xl sm:text-2xl text-foreground">{product.name}</h2>
-          <p className="font-display font-bold text-2xl sm:text-3xl text-primary">{product.price}</p>
-          <p className="font-body font-light text-sm sm:text-base text-muted-foreground leading-relaxed">{product.description}</p>
-          <div className="flex items-center gap-3">
-            <span className="font-body text-sm text-foreground font-medium">Quantity:</span>
-            <div className="flex items-center border border-border rounded-md">
-              <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-9 h-9 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors rounded-l-md">
-                <Minus className="w-4 h-4" />
-              </button>
-              <span className="w-10 text-center font-body font-semibold text-foreground text-sm">{qty}</span>
-              <button onClick={() => setQty((q) => q + 1)} className="w-9 h-9 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors rounded-r-md">
-                <Plus className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-          <a
-            href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full px-5 py-3 rounded-sm bg-[#25D366] text-white font-body font-semibold text-sm sm:text-base hover:bg-[#128C7E] transition-colors"
-          >
-            <MessageCircle className="w-5 h-5" /> Order on WhatsApp
-          </a>
-        </div>
-      </div>
-    </div>,
-    document.body
-  );
-};
-
-const ProductCard = ({ product, delay = 0, onViewDetails }: { product: Product; delay?: number; onViewDetails: (p: Product) => void }) => {
+const ProductCard = ({ product, delay = 0 }: { product: Product; delay?: number }) => {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [qty, setQty] = useState(1);
   const { whatsappNumber } = useContactInfo();
@@ -132,17 +70,35 @@ const ProductCard = ({ product, delay = 0, onViewDetails }: { product: Product; 
 
   return (
     <div ref={ref} className={`${isVisible ? "animate-fade-up" : "opacity-0"}`} style={{ animationDelay: isVisible ? `${delay}s` : undefined }}>
-      <div className="bg-card shadow-card rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-hero group flex flex-col h-full">
-        <div className="aspect-[4/3] relative overflow-hidden">
+      <Link to={`/products/${product.id}`} className="block">
+        <div className="bg-card shadow-card rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-hero group flex flex-col h-full">
+
+        {/* Image */}
+        <div className="aspect-square sm:aspect-[4/3] relative overflow-hidden">
           {!imgLoaded && <div className="absolute inset-0 skeleton-shimmer" />}
           <img src={product.image} alt={product.name} loading="lazy" onLoad={() => setImgLoaded(true)} className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.04] ${imgLoaded ? "opacity-100" : "opacity-0"}`} />
-          <span className={`absolute top-3 left-3 px-3 py-1 text-xs font-body font-medium rounded-full ${categoryBadgeColors[product.category] || "bg-muted text-muted-foreground"}`}>{product.categoryLabel}</span>
+          <span className={`absolute top-2 left-2 px-2 py-0.5 text-[0.65rem] sm:text-xs font-body font-medium rounded-full ${categoryBadgeColors[product.category] || "bg-muted text-muted-foreground"}`}>{product.categoryLabel}</span>
+          <div className="absolute top-1.5 right-1.5">
+            <ShareButton
+              title={product.name}
+              text={`Check out *${product.name}* on Javani Spiritual Hub \u2014 ${product.price}`}
+              url={`/products/${product.id}`}
+              className="bg-black/40 hover:bg-black/60 text-white hover:text-white rounded-full w-7 h-7 sm:w-auto sm:h-auto"
+            />
+          </div>
         </div>
-        <div className="p-5 sm:p-6 flex flex-col flex-1">
-          <h3 className="font-display font-semibold text-[1.1rem] sm:text-[1.2rem] text-foreground mb-2">{product.name}</h3>
-          <p className="font-body font-light text-[0.8rem] sm:text-[0.875rem] text-muted-foreground mb-4 leading-relaxed flex-1">{product.description}</p>
-          <p className="font-display font-bold text-[1.2rem] sm:text-[1.4rem] text-primary mb-3">{product.price}</p>
-          <div className="flex items-center gap-2 mb-4">
+
+        {/* Body */}
+        <div className="p-2.5 sm:p-5 flex flex-col flex-1">
+          <h3 className="font-display font-semibold text-[0.8rem] sm:text-[1.1rem] text-foreground mb-1 sm:mb-2 line-clamp-2">{product.name}</h3>
+
+          {/* Description — hidden on mobile */}
+          <p className="hidden sm:block font-body font-light text-[0.875rem] text-muted-foreground mb-4 leading-relaxed flex-1">{product.description}</p>
+
+          <p className="font-body font-semibold text-base sm:text-[1.4rem] text-primary mb-2 sm:mb-3">{product.price}</p>
+
+          {/* Qty — hidden on mobile */}
+          <div className="hidden sm:flex items-center gap-2 mb-4">
             <span className="font-body text-[0.8rem] text-muted-foreground">Qty:</span>
             <div className="flex items-center border border-border rounded-md">
               <button onClick={() => setQty((q) => Math.max(1, q - 1))} className="w-7 h-7 flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors rounded-l-md">
@@ -154,14 +110,36 @@ const ProductCard = ({ product, delay = 0, onViewDetails }: { product: Product; 
               </button>
             </div>
           </div>
-          <div className="flex gap-2 sm:gap-3">
-            <GoldOutlineButton className="text-[0.75rem] sm:text-[0.8rem] px-3 sm:px-4 py-2 flex-1" onClick={() => onViewDetails(product)}>View Details</GoldOutlineButton>
-            <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 rounded-sm bg-[#25D366] text-white font-body font-medium text-[0.75rem] sm:text-[0.8rem] hover:bg-[#128C7E] transition-colors flex-1 text-center">
-              <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" /> WhatsApp
+
+          {/* Mobile: just WhatsApp button */}
+          <div className="flex sm:hidden gap-1.5">
+            <a
+              href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center justify-center px-2.5 py-1.5 rounded bg-[#25D366] text-white font-body font-medium text-[0.7rem] hover:bg-[#128C7E] transition-colors w-full"
+            >
+              <MessageCircle className="w-3.5 h-3.5 mr-1" /> Order Now
+            </a>
+          </div>
+
+          {/* Desktop: full buttons */}
+          <div className="hidden sm:flex gap-3">
+            <GoldOutlineButton className="text-[0.8rem] px-4 py-2 w-full flex-1">View Details</GoldOutlineButton>
+            <a
+              href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-sm bg-[#25D366] text-white font-body font-medium text-[0.8rem] hover:bg-[#128C7E] transition-colors flex-1 text-center"
+            >
+              <MessageCircle className="w-4 h-4" /> WhatsApp
             </a>
           </div>
         </div>
       </div>
+      </Link>
     </div>
   );
 };
@@ -171,9 +149,13 @@ const Products = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { whatsappNumber } = useContactInfo();
+
+  useEffect(() => {
+    document.body.classList.add("hide-nav-mobile");
+    return () => document.body.classList.remove("hide-nav-mobile");
+  }, []);
 
   useEffect(() => {
     console.log("[Products] Starting Firestore listener on 'products' collection...");
@@ -221,7 +203,7 @@ const Products = () => {
           </div>
         </div>
 
-        <div className="sticky top-[80px] z-[500] bg-card shadow-sm py-3 sm:py-4">
+        <div className="sticky top-0 sm:top-[80px] z-[500] bg-card shadow-sm py-3 sm:py-4">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-wrap justify-center gap-2">
             {filters.map((f) => (
               <button key={f.value} onClick={() => setActiveFilter(f.value)} className={`px-4 sm:px-5 py-2 rounded-full font-body font-medium text-[0.8rem] sm:text-[0.875rem] transition-all duration-300 ${activeFilter === f.value ? "bg-gradient-primary text-primary-foreground" : "border border-ivory-dark text-muted-foreground hover:bg-ivory-dark"}`}>
@@ -251,15 +233,14 @@ const Products = () => {
             ) : filtered.length === 0 ? (
               <p className="font-display text-xl text-muted-foreground text-center py-12">No products available in this category.</p>
             ) : (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                {filtered.map((p, i) => <ProductCard key={p.id} product={p} delay={i * 0.1} onViewDetails={setSelectedProduct} />)}
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 lg:gap-8">
+                {filtered.map((p, i) => <ProductCard key={p.id} product={p} delay={i * 0.1} />)}
               </div>
             )}
           </div>
         </section>
       </main>
-      <Footer />
-      {selectedProduct && <ProductDetailModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
+      <div className="hidden sm:block"><Footer /></div>
     </>
   );
 };
