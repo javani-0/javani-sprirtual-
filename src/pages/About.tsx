@@ -27,7 +27,7 @@ const FounderSection = ({ founderImage }: { founderImage: string }) => {
   const { ref: textRef, isVisible: textVisible } = useScrollAnimation();
 
   return (
-    <section className="py-16 sm:py-20 md:py-32 bg-background overflow-hidden">
+    <section className="py-8 sm:py-12 md:py-16 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[4fr_5fr] gap-8 sm:gap-12 lg:gap-20 items-center">
         <div ref={imgRef} className={`relative ${imgVisible ? "animate-fade-left" : "opacity-0"}`}>
           <div className="absolute -inset-3 border-[4px] border-gold/30 pointer-events-none" style={{ borderRadius: "2px" }} />
@@ -67,7 +67,7 @@ const VisionSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
+    <section className="py-8 sm:py-12 md:py-16" style={{ background: "hsl(var(--bg-section))" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div ref={ref} className={`${isVisible ? "animate-fade-up" : "opacity-0"}`}>
           <SectionLabel text="WHAT DRIVES US" className="mb-6" />
@@ -103,7 +103,7 @@ const TimelineSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
 
   return (
-    <section className="py-16 sm:py-20 md:py-32 bg-background">
+    <section className="py-8 sm:py-12 md:py-16 bg-background">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
           <SectionLabel text="04 YEARS OF EXCELLENCE" className="mb-6" />
@@ -156,7 +156,7 @@ const FacultySection = ({ faculty, loadingFaculty }: { faculty: Faculty[]; loadi
 
   return (
     <>
-      <section className="py-16 sm:py-20 md:py-32 bg-card">
+      <section className="py-8 sm:py-12 md:py-16 bg-card">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div ref={ref}>
             <div className={`${isVisible ? "animate-scale-in" : "opacity-0"}`}>
@@ -276,7 +276,7 @@ const WhySection = () => {
   const { ref: cardsRef, isVisible: cardsVisible } = useScrollAnimation();
 
   return (
-    <section className="relative py-16 sm:py-20 md:py-32 overflow-hidden">
+    <section className="relative py-8 sm:py-12 md:py-16 overflow-hidden">
       <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${heroTemple})` }} />
       <div className="absolute inset-0 bg-[#1A0A0A]/80" />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">

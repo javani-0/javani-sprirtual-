@@ -64,7 +64,7 @@ const ProductCard = ({ product, delay = 0 }: { product: Product; delay?: number 
   const [qty, setQty] = useState(1);
   const { whatsappNumber } = useContactInfo();
   const whatsappMsg = encodeURIComponent(
-    `Hi, I'd like to order from *Javani Spiritual Hub*:\n\n*${product.name}* (${product.categoryLabel})\nPrice: ${product.price}\nQuantity: ${qty}\n\n${product.image ? `Image: ${product.image}` : ""}`
+    `Hi, I'd like to order from *Javani Spiritual Hub*:\n\n*${product.name}* (${product.categoryLabel})\nPrice: *${product.price}/-*\nQuantity: ${qty}${product.image ? `\n\nProduct Image: ${product.image}` : ""}`
   );
   const { ref, isVisible } = useScrollAnimation();
 
@@ -81,7 +81,7 @@ const ProductCard = ({ product, delay = 0 }: { product: Product; delay?: number 
           <div className="absolute top-1.5 right-1.5">
             <ShareButton
               title={product.name}
-              text={`Check out *${product.name}* on Javani Spiritual Hub \u2014 ${product.price}`}
+              text={`Check out *${product.name}* on Javani Spiritual Hub — *${product.price}/-*${product.image ? `\n\nImage: ${product.image}` : ""}`}
               url={`/products/${product.id}`}
               className="bg-black/40 hover:bg-black/60 text-white hover:text-white rounded-full w-7 h-7 sm:w-auto sm:h-auto"
             />
@@ -95,7 +95,7 @@ const ProductCard = ({ product, delay = 0 }: { product: Product; delay?: number 
           {/* Description — hidden on mobile */}
           <p className="hidden sm:block font-body font-light text-[0.875rem] text-muted-foreground mb-4 leading-relaxed flex-1">{product.description}</p>
 
-          <p className="font-body font-semibold text-base sm:text-[1.4rem] text-primary mb-2 sm:mb-3">{product.price}</p>
+          <p className="font-body font-semibold text-base sm:text-[1.4rem] text-primary mb-2 sm:mb-3">{product.price}/-</p>
 
           {/* Qty — hidden on mobile */}
           <div className="hidden sm:flex items-center gap-2 mb-4">

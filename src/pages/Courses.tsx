@@ -69,8 +69,9 @@ const ExtCourseCard = ({ course, delay = 0 }: { course: Course; delay?: number }
 
   return (
     <div ref={ref} className={`${isVisible ? "animate-fade-up" : "opacity-0"}`} style={{ animationDelay: isVisible ? `${delay}s` : undefined }}>
-      <div className="bg-card shadow-card rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-hero group flex flex-col h-full">
-        <div className="aspect-[3/2] relative overflow-hidden">
+      <Link to={`/courses/${course.id}`} className="block">
+        <div className="bg-card shadow-card rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-hero group flex flex-col h-full">
+        <div className="aspect-square sm:aspect-[3/2] relative overflow-hidden">
           {!imgLoaded && <div className="absolute inset-0 skeleton-shimmer" />}
           <img src={course.image} alt={course.title} loading="lazy" onLoad={() => setImgLoaded(true)} className={`w-full h-full object-cover transition-all duration-500 group-hover:scale-[1.06] ${imgLoaded ? "opacity-100" : "opacity-0"}`} />
           {course.status === "inactive" && (
@@ -79,7 +80,7 @@ const ExtCourseCard = ({ course, delay = 0 }: { course: Course; delay?: number }
             </div>
           )}
           {/* Share button overlay */}
-          <div className="absolute top-2 left-2">
+          <div className="absolute top-2 right-2">
             <ShareButton
               title={course.title}
               text={`Check out *${course.title}* (${course.badge}) at Javani Spiritual Hub`}
@@ -88,27 +89,26 @@ const ExtCourseCard = ({ course, delay = 0 }: { course: Course; delay?: number }
             />
           </div>
         </div>
-        <div className="p-5 sm:p-6 flex flex-col flex-1">
-          <span className={`inline-block px-3 py-1 text-xs font-body font-medium rounded-full mb-3 self-start ${badgeStyles[course.badgeColor] || badgeStyles.red}`}>{course.badge}</span>
-          {course.extra && <p className="font-body text-xs text-muted-foreground mb-2">{course.extra}</p>}
-          <h3 className="font-display font-semibold text-[1.2rem] sm:text-[1.4rem] text-foreground mb-2 transition-colors duration-300 group-hover:text-gold">{course.title}</h3>
-          <p className="font-body text-[0.85rem] sm:text-[0.9rem] text-muted-foreground mb-4 leading-relaxed flex-1">{course.description}</p>
-          <div className="flex gap-2 sm:gap-3 flex-wrap">
-            <Link to={`/courses/${course.id}`} className="flex-1 min-w-[120px]">
-              <button className="w-full px-3 py-2 rounded-sm border border-gold text-gold font-body font-medium text-[0.8rem] hover:bg-gold/10 transition-colors">View Details</button>
+        <div className="p-2.5 sm:p-6 flex flex-col flex-1">
+          <span className={`inline-block px-2 py-0.5 text-[0.6rem] sm:text-xs font-body font-medium rounded-full mb-2 self-start ${badgeStyles[course.badgeColor] || badgeStyles.red}`}>{course.badge}</span>
+          <h3 className="font-display font-semibold text-[0.75rem] sm:text-[1.4rem] text-foreground mb-2 sm:mb-4 transition-colors duration-300 group-hover:text-gold truncate">{course.title}</h3>
+          <div className="flex flex-col sm:flex-row gap-1.5 sm:gap-3 flex-wrap mt-auto">
+            <Link to="/contact" className="flex-1 min-w-[80px] sm:min-w-[120px]" onClick={(e) => e.stopPropagation()}>
+              <PrimaryButton compact className="text-[0.65rem] sm:text-[0.85rem] w-full py-1.5 sm:py-2">Enquire</PrimaryButton>
             </Link>
-            <Link to="/contact" className="flex-1 min-w-[120px]"><PrimaryButton compact className="text-[0.85rem] w-full">Know More + Enquire</PrimaryButton></Link>
             <a
               href={`https://wa.me/${whatsappNumber}?text=${whatsappMsg}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-sm bg-[#25D366] text-white font-body font-medium text-[0.75rem] sm:text-[0.8rem] hover:bg-[#128C7E] transition-colors"
+              onClick={(e) => e.stopPropagation()}
+              className="flex items-center justify-center gap-1 sm:gap-1.5 px-2 sm:px-4 py-1.5 sm:py-2 rounded-sm bg-[#25D366] text-white font-body font-medium text-[0.65rem] sm:text-[0.8rem] hover:bg-[#128C7E] transition-colors"
             >
-              <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> WhatsApp
+              <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4" /> <span className="hidden sm:inline">WhatsApp</span><span className="sm:hidden">WA</span>
             </a>
           </div>
         </div>
       </div>
+      </Link>
     </div>
   );
 };
@@ -122,14 +122,14 @@ const CourseSection = ({ category, title, description, courses, bgClass }: {
 }) => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   return (
-    <section className={`py-16 sm:py-20 md:py-32 ${bgClass}`} style={!bgClass ? { background: "hsl(var(--bg-section))" } : undefined}>
+    <section className={`py-8 sm:py-12 md:py-16 ${bgClass}`} style={!bgClass ? { background: "hsl(var(--bg-section))" } : undefined}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
           <SectionLabel text={category} className="mb-6" />
           <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-primary mb-3">{title}</h2>
           <p className="font-body font-light text-[0.95rem] sm:text-[1rem] text-muted-foreground mb-10 sm:mb-12 max-w-2xl">{description}</p>
         </div>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
           {courses.map((c, i) => <ExtCourseCard key={c.id} course={c} delay={i * 0.12} />)}
         </div>
       </div>

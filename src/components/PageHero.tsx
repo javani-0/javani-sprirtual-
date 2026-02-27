@@ -67,7 +67,7 @@ const PageHero = ({ backgroundImages = [], label, heading, subtext, breadcrumb, 
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="relative z-10 text-center max-w-3xl mx-auto px-4 sm:px-6 pt-16 sm:pt-20">
         <SectionLabel text={label} className="mb-4 sm:mb-6 [&_span]:text-gold-light [&_div]:bg-gold-light" />
         <h1 className="font-display font-bold text-[1.8rem] sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4.5rem] text-white leading-tight mb-3 sm:mb-4">
           {heading}

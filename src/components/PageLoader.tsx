@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import logoWhiteMobile from "@/assets/logo-white-mobile.png";
 
 const PageLoader = () => {
   const [progress, setProgress] = useState(0);
@@ -23,14 +24,13 @@ const PageLoader = () => {
       className="fixed inset-0 z-[9999] bg-[#1A0A0A] flex flex-col items-center justify-center transition-opacity duration-300"
       style={{ opacity: progress === 100 ? 0 : 1, pointerEvents: progress === 100 ? 'none' : 'auto' }}
     >
-      {/* Logo/Text */}
+      {/* Logo */}
       <div className="text-center mb-12 animate-fade-in">
-        <h1 className="font-accent text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] text-gold-light tracking-wider uppercase mb-2 leading-tight">
-          Javani
-        </h1>
-        <p className="font-body text-xs md:text-sm text-gold/80 tracking-[0.3em] uppercase">
-          Spiritual Hub
-        </p>
+        <img 
+          src={logoWhiteMobile} 
+          alt="Javani Spiritual Hub" 
+          className="h-20 md:h-24 w-auto mx-auto object-contain"
+        />
       </div>
 
       {/* Loading Bar */}

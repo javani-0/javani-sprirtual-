@@ -30,7 +30,7 @@ const IntroSection = () => {
   ];
 
   return (
-    <section className="py-16 sm:py-20 md:py-32 bg-background overflow-hidden">
+    <section className="py-8 sm:py-12 md:py-16 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-[45%_1fr] gap-8 sm:gap-12 lg:gap-20 items-start">
         <div ref={imgRef} className={`relative ${imgVisible ? "animate-fade-left" : "opacity-0"}`}>
           <div className="absolute -inset-5 border-[3px] border-gold/20 -z-10 hidden lg:block" style={{ borderRadius: "2px" }} />
@@ -91,7 +91,7 @@ const LadderSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: stepsRef, isVisible: stepsVisible } = useScrollAnimation();
   return (
-    <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
+    <section className="py-8 sm:py-12 md:py-16" style={{ background: "hsl(var(--bg-section))" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
           <SectionLabel text="THE PROGRESSION PATH" className="mb-6" />
@@ -136,7 +136,7 @@ const CertificationSection = () => {
   );
   
   return (
-  <section className="py-16 sm:py-20 md:py-32 bg-background">
+  <section className="py-8 sm:py-12 md:py-16 bg-background">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-20 items-center">
       <div ref={textRef} className={`${textVisible ? "animate-fade-left" : "opacity-0"}`}>
         <SectionLabel text="WHAT YOU EARN" className="justify-start mb-6" />
@@ -201,7 +201,7 @@ const ExamProcessSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: stepsRef, isVisible: stepsVisible } = useScrollAnimation();
   return (
-    <section className="py-16 sm:py-20 md:py-32" style={{ background: "hsl(var(--bg-section))" }}>
+    <section className="py-8 sm:py-12 md:py-16" style={{ background: "hsl(var(--bg-section))" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
           <SectionLabel text="THE EXAM JOURNEY" className="mb-6" />
@@ -247,7 +247,7 @@ const FAQSection = () => {
   const { ref: faqRef, isVisible: faqVisible } = useScrollAnimation();
 
   return (
-    <section className="py-16 sm:py-20 md:py-32 bg-background">
+    <section className="py-8 sm:py-12 md:py-16 bg-background">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div ref={headerRef} className={`${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
           <SectionLabel text="COMMON QUESTIONS" className="mb-6" />
