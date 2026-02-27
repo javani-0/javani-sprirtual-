@@ -123,6 +123,7 @@ const ProductDetail = () => {
                   title={product.name}
                   text={`Check out *${product.name}* on Javani Spiritual Hub — ${product.price}`}
                   url={`/products/${product.id}`}
+                  imageUrl={product.image}
                 />
               </div>
 

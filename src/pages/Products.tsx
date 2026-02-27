@@ -81,9 +81,10 @@ const ProductCard = ({ product, delay = 0 }: { product: Product; delay?: number 
           <div className="absolute top-1.5 right-1.5">
             <ShareButton
               title={product.name}
-              text={`Check out *${product.name}* on Javani Spiritual Hub — *${product.price}/-*${product.image ? `\n\nImage: ${product.image}` : ""}`}
+              text={`Check out *${product.name}* on Javani Spiritual Hub — *${product.price}/-*`}
               url={`/products/${product.id}`}
-              className="bg-black/40 hover:bg-black/60 text-white hover:text-white rounded-full w-7 h-7 sm:w-auto sm:h-auto"
+              imageUrl={product.image}
+              className="bg-[#25D366]/90 hover:bg-[#25D366] text-white hover:text-white rounded-full w-7 h-7 sm:w-auto sm:h-auto"
             />
           </div>
         </div>
