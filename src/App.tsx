@@ -31,6 +31,7 @@ const AdminEnquiries = lazy(() => import("./pages/admin/AdminEnquiries"));
 const AdminCourses = lazy(() => import("./pages/admin/AdminCourses"));
 const AdminGallery = lazy(() => import("./pages/admin/AdminGallery"));
 const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
+const AdminPartners = lazy(() => import("./pages/admin/AdminPartners"));
 const AdminFaculty = lazy(() => import("./pages/admin/AdminFaculty"));
 const AdminSiteSettings = lazy(() => import("./pages/admin/AdminSiteSettings"));
 const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
@@ -120,7 +121,7 @@ const App = () => {
                     <Route path="enquiries" element={<AdminEnquiries />} />
                     <Route path="courses" element={<AdminCourses />} />
                     <Route path="gallery" element={<AdminGallery />} />
-                    <Route path="products" element={<AdminProducts />} />                    <Route path="faculty" element={<AdminFaculty />} />                    <Route path="site-settings" element={<AdminSiteSettings />} />
+                    <Route path="products" element={<AdminProducts />} />                    <Route path="partners" element={<AdminPartners />} />                    <Route path="faculty" element={<AdminFaculty />} />                    <Route path="site-settings" element={<AdminSiteSettings />} />
                   </Route>
                   <Route path="*" element={<NotFound />} />
                 </Routes>
