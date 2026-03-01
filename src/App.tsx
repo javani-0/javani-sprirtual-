@@ -36,6 +36,7 @@ const AdminSiteSettings = lazy(() => import("./pages/admin/AdminSiteSettings"));
 const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const CourseDetail = lazy(() => import("./pages/CourseDetail"));
+const TermsAndConditions = lazy(() => import("./pages/TermsAndConditions"));
 
 const queryClient = new QueryClient();
 
@@ -109,6 +110,7 @@ const App = () => {
                   <Route path="/courses/:id" element={<CourseDetail />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/guru-bandhu" element={<GuruBandhu />} />
+                  <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<Signup />} />
                   <Route path="/admin/login" element={<AdminLogin />} />

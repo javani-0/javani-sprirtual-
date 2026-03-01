@@ -28,7 +28,7 @@ const Footer = () => {
     <footer className="bg-[#1A0A0A] text-white">
       <GoldDivider />
       <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div>
             <h3 className="font-accent text-[1.4rem] text-white mb-1">Javani</h3>
@@ -56,6 +56,18 @@ const Footer = () => {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Terms & Conditions */}
+          <div>
+            <h4 className="font-display font-semibold text-gold text-[1rem] tracking-wide mb-6">Legal</h4>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/terms-and-conditions" className="font-body font-light text-[0.875rem] text-white/70 hover:text-white hover:translate-x-1 transition-all duration-300 inline-block">
+                  Terms and Conditions
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -89,9 +101,11 @@ const Footer = () => {
       
       {/* Bottom bar */}
       <div className="border-t border-gold/20">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-2">
-          <p className="font-body font-light text-[0.75rem] text-white/50">© 2024 Javani Spiritual Hub. All Rights Reserved.</p>
-          <p className="font-body font-light text-[0.75rem] text-white/50">Built by Dream Team Services</p>
+        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-center gap-2">
+          <p className="font-body font-light text-[0.75rem] text-white/50">© 2026 Javani Spiritual Hub. All Rights Reserved | Built and developed by</p>
+          <a href="https://www.thedreamteamservices.com/" target="_blank" rel="noopener noreferrer" className="font-body font-light text-[0.75rem] text-gold hover:text-white transition-colors duration-300">
+            DREAM TEAM SERVICES
+          </a>
         </div>
       </div>
     </footer>

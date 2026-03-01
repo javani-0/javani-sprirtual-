@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import { useContactInfo } from "@/hooks/useContactInfo";
 
 import Footer from "@/components/Footer";
@@ -157,12 +158,39 @@ const LadderSection = () => {
         </div>
       </div>
         </div>
+        
+        {/* CTA Button */}
+        <div className="text-center mt-10 sm:mt-12">
+          <Link to="/courses">
+            <PrimaryButton>Explore Our Courses</PrimaryButton>
+          </Link>
+        </div>
     </div>
   </section>
   );
 };
 
 /* ───── JGP Fee Table ───── */
+const jdpSemesters = [
+  { level: "Semester I",   eligibility: "Minimum 10th Std Completion / 4 years' experience in Artform", fee: "₹ 29,200 + Tax" },
+  { level: "Semester II",  eligibility: "Successful Completion of Semester I",  fee: "₹ 29,200 + Tax" },
+  { level: "Semester III", eligibility: "Successful Completion of Semester II", fee: "₹ 29,200 + Tax" },
+  { level: "Semester IV",  eligibility: "Successful Completion of Semester III",fee: "₹ 29,200 + Tax" },
+];
+
+const jdpProcessNotes = [
+  "Once the Diploma admission is completed, study materials and individual Student ID login will be provided.",
+  "Examination / Assessment schedule will be published prior to the examination date.",
+  "After completion of each semester examination, results and Semester Completion Certificates will be issued within 30 days.",
+  "Upon successful completion of all semesters (or four semesters in the case of lateral entry), candidates will be awarded the Diploma Completion Certificate.",
+  "Diploma covers (Practical 1 / Practical 2 / Project / Dissertation).",
+  "Demonstration audios & videos will be provided.",
+  "Subject & notations Theory PDFs will be provided.",
+  "Exam will be conducted in JAVANI SPIRITUAL HUB, Secunderabad.",
+  "Exam will be conducted with live orchestra & according to the Training centre rules & regulations.",
+  "Exam demonstration of students will be recorded for in-depth evaluation purposes.",
+];
+
 const jgpGrades = [
   { grade: "I",    eligibility: "5 Years / I Std Pass",    fee: "₹ 12K + Tax" },
   { grade: "II",   eligibility: "6 Years / II Std Pass",   fee: "₹ 15K + Tax" },
@@ -191,6 +219,9 @@ const JGPSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: tableRef, isVisible: tableVisible } = useScrollAnimation();
   const { ref: notesRef, isVisible: notesVisible } = useScrollAnimation();
+  const { ref: jdpHeaderRef, isVisible: jdpHeaderVisible } = useScrollAnimation();
+  const { ref: jdpTableRef, isVisible: jdpTableVisible } = useScrollAnimation();
+  const { ref: jdpNotesRef, isVisible: jdpNotesVisible } = useScrollAnimation();
 
   return (
     <section className="py-8 sm:py-12 md:py-16 bg-background">
@@ -248,6 +279,53 @@ const JGPSection = () => {
           </h3>
           <ul className="space-y-3">
             {processNotes.map((note, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-gold/10 text-gold text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-accent font-bold">{i + 1}</span>
+                <span className="font-body font-light text-[0.85rem] sm:text-[0.95rem] text-foreground leading-relaxed">{note}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* ── JDP Section ── */}
+        <div ref={jdpHeaderRef} className={`text-center mt-16 mb-10 ${jdpHeaderVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <SectionLabel text="JAVANI DIPLOMA PROGRAM (JDP)" className="mb-3" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-foreground leading-tight">
+            Eligibility &amp; Fee Structure
+          </h2>
+        </div>
+
+        {/* JDP Fee Table */}
+        <div ref={jdpTableRef} className={`mb-12 overflow-x-auto rounded-xl shadow-[0_4px_30px_rgba(201,168,76,0.12)] border border-gold/20 ${jdpTableVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <table className="w-full min-w-[480px] text-sm sm:text-base">
+            <thead>
+              <tr className="bg-gold text-white">
+                <th className="py-3 px-4 sm:px-6 font-accent font-semibold text-left text-xs sm:text-sm tracking-wider uppercase rounded-tl-xl">Program Level</th>
+                <th className="py-3 px-4 sm:px-6 font-accent font-semibold text-left text-xs sm:text-sm tracking-wider uppercase">Eligibility</th>
+                <th className="py-3 px-4 sm:px-6 font-accent font-semibold text-left text-xs sm:text-sm tracking-wider uppercase rounded-tr-xl">Training &amp; Exam Fee<br /><span className="text-[10px] font-body font-normal opacity-80 normal-case tracking-normal">(Group Session)</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {jdpSemesters.map((row, i) => (
+                <tr key={row.level} className={`border-b border-gold/10 transition-colors duration-200 hover:bg-gold/5 ${i % 2 === 0 ? "bg-card" : "bg-background"}`}>
+                  <td className="py-3 px-4 sm:px-6 font-body font-semibold text-foreground text-[0.85rem] sm:text-[0.95rem]">{row.level}</td>
+                  <td className="py-3 px-4 sm:px-6 font-body text-foreground text-[0.85rem] sm:text-[0.95rem]">{row.eligibility}</td>
+                  <td className="py-3 px-4 sm:px-6 font-body font-semibold text-gold text-[0.9rem] sm:text-[1rem]">{row.fee}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* JDP Process Notes */}
+        <div ref={jdpNotesRef} className={`bg-card border border-gold/20 rounded-xl p-5 sm:p-8 shadow-card mb-10 ${jdpNotesVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <p className="font-body font-semibold text-[0.95rem] sm:text-[1rem] text-red-400 mb-3">Note: -</p>
+          <h3 className="font-display font-semibold text-[1.1rem] sm:text-[1.3rem] text-foreground mb-5 flex items-center gap-2">
+            <span className="w-1 h-6 bg-gold rounded-full inline-block" />
+            Process Information
+          </h3>
+          <ul className="space-y-3">
+            {jdpProcessNotes.map((note, i) => (
               <li key={i} className="flex items-start gap-3">
                 <span className="w-5 h-5 rounded-full bg-gold/10 text-gold text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-accent font-bold">{i + 1}</span>
                 <span className="font-body font-light text-[0.85rem] sm:text-[0.95rem] text-foreground leading-relaxed">{note}</span>
