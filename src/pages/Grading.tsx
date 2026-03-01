@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useContactInfo } from "@/hooks/useContactInfo";
 
 import Footer from "@/components/Footer";
@@ -7,7 +7,7 @@ import SectionLabel from "@/components/SectionLabel";
 import GoldDivider from "@/components/GoldDivider";
 import PrimaryButton from "@/components/PrimaryButton";
 import SEO from "@/components/SEO";
-import { ChevronDown, Award, Crown } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Award, Crown } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer2 from "@/assets/hero-dancer-2.jpg";
@@ -90,6 +90,23 @@ const steps = [
 const LadderSection = () => {
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: stepsRef, isVisible: stepsVisible } = useScrollAnimation();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateButtons = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 8);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
+  };
+
+  const scroll = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === "left" ? -280 : 280, behavior: "smooth" });
+  };
+
   return (
     <section className="py-8 sm:py-12 md:py-16" style={{ background: "hsl(var(--bg-section))" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -97,7 +114,24 @@ const LadderSection = () => {
           <SectionLabel text="THE PROGRESSION PATH" className="mb-6" />
           <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[3rem] text-foreground text-center mb-10 sm:mb-14">From First Step to Master Level</h2>
         </div>
-        <div ref={stepsRef} className={`overflow-x-auto pb-4 -mx-4 sm:mx-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${stepsVisible ? "animate-fade-up" : "opacity-0"}`}>
+        <div className="relative">
+          {/* Left Arrow */}
+          <button
+            onClick={() => scroll("left")}
+            aria-label="Scroll left"
+            className={`absolute left-0 top-1/2 -translate-y-1/2 z-10 -translate-x-1 sm:-translate-x-4 w-9 h-9 rounded-full bg-card shadow-md border border-gold/20 flex items-center justify-center text-gold hover:bg-gold hover:text-white transition-all duration-200 ${canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          {/* Right Arrow */}
+          <button
+            onClick={() => scroll("right")}
+            aria-label="Scroll right"
+            className={`absolute right-0 top-1/2 -translate-y-1/2 z-10 translate-x-1 sm:translate-x-4 w-9 h-9 rounded-full bg-card shadow-md border border-gold/20 flex items-center justify-center text-gold hover:bg-gold hover:text-white transition-all duration-200 ${canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        <div ref={(el) => { (stepsRef as React.MutableRefObject<HTMLDivElement | null>).current = el; scrollRef.current = el; }} onScroll={updateButtons} className={`overflow-x-auto pb-4 -mx-4 sm:mx-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${stepsVisible ? "animate-fade-up" : "opacity-0"}`}>
         <div className="flex gap-3 sm:gap-4 min-w-[1100px] px-4 sm:px-0">
           {steps.map((s, i) => (
             <div key={s.badge} className="flex items-start">
@@ -121,6 +155,7 @@ const LadderSection = () => {
           ))}
         </div>
       </div>
+        </div>
     </div>
   </section>
   );
@@ -141,7 +176,7 @@ const CertificationSection = () => {
       <div ref={textRef} className={`${textVisible ? "animate-fade-left" : "opacity-0"}`}>
         <SectionLabel text="WHAT YOU EARN" className="justify-start mb-6" />
         <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-primary leading-tight mb-8">
-          Your Certificate, Recognized Nationally
+          Your Certificate, Recognized Nationally & Internationally
         </h2>
         <ul className="space-y-4 mb-8">
           {[
