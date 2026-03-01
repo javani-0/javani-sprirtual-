@@ -12,7 +12,7 @@ const navLinks = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Courses", path: "/courses" },
-  { label: "Grading System", path: "/grading" },
+  { label: "Grades & Diploma", path: "/grading" },
   { label: "Gallery", path: "/gallery" },
   { label: "Products", path: "/products" },
   { label: "Guru Bandhu", path: "/guru-bandhu" },

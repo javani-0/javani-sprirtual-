@@ -7,7 +7,7 @@ import SectionLabel from "@/components/SectionLabel";
 import GoldDivider from "@/components/GoldDivider";
 import PrimaryButton from "@/components/PrimaryButton";
 import SEO from "@/components/SEO";
-import { ChevronDown, ChevronLeft, ChevronRight, Award, Crown } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Crown } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import heroDancer1 from "@/assets/hero-dancer-1.jpg";
 import heroDancer2 from "@/assets/hero-dancer-2.jpg";
@@ -43,7 +43,8 @@ const IntroSection = () => {
                   alt={img.alt} 
                   loading="lazy" 
                   onLoad={() => handleLoad(i)} 
-                  className={`w-full h-full object-cover shadow-gold transition-all duration-500 hover:scale-[1.04] ${loadedImages.has(i) ? "opacity-100" : "opacity-0"}`} 
+                  className={`w-full h-full object-cover shadow-gold transition-all duration-500 hover:scale-[1.04] ${loadedImages.has(i) ? "opacity-100" : "opacity-0"}`}
+                  style={i === 0 ? { objectPosition: "top center" } : undefined}
                 />
               </div>
             ))}
@@ -161,6 +162,105 @@ const LadderSection = () => {
   );
 };
 
+/* ───── JGP Fee Table ───── */
+const jgpGrades = [
+  { grade: "I",    eligibility: "5 Years / I Std Pass",    fee: "₹ 12K + Tax" },
+  { grade: "II",   eligibility: "6 Years / II Std Pass",   fee: "₹ 15K + Tax" },
+  { grade: "III",  eligibility: "7 Years / III Std Pass",  fee: "₹ 18K + Tax" },
+  { grade: "IV",   eligibility: "8 Years / IV Std Pass",   fee: "₹ 21K + Tax" },
+  { grade: "V",    eligibility: "9 Years / V Std Pass",    fee: "₹ 21K + Tax" },
+  { grade: "VI",   eligibility: "10 Years / VI Std Pass",  fee: "₹ 24K + Tax" },
+  { grade: "VII",  eligibility: "11 Years / VII Std Pass", fee: "₹ 24K + Tax" },
+  { grade: "VIII", eligibility: "12 Years / VIII Std Pass",fee: "₹ 27K + Tax" },
+  { grade: "IX",   eligibility: "13 Years / IX Std Pass",  fee: "₹ 27K + Tax" },
+  { grade: "X",    eligibility: "14 Years / X Std Pass",   fee: "₹ 30K + Tax" },
+];
+
+const processNotes = [
+  "Once the examination admission is completed, study materials and an ID card will be provided.",
+  "Hall Ticket will be published prior to the examination date.",
+  "After completion of the examination, results and Grade Completion Certificates will be issued within 30 days.",
+  "Demonstration audios & videos will be provided.",
+  "Subject & notations Theory PDFs will be provided.",
+  "Exam will be conducted in JAVANI SPIRITUAL HUB, Secunderabad.",
+  "Exam will be conducted with live orchestra & according to the Training centre rules & regulations.",
+  "Exam demonstration of students will be recorded for in-depth evaluation purposes.",
+];
+
+const JGPSection = () => {
+  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
+  const { ref: tableRef, isVisible: tableVisible } = useScrollAnimation();
+  const { ref: notesRef, isVisible: notesVisible } = useScrollAnimation();
+
+  return (
+    <section className="py-8 sm:py-12 md:py-16 bg-background">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+
+        {/* Collaboration Banner */}
+        <div ref={headerRef} className={`text-center mb-10 ${headerVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <div className="inline-flex items-center gap-3 bg-gold/10 border border-gold/30 rounded-full px-5 py-2 mb-6">
+            <span className="text-gold text-xs sm:text-sm font-accent font-semibold tracking-widest uppercase">IAF &amp; ISO Approved</span>
+          </div>
+          <p className="font-body text-[0.85rem] sm:text-[0.95rem] text-muted-foreground mb-4 max-w-2xl mx-auto">
+            In Collaboration with an authentic <span className="text-gold font-semibold">IAF, ISO Approved</span> Certificate Providing Center
+          </p>
+          <SectionLabel text="JAVANI GRADE PROGRAM (JGP)" className="mb-3" />
+          <h2 className="font-display font-semibold text-[1.8rem] sm:text-[2rem] md:text-[2.8rem] text-foreground leading-tight">
+            Eligibility &amp; Examination Fees
+          </h2>
+        </div>
+
+        {/* Fee Table */}
+        <div ref={tableRef} className={`mb-12 overflow-x-auto rounded-xl shadow-[0_4px_30px_rgba(201,168,76,0.12)] border border-gold/20 ${tableVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <table className="w-full min-w-[480px] text-sm sm:text-base">
+            <thead>
+              <tr className="bg-gold text-white">
+                <th className="py-3 px-4 sm:px-6 font-accent font-semibold text-left text-xs sm:text-sm tracking-wider uppercase rounded-tl-xl">Grade</th>
+                <th className="py-3 px-4 sm:px-6 font-accent font-semibold text-left text-xs sm:text-sm tracking-wider uppercase">Eligibility</th>
+                <th className="py-3 px-4 sm:px-6 font-accent font-semibold text-left text-xs sm:text-sm tracking-wider uppercase rounded-tr-xl">Training &amp; Exam Fee<br /><span className="text-[10px] font-body font-normal opacity-80 normal-case tracking-normal">(Group Session)</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {jgpGrades.map((row, i) => (
+                <tr
+                  key={row.grade}
+                  className={`border-b border-gold/10 transition-colors duration-200 hover:bg-gold/5 ${i % 2 === 0 ? "bg-card" : "bg-background"}`}
+                >
+                  <td className="py-3 px-4 sm:px-6">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gold/10 text-gold font-accent font-bold text-xs sm:text-sm">
+                      {row.grade}
+                    </span>
+                  </td>
+                  <td className="py-3 px-4 sm:px-6 font-body text-foreground text-[0.85rem] sm:text-[0.95rem]">{row.eligibility}</td>
+                  <td className="py-3 px-4 sm:px-6 font-body font-semibold text-gold text-[0.9rem] sm:text-[1rem]">{row.fee}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Process Notes */}
+        <div ref={notesRef} className={`bg-card border border-gold/20 rounded-xl p-5 sm:p-8 shadow-card ${notesVisible ? "animate-fade-up" : "opacity-0"}`}>
+          <p className="font-body font-semibold text-[0.95rem] sm:text-[1rem] text-red-400 mb-3">Note: -</p>
+          <h3 className="font-display font-semibold text-[1.1rem] sm:text-[1.3rem] text-foreground mb-5 flex items-center gap-2">
+            <span className="w-1 h-6 bg-gold rounded-full inline-block" />
+            Process Information
+          </h3>
+          <ul className="space-y-3">
+            {processNotes.map((note, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <span className="w-5 h-5 rounded-full bg-gold/10 text-gold text-xs flex items-center justify-center flex-shrink-0 mt-0.5 font-accent font-bold">{i + 1}</span>
+                <span className="font-body font-light text-[0.85rem] sm:text-[0.95rem] text-foreground leading-relaxed">{note}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+      </div>
+    </section>
+  );
+};
+
 /* ───── Certificate Mockup ───── */
 const CertificationSection = () => {
   const { ref: textRef, isVisible: textVisible } = useScrollAnimation();
@@ -200,24 +300,15 @@ const CertificationSection = () => {
           <PrimaryButton>Ask About Certification</PrimaryButton>
         </a>
       </div>
-      <div ref={certRef} className={`bg-ivory rounded-lg p-6 sm:p-8 md:p-10 shadow-[0_20px_60px_rgba(201,168,76,0.2)] ${certVisible ? "animate-fade-right" : "opacity-0"}`} style={{ border: "3px double hsl(42,50%,54%)" }}>
-        <div className="text-center">
-          <p className="font-accent text-[1.1rem] sm:text-[1.2rem] md:text-[1.4rem] text-gold mb-2">Javani Spiritual Hub</p>
-          <GoldDivider className="mb-4" />
-          <p className="font-display text-xs sm:text-sm text-muted-foreground mb-4 sm:mb-6 tracking-widest uppercase">Certificate of Achievement</p>
-          <p className="font-display text-[0.95rem] sm:text-[1.1rem] text-foreground leading-relaxed mb-6 sm:mb-8">
-            This certifies that <span className="font-semibold text-primary">[Student Name]</span> has successfully completed <span className="font-semibold">Grade 3</span> in <span className="font-semibold">Bharatanatyam</span>
-          </p>
-          <div className="flex items-end justify-between mt-8 sm:mt-10">
-            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-gold flex items-center justify-center">
-              <Award className="w-5 h-5 sm:w-6 sm:h-6 text-gold" />
-            </div>
-            <div className="text-right">
-              <div className="w-24 sm:w-32 h-px bg-foreground/30 mb-1" />
-              <p className="font-body text-xs text-muted-foreground">Authorized Signature</p>
-            </div>
-          </div>
+      <div ref={certRef} className={`flex flex-col items-center ${certVisible ? "animate-fade-right" : "opacity-0"}`}>
+        <div className="rounded-lg overflow-hidden shadow-[0_20px_60px_rgba(201,168,76,0.25)]" style={{ border: "3px double hsl(42,50%,54%)" }}>
+          <img
+            src="/demo-certificate.png"
+            alt="Demo Certificate"
+            className="w-full h-auto object-contain"
+          />
         </div>
+        <p className="mt-3 font-body text-xs sm:text-sm text-muted-foreground tracking-widest uppercase italic">* Demo certificate</p>
       </div>
     </div>
   </section>
@@ -322,13 +413,14 @@ const Grading = () => (
     <main>
       <PageHero
         backgroundImages={[heroDancer2, heroTemple, heroDancer1]}
-        label="GRADING SYSTEM"
+        label="GRADES & DIPLOMA"
         heading="Understanding Our Grading System"
         subtext="A transparent, progressive, and internationally-aligned certification pathway."
       />
       <IntroSection />
       <LadderSection />
       <CertificationSection />
+      <JGPSection />
       <ExamProcessSection />
       <FAQSection />
     </main>
