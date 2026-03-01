@@ -71,6 +71,9 @@ const IntroSection = () => {
             <div className="border-l-[3px] border-gold pl-4 sm:pl-5 py-3 bg-ivory rounded-r-lg">
               <p className="font-body text-[0.85rem] sm:text-[0.95rem] text-foreground break-words">📋 <strong>Structured Progression</strong> — Every grade has a defined syllabus, assessment criteria, and a clear milestone — so students always know their path forward.</p>
             </div>
+            <div className="border-l-[3px] border-gold pl-4 sm:pl-5 py-3 bg-ivory rounded-r-lg">
+              <p className="font-body text-[0.85rem] sm:text-[0.95rem] text-foreground break-words">📜 <strong>Terms and Conditions</strong> — Please review our <Link to="/terms-and-conditions" className="text-gold hover:text-primary underline underline-offset-2 transition-colors duration-300">terms and conditions</Link> for enrollment, refunds, and examination policies.</p>
+            </div>
           </div>
         </div>
       </div>
