@@ -7,8 +7,8 @@ const refundPoints = [
   "Requests for refunds must be submitted to spiritualarts@javanilife.com with payment reference and reason for refund.",
   "Refund request is accepted only by initiating within 48hrs of fee payment done from your side.",
   "Refund eligibility depends on the fee type (tuition, exam, admission) and the date of request. Specific refund windows and deduction rules (if any) will be communicated at the time of payment or in the relevant fee policy document.",
-  "Processing time for approved refunds is subject to BRAND timelines and the payer's bank — typically 7–45 business days after approval, but may vary.",
-  "Transaction charges, payment gateway fees, or other administrative fees may be non-refundable unless stated otherwise.",
+  "Processing time for approved refunds is subject to BRAND timelines and typically 7–45 business days after approval, but may vary.",
+  "Registration charges & admission are strictly non-refundable under any circumstances.",
 ];
 
 const TermsAndConditions = () => {
@@ -65,7 +65,7 @@ const TermsAndConditions = () => {
                 ))}
               </ul>
               <p className="font-body text-[0.8rem] sm:text-[0.85rem] text-muted-foreground italic border-t border-gold/10 pt-4">
-                <span className="text-red-400 font-semibold not-italic">Note:</span> A refund will be initiated to the same payment instrument used for the original transaction wherever possible.
+                Refer Terms &amp; Condition policy documents for more details
               </p>
             </div>
 

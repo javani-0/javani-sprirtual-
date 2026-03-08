@@ -85,13 +85,12 @@ const IntroSection = () => {
 
 /* ───── Grading Ladder ───── */
 const steps = [
-  { badge: "F", title: "Foundation", level: "Pre-Grade", desc: "Introduction to posture, basic Adavus, rhythm fundamentals. No examination — just joy of learning." },
-  { badge: "G1", title: "Grade 1", level: "Beginner", desc: "First formal graded examination. Covers foundational Adavus, basic Abhinaya, and simple compositions." },
-  { badge: "G2", title: "Grade 2", level: "Elementary", desc: "Intermediate compositions, advanced footwork patterns, and expanded mudra vocabulary." },
-  { badge: "G3", title: "Grade 3", level: "Intermediate", desc: "Performance-level Adavus, full Varnam introduction, and formal stage presence training." },
-  { badge: "G4/5", title: "Grade 4 / 5", level: "Senior", desc: "Senior level — complete Margam, advanced Abhinaya, and solo performance capability." },
-  { badge: "JD", title: "Junior Diploma", level: "Advanced", desc: "University-examination level. Covers full traditional repertoire with written theory component." },
-  { badge: "SD", title: "Senior Diploma / Arangetram", level: "Master", desc: "The pinnacle — a full solo debut performance (Arangetram) and Senior Diploma certification.", crown: true },
+  { badge: "G1/2", title: "Grade 1 & 2", level: "Beginner", desc: "Foundation of Kuchipudi through basic adavus, rhythm training, mudras, and introductory theory." },
+  { badge: "G3/4", title: "Grade 3 & 4", level: "Elementary", desc: "Strengthening Kuchipudi technique with structured adavus, simple repertoire, and tala understanding." },
+  { badge: "G5/6", title: "Grade 5 & 6", level: "Intermediate", desc: "Performance development through complete items, abhinaya training, and deeper theoretical knowledge." },
+  { badge: "G7/8", title: "Grade 7 & 8", level: "Senior", desc: "Advanced technique and expressive mastery with traditional repertoire and refined laya control." },
+  { badge: "G9/10", title: "Grade 9 & 10", level: "Advanced", desc: "Professional-level Kuchipudi excellence with major productions, manodharma, choreography, and comprehensive theory." },
+  { badge: "RP", title: "Rangapravesham", level: "Debut Performance", desc: "Granted after completion of Senior/Advanced grades, full repertoire mastery, performance maturity, and Guru approval.", crown: true },
 ];
 
 const LadderSection = () => {
